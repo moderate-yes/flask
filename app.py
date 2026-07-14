@@ -147,6 +147,11 @@ def google_site_verification():
     return send_from_directory(app.root_path, "googlebb29d5b1978e0f82.html", mimetype="text/html")
 
 
+@app.get("/ads.txt")
+def ads_txt():
+    return send_from_directory(app.root_path, "ads.txt", mimetype="text/plain")
+
+
 @app.get("/robots.txt")
 def robots_txt():
     body = f"User-agent: *\nAllow: /\nSitemap: {public_url('sitemap_xml')}\n"
