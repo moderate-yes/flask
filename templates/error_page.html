@@ -2,10 +2,11 @@
 <html lang="en">
   <head>
     {% include '_adsense_head.html' %}
+    {% include '_brand_head.html' %}
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#a9aaa5">
-    <title>{{ code }} — {{ title }} — Local Tools</title>
+    <title>{{ code }} — {{ title }} — Browser Tools</title>
     <meta name="robots" content="noindex">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,7 +17,7 @@
   <body>
     <main class="page-shell content-shell">
       <div class="content-topbar">
-        <a class="content-home" href="{{ url_for('index') }}">LOCAL TOOLS</a>
+        <a class="content-home" href="{{ url_for('index') }}">BROWSER TOOLS</a>
         {% include '_tool_launcher.html' %}
       </div>
       <section class="content-card error-card">
@@ -24,7 +25,7 @@
           <p class="content-eyebrow">ERROR / {{ code }}</p>
           <h1>{{ title | upper }}</h1>
           <p class="content-intro">{{ message }}</p>
-          <a class="section-link" href="{{ url_for('index') }}">RETURN TO LOCAL TOOLS <span aria-hidden="true">↗</span></a>
+          <a class="section-link" href="{{ url_for('index') }}">RETURN TO BROWSER TOOLS <span aria-hidden="true">↗</span></a>
         </div>
       </section>
       {% include '_site_footer.html' %}

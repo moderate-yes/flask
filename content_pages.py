@@ -1,14 +1,14 @@
 PAGES = {
     "about": {
-        "title": "About Local Tools",
-        "description": "Learn why Local Tools builds practical, browser-first utilities with privacy in mind.",
-        "eyebrow": "ABOUT / LOCAL TOOLS",
+        "title": "About Browser Tools",
+        "description": "Learn why Browser Tools builds practical, browser-first utilities with privacy in mind.",
+        "eyebrow": "ABOUT / BROWSER TOOLS",
         "heading": "SMALL TOOLS.\nCLEAR PURPOSE.",
-        "intro": "Local Tools is a growing collection of focused browser utilities designed to solve everyday tasks without unnecessary accounts, dashboards, or uploads.",
+        "intro": "Browser Tools is a growing collection of focused browser utilities designed to solve everyday tasks without unnecessary accounts, dashboards, or uploads.",
         "sections": [
             {
                 "title": "WHY THIS SITE EXISTS",
-                "text": "Many simple tasks are routed through services that ask users to upload documents, create accounts, or hand over more information than the task requires. Local Tools takes a smaller approach: open a tool, complete the task, and leave."
+                "text": "Many simple tasks are routed through services that ask users to upload documents, create accounts, or hand over more information than the task requires. Browser Tools takes a smaller approach: open a tool, complete the task, and leave."
             },
             {
                 "title": "BROWSER-FIRST BY DESIGN",
@@ -30,7 +30,7 @@ PAGES = {
         ]
     },
     "guides": {
-        "title": "How to Use Local Tools",
+        "title": "How to Use Browser Tools",
         "description": "Step-by-step instructions for the focus timer, PDF tools, Path Studio, number converter, and multi calculator.",
         "eyebrow": "GUIDES / START HERE",
         "heading": "USE EVERY TOOL.\nWITHOUT GUESSING.",
@@ -82,10 +82,10 @@ PAGES = {
     },
     "faq": {
         "title": "Frequently Asked Questions",
-        "description": "Answers about privacy, browser processing, saved projects, supported files, and Local Tools.",
+        "description": "Answers about privacy, browser processing, saved projects, supported files, and Browser Tools.",
         "eyebrow": "FAQ / COMMON QUESTIONS",
         "heading": "CLEAR ANSWERS.\nBEFORE YOU START.",
-        "intro": "These answers describe how the current version of Local Tools behaves. Review the Privacy Policy for the complete data-handling explanation.",
+        "intro": "These answers describe how the current version of Browser Tools behaves. Review the Privacy Policy for the complete data-handling explanation.",
         "sections": [
             {"title": "ARE MY PDF FILES UPLOADED?", "text": "No. The PDF merge and split tools process selected files in your browser. The Flask server delivers the page files but does not provide an upload endpoint for these tools."},
             {"title": "DO YOU STORE MY PATH STUDIO IMAGES?", "text": "No. Added images stay in browser memory while the editor is open. When you save a .pathwork project, the project and embedded image data are downloaded directly to your device."},
@@ -101,19 +101,19 @@ PAGES = {
     },
     "privacy": {
         "title": "Privacy Policy",
-        "description": "How Local Tools handles browser data, local files, technical logs, external resources, and future advertising.",
+        "description": "How Browser Tools handles browser data, local files, technical logs, external resources, and advertising.",
         "eyebrow": "POLICY / PRIVACY",
         "heading": "YOUR FILES STAY\nCLOSE TO YOU.",
-        "intro": "This policy explains what the current Local Tools website processes, what may be stored on your device, and what may change if analytics or advertising is introduced.",
-        "updated": "Last updated: July 14, 2026",
+        "intro": "This policy explains what the current Browser Tools website processes, what may be stored on your device, and how third-party resources and advertising may process technical information.",
+        "updated": "Last updated: July 15, 2026",
         "sections": [
             {"title": "FILES AND TOOL INPUTS", "text": "PDF documents, Path Studio project files, and images selected in supported tools are processed in the browser. These tools do not send those files to the application server. Temporary working data is normally cleared when the page closes."},
             {"title": "LOCAL BROWSER STORAGE", "text": "The focus timer may use local browser storage to preserve timer state on the same device. You can remove this information by clearing site data in your browser."},
             {"title": "CALCULATIONS AND NUMBER CONVERSION", "text": "Values entered in the multi calculator and number converter are calculated in the browser and are not submitted to an application endpoint."},
             {"title": "HOSTING AND TECHNICAL LOGS", "text": "When the site is publicly hosted, the hosting provider may process standard request information such as IP address, browser type, requested URL, timestamps, and security logs. This information may be required to deliver, protect, and diagnose the website."},
             {"title": "EXTERNAL RESOURCES", "text": "The current interface loads font resources from Google Fonts. Requests for these resources may disclose standard connection information, including an IP address, to the resource provider."},
-            {"title": "ADVERTISING AND COOKIES", "text": "The current local development version does not include advertising code. If advertising or analytics is enabled, this policy will be updated before launch to describe providers, cookies, identifiers, consent choices, and opt-out methods. Where required, an appropriate consent message will be shown before relevant storage or personalized advertising is used."},
-            {"title": "DATA SALES AND USER ACCOUNTS", "text": "Local Tools does not currently provide user accounts and does not sell the PDF, image, project, timer, calculation, or number-conversion contents users process in the tools."},
+            {"title": "ADVERTISING AND COOKIES", "text": "Browser Tools uses Google AdSense advertising code. Google and its partners may use cookies, device identifiers, IP addresses, and related technical information to deliver, measure, limit, and personalize advertising where permitted. Consent choices are presented where required, and users can review Google's advertising and privacy controls for additional options."},
+            {"title": "DATA SALES AND USER ACCOUNTS", "text": "Browser Tools does not currently provide user accounts and does not sell the PDF, image, project, timer, calculation, or number-conversion contents users process in the tools."},
             {"title": "CHILDREN", "text": "The service is a general-purpose utility site and is not designed to collect personal information from children."},
             {"title": "POLICY CHANGES", "text": "This policy may be revised when hosting, analytics, advertising, contact methods, or tool behavior changes. The updated date will be changed when material revisions are published."},
             {"title": "CONTACT", "text": "Privacy questions can be sent through the contact method published on the Contact page."}
@@ -121,10 +121,10 @@ PAGES = {
     },
     "terms": {
         "title": "Terms of Use",
-        "description": "Terms governing use of Local Tools, local file processing, acceptable use, and service availability.",
+        "description": "Terms governing use of Browser Tools, local file processing, acceptable use, and service availability.",
         "eyebrow": "POLICY / TERMS",
         "heading": "USE THE TOOLS.\nKEEP CONTROL.",
-        "intro": "By using Local Tools, you agree to use the service lawfully and to review important outputs before relying on them.",
+        "intro": "By using Browser Tools, you agree to use the service lawfully and to review important outputs before relying on them.",
         "updated": "Last updated: July 14, 2026",
         "sections": [
             {"title": "SERVICE PROVIDED AS IS", "text": "The tools are provided on an as-is and as-available basis. Features may contain errors, change, pause, or be removed. Continuous availability and compatibility with every file or browser are not guaranteed."},
@@ -139,8 +139,8 @@ PAGES = {
         ]
     },
     "contact": {
-        "title": "Contact Local Tools",
-        "description": "Contact Local Tools about support, privacy, policy questions, or feedback.",
+        "title": "Contact Browser Tools",
+        "description": "Contact Browser Tools about support, privacy, policy questions, or feedback.",
         "eyebrow": "CONTACT / SUPPORT",
         "heading": "QUESTIONS.\nFEEDBACK. ISSUES.",
         "intro": "Use the contact channel below for tool feedback, accessibility issues, privacy questions, or reports of unexpected behavior.",

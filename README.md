@@ -1,4 +1,4 @@
-# ON / TIME
+# Browser Tools
 
 A privacy-first browser toolkit built with Flask.
 

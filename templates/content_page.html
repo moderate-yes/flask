@@ -2,10 +2,11 @@
 <html lang="en">
   <head>
     {% include '_adsense_head.html' %}
+    {% include '_brand_head.html' %}
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#a9aaa5">
-    <title>{{ page.title }} — Local Tools</title>
+    <title>{{ page.title }} — Browser Tools</title>
     <meta name="description" content="{{ page.description }}">
     <link rel="canonical" href="{{ canonical_url }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -17,7 +18,7 @@
   <body>
     <main class="page-shell content-shell">
       <div class="content-topbar">
-        <a class="content-home" href="{{ url_for('index') }}">LOCAL TOOLS</a>
+        <a class="content-home" href="{{ url_for('index') }}">BROWSER TOOLS</a>
         {% include '_tool_launcher.html' %}
       </div>
 

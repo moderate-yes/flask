@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title">
+  <title id="title">Browser Tools</title>
+  <rect width="64" height="64" fill="#a9aaa5"/>
+  <path d="M2 2h60v60H2z" fill="none" stroke="#111210" stroke-width="4"/>
+  <path d="M12 13h14c8 0 12 3.5 12 9.5 0 3.8-1.8 6.6-5.2 8.1 4 1.4 6.2 4.4 6.2 9 0 7.4-4.7 11.4-13 11.4H12V13zm7 6v9h6.2c4 0 5.8-1.4 5.8-4.6 0-3-1.8-4.4-5.8-4.4H19zm0 14.5V45h6.7c4.3 0 6.3-1.8 6.3-5.8 0-3.8-2.1-5.7-6.3-5.7H19z" fill="#111210"/>
+  <path d="M39 13h15v7h-4v31h-7V20h-4z" fill="#111210"/>
+</svg>

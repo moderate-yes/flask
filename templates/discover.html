@@ -2,6 +2,7 @@
 <html lang="{{ locale.html_lang }}" dir="{{ locale.dir }}">
   <head>
     {% include '_adsense_head.html' %}
+    {% include '_brand_head.html' %}
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#a9aaa5">
@@ -12,7 +13,6 @@
     {% for item in alternates %}<link rel="alternate" hreflang="{{ item.hreflang }}" href="{{ item.url }}">
     {% endfor %}<link rel="alternate" hreflang="x-default" href="{{ default_url }}">
     <meta property="og:type" content="website">
-    <meta property="og:site_name" content="Local Tools">
     <meta property="og:locale" content="{{ locale.og_locale }}">
     <meta property="og:title" content="{{ locale.title }}">
     <meta property="og:description" content="{{ locale.description }}">
@@ -30,7 +30,7 @@
   <body>
     <main class="page-shell discover-shell">
       <div class="discover-topbar">
-        <a class="discover-brand" href="{{ url_for('discover_default') }}">LOCAL TOOLS</a>
+        <a class="discover-brand" href="{{ url_for('discover_default') }}">BROWSER TOOLS</a>
         {% include '_tool_launcher.html' %}
       </div>
 

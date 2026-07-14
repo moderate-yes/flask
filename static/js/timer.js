@@ -63,7 +63,7 @@
     elements.startLabel.textContent = state.running ? "PAUSE" : state.remaining === 0 ? "START AGAIN" : "START FOCUS";
     elements.playIcon.textContent = state.running ? "Ⅱ" : "▶";
     document.body.classList.toggle("paused", !state.running);
-    document.title = state.running ? `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")} — ON / TIME` : "ON / TIME — Focus Timer";
+    document.title = state.running ? `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")} — Browser Tools` : "Focus Timer — Browser Tools";
     setPresetActive();
   }
 
