@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#9a9b96">
+    <title>Path Studio</title>
+    <meta name="description" content="A private browser-based path and layer editor.">
+    <link rel="canonical" href="{{ canonical_url }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/path-studio.css') }}">
+  </head>
+  <body class="path-body">
+    <div class="path-app" id="pathApp">
+      <header class="path-header">
+        <div class="path-title">
+          <strong>PATH STUDIO</strong>
+          <span>LOCAL VECTOR WORKSPACE</span>
+        </div>
+        <div class="project-actions" aria-label="Project actions">
+          <button id="newProject" type="button">NEW</button>
+          <button id="openProject" type="button">OPEN PROJECT</button>
+          <button id="saveProject" type="button">SAVE PROJECT</button>
+          <button id="exportPng" type="button">EXPORT PNG</button>
+        </div>
+        {% include '_tool_launcher.html' %}
+      </header>
+
+      <input class="visually-hidden" id="projectFile" type="file" accept=".pathwork,.json,application/json">
+      <input class="visually-hidden" id="imageFile" type="file" accept="image/*">
+
+      <main class="editor-grid">
+        <aside class="tool-rail" aria-label="Drawing tools">
+          <button class="tool-button" type="button" data-tool="pen" aria-pressed="false">
+            <span class="tool-key">P</span><span>PEN</span>
+          </button>
+          <button class="tool-button active" type="button" data-tool="select" aria-pressed="true">
+            <span class="tool-key">V</span><span>SELECT</span>
+          </button>
+          <button class="tool-button" id="finishPath" type="button">
+            <span class="tool-key">↵</span><span>FINISH</span>
+          </button>
+          <button class="tool-button" id="addImage" type="button">
+            <span class="tool-key">＋</span><span>IMAGE</span>
+          </button>
+        </aside>
+
+        <section class="workspace" aria-label="Canvas workspace">
+          <div class="workspace-bar">
+            <div class="canvas-meta"><span>CANVAS</span><strong>1600 × 900</strong></div>
+            <p id="editorStatus" role="status" aria-live="polite">Select a tool to begin.</p>
+            <label class="zoom-control" for="zoomSelect">ZOOM
+              <select id="zoomSelect">
+                <option value="0.5">50%</option>
+                <option value="0.75" selected>75%</option>
+                <option value="1">100%</option>
+              </select>
+            </label>
+          </div>
+          <div class="canvas-scroll" id="canvasScroll">
+            <div class="canvas-frame">
+              <canvas id="workCanvas" width="1600" height="900" aria-label="Path editing canvas"></canvas>
+            </div>
+          </div>
+          <div class="workspace-hint">
+            <span>PEN: JOIN ENDPOINTS · ALT + DRAG FOR CURVES · SELECT: CLICK A PATH TO MOVE IT</span>
+            <span>START / LIME · END / CORAL ON HOVER</span>
+          </div>
+        </section>
+
+        <aside class="inspector" aria-label="Layers and properties">
+          <section class="inspector-panel">
+            <div class="panel-heading"><h2>PROPERTIES</h2><span id="layerType">PATH</span></div>
+            <label class="property-row">NAME
+              <input id="layerName" type="text" value="Path 1" maxlength="60">
+            </label>
+            <label class="property-row">OPACITY
+              <span class="range-wrap"><input id="layerOpacity" type="range" min="0" max="100" value="100"><output id="opacityValue">100%</output></span>
+            </label>
+            <div class="path-properties" id="pathProperties">
+              <label class="property-row">STROKE
+                <input id="strokeColor" type="color" value="#111210">
+              </label>
+              <label class="property-row">WIDTH
+                <span class="range-wrap"><input id="strokeWidth" type="range" min="1" max="30" value="4"><output id="strokeWidthValue">4</output></span>
+              </label>
+              <label class="check-row"><input id="fillEnabled" type="checkbox"><span>ENABLE FILL</span></label>
+              <label class="property-row" id="fillColorRow">FILL
+                <input id="fillColor" type="color" value="#777873" disabled>
+              </label>
+            </div>
+          </section>
+
+          <section class="inspector-panel layers-panel">
+            <div class="panel-heading">
+              <h2>LAYERS</h2>
+              <div class="panel-actions">
+                <button id="newPathLayer" type="button" aria-label="Add path layer">＋ PATH</button>
+                <button id="newImageLayer" type="button" aria-label="Add image layer">＋ IMAGE</button>
+              </div>
+            </div>
+            <ol class="layer-list" id="layerList"></ol>
+          </section>
+        </aside>
+      </main>
+      {% include '_site_footer.html' %}
+    </div>
+    <script src="{{ url_for('static', filename='js/tool-launcher.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='js/path-studio.js') }}" defer></script>
+  </body>
+</html>

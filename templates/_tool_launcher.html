@@ -1,0 +1,58 @@
+<div class="tools-bar">
+  <button class="tools-trigger" type="button" data-tools-open aria-expanded="false" aria-controls="toolLauncher">
+    <span>TOOLS</span><span aria-hidden="true">+</span>
+  </button>
+</div>
+
+<dialog class="tool-launcher" id="toolLauncher" aria-labelledby="launcherTitle">
+  <div class="launcher-panel">
+    <header class="launcher-header">
+      <h2 id="launcherTitle">SELECT A TOOL</h2>
+      <button type="button" data-tools-close aria-label="Close tools">×</button>
+    </header>
+
+    <div class="launcher-list">
+      <a class="tool-card{% if request.endpoint == 'index' %} current{% endif %}" href="{{ url_for('index') }}"{% if request.endpoint == 'index' %} aria-current="page"{% endif %}>
+        <span class="tool-number">01</span>
+        <span class="tool-copy"><strong>FOCUS TIMER</strong><small>Stay on one task.</small></span>
+        <span class="tool-arrow" aria-hidden="true">↗</span>
+      </a>
+      <a class="tool-card{% if request.endpoint == 'pdf_merge' %} current{% endif %}" href="{{ url_for('pdf_merge') }}"{% if request.endpoint == 'pdf_merge' %} aria-current="page"{% endif %}>
+        <span class="tool-number">02</span>
+        <span class="tool-copy"><strong>PDF MERGE</strong><small>Combine files locally.</small></span>
+        <span class="tool-arrow" aria-hidden="true">↗</span>
+      </a>
+      <a class="tool-card{% if request.endpoint == 'pdf_split' %} current{% endif %}" href="{{ url_for('pdf_split') }}"{% if request.endpoint == 'pdf_split' %} aria-current="page"{% endif %}>
+        <span class="tool-number">03</span>
+        <span class="tool-copy"><strong>PDF SPLIT</strong><small>Cut pages privately.</small></span>
+        <span class="tool-arrow" aria-hidden="true">↗</span>
+      </a>
+      <a class="tool-card{% if request.endpoint == 'path_studio' %} current{% endif %}" href="{{ url_for('path_studio') }}"{% if request.endpoint == 'path_studio' %} aria-current="page"{% endif %}>
+        <span class="tool-number">04</span>
+        <span class="tool-copy"><strong>PATH STUDIO</strong><small>Draw and layer freely.</small></span>
+        <span class="tool-arrow" aria-hidden="true">↗</span>
+      </a>
+      <a class="tool-card{% if request.endpoint == 'number_converter' %} current{% endif %}" href="{{ url_for('number_converter') }}"{% if request.endpoint == 'number_converter' %} aria-current="page"{% endif %}>
+        <span class="tool-number">05</span>
+        <span class="tool-copy"><strong>NUMBER CONVERTER</strong><small>US and Korean units.</small></span>
+        <span class="tool-arrow" aria-hidden="true">↗</span>
+      </a>
+      <a class="tool-card{% if request.endpoint == 'calculator' %} current{% endif %}" href="{{ url_for('calculator') }}"{% if request.endpoint == 'calculator' %} aria-current="page"{% endif %}>
+        <span class="tool-number">06</span>
+        <span class="tool-copy"><strong>CALCULATOR</strong><small>Percent, discount, tax, tip.</small></span>
+        <span class="tool-arrow" aria-hidden="true">↗</span>
+      </a>
+    </div>
+
+    <nav class="launcher-info" aria-label="Site information">
+      <a href="{{ url_for('discover_default') }}">DISCOVER</a>
+      <a href="{{ url_for('content_page', slug='about') }}">ABOUT</a>
+      <a href="{{ url_for('content_page', slug='guides') }}">GUIDES</a>
+      <a href="{{ url_for('content_page', slug='faq') }}">FAQ</a>
+      <a href="{{ url_for('content_page', slug='privacy') }}">PRIVACY</a>
+      <a href="{{ url_for('content_page', slug='contact') }}">CONTACT</a>
+    </nav>
+
+    <p class="launcher-note">INDEPENDENT TOOLS · ONE TAP AWAY</p>
+  </div>
+</dialog>

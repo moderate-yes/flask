@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#a9aaa5">
+    <title>Private PDF Merge</title>
+    <meta name="description" content="Merge PDF files locally in your browser. No uploads and no storage.">
+    <link rel="canonical" href="{{ canonical_url }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/pdf-merge.css') }}">
+  </head>
+  <body>
+    <main class="page-shell pdf-shell" id="pdfApp" data-worker-url="{{ url_for('static', filename='js/pdf-worker.js') }}">
+      {% include '_tool_launcher.html' %}
+
+      <section class="merge-card" aria-labelledby="mergeTitle">
+        <nav class="pdf-mode-switch" aria-label="Choose a PDF action">
+          <a class="active" href="{{ url_for('pdf_merge') }}" aria-current="page">MERGE</a>
+          <a href="{{ url_for('pdf_split') }}">SPLIT</a>
+        </nav>
+        <header class="merge-heading">
+          <h1 id="mergeTitle">KEEP YOUR DATA PRIVATE.</h1>
+        </header>
+
+        <div class="privacy-strip" aria-label="Privacy features">
+          <span>NO UPLOADS</span>
+          <span>NO STORAGE</span>
+          <span>100% LOCAL</span>
+        </div>
+
+        <button class="drop-zone" id="dropZone" type="button">
+          <span class="add-mark" aria-hidden="true">+</span>
+          <strong>ADD PDF FILES</strong>
+          <span>Choose files or drop them here</span>
+        </button>
+        <input id="filePicker" class="visually-hidden" type="file" accept="application/pdf,.pdf" multiple>
+
+        <section class="file-queue" id="fileQueue" hidden aria-labelledby="queueTitle">
+          <div class="queue-heading">
+            <h2 id="queueTitle">FILES <span id="fileCount">0</span></h2>
+            <button id="clearButton" type="button">CLEAR</button>
+          </div>
+          <ol class="file-list" id="fileList"></ol>
+        </section>
+
+        <p class="merge-status" id="mergeStatus" role="status" aria-live="polite">Add at least two PDF files to begin.</p>
+        <button class="merge-button" id="mergeButton" type="button" disabled>MERGE</button>
+        <p class="memory-note">Files exist only in your browser memory and are cleared when this page closes.</p>
+      </section>
+      {% include '_site_footer.html' %}
+    </main>
+    <script src="{{ url_for('static', filename='js/tool-launcher.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='js/pdf-merge.js') }}" defer></script>
+  </body>
+</html>

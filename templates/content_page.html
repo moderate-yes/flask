@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#a9aaa5">
+    <title>{{ page.title }} — Local Tools</title>
+    <meta name="description" content="{{ page.description }}">
+    <link rel="canonical" href="{{ canonical_url }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/content-pages.css') }}">
+  </head>
+  <body>
+    <main class="page-shell content-shell">
+      <div class="content-topbar">
+        <a class="content-home" href="{{ url_for('index') }}">LOCAL TOOLS</a>
+        {% include '_tool_launcher.html' %}
+      </div>
+
+      <article class="content-card">
+        <header class="content-hero">
+          <p class="content-eyebrow">{{ page.eyebrow }}</p>
+          <h1>{{ page.heading | replace('\n', '<br>') | safe }}</h1>
+          <p class="content-intro">{{ page.intro }}</p>
+          {% if page.updated %}<p class="content-updated">{{ page.updated }}</p>{% endif %}
+        </header>
+
+        {% if page.contact_page %}
+          <section class="contact-channel" aria-labelledby="contactChannel">
+            <span>PUBLIC CONTACT CHANNEL</span>
+            {% if contact_email %}
+              <h2 id="contactChannel"><a href="mailto:{{ contact_email }}">{{ contact_email }}</a></h2>
+              <p>This address is configured by the site operator.</p>
+            {% else %}
+              <h2 id="contactChannel">CONTACT EMAIL NOT YET PUBLISHED</h2>
+              <p>A verified public address will appear here before the site launches. Set the CONTACT_EMAIL environment value to publish it.</p>
+            {% endif %}
+          </section>
+        {% endif %}
+
+        <div class="content-sections">
+          {% for section in page.sections %}
+            <section class="content-section">
+              <span class="section-number">{{ '%02d' | format(loop.index) }}</span>
+              <div>
+                <h2>{{ section.title }}</h2>
+                <p>{{ section.text }}</p>
+                {% if section.get('items') %}
+                  <ul>
+                    {% for item in section.get('items') %}<li>{{ item }}</li>{% endfor %}
+                  </ul>
+                {% endif %}
+                {% if section.endpoint %}<a class="section-link" href="{{ url_for(section.endpoint) }}">{{ section.link_label }} <span aria-hidden="true">↗</span></a>{% endif %}
+              </div>
+            </section>
+          {% endfor %}
+        </div>
+      </article>
+
+      {% include '_site_footer.html' %}
+    </main>
+    <script src="{{ url_for('static', filename='js/tool-launcher.js') }}" defer></script>
+  </body>
+</html>

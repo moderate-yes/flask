@@ -1,0 +1,46 @@
+.discover-shell { max-width: 1060px; }
+.discover-topbar { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; }
+.discover-topbar .tools-bar { margin: 0; }
+.discover-brand { min-height: 34px; display: inline-flex; align-items: center; border: 1px solid var(--ink); padding: 0 12px; background: rgba(205,206,201,.78); color: var(--ink); font: 500 9px "DM Mono", monospace; letter-spacing: .09em; text-decoration: none; }
+.discover-brand:hover { background: var(--ink); color: var(--white); }
+.discover-hero { margin-top: 9px; border: 2px solid var(--ink); background: rgba(205,206,201,.88); padding: clamp(32px,7vw,76px); }
+.discover-hero > p, .privacy-block > span, .how-block span, .language-block span { margin: 0; font: 500 9px "DM Mono", monospace; letter-spacing: .12em; }
+.discover-hero h1 { max-width: 850px; margin: 24px 0 0; font-family: "Archivo Black", sans-serif; font-size: clamp(47px,8.4vw,92px); line-height: .9; letter-spacing: -.065em; }
+.hero-bottom { display: grid; grid-template-columns: 90px minmax(0,580px); gap: 25px; margin-top: 42px; }
+.hero-bottom span { font: 500 8px "DM Mono",monospace; }
+.hero-bottom p { margin: 0; font-size: 15px; line-height: 1.7; }
+.privacy-block { display: grid; grid-template-columns: 190px minmax(0,1fr); gap: 28px; margin-top: 10px; border: 1px solid var(--ink); padding: clamp(25px,4vw,45px); background: #151613; color: #e4e5df; }
+.privacy-block h2 { margin: 0; font-family: "Archivo Black",sans-serif; font-size: clamp(29px,4vw,48px); line-height: 1; letter-spacing: -.045em; }
+.privacy-block p { max-width: 660px; margin: 17px 0 0; color: #bfc0bb; font-size: 14px; line-height: 1.7; }
+.tool-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 10px; margin-top: 10px; }
+.discover-tool { min-height: 280px; display: flex; flex-direction: column; border: 1px solid var(--ink); padding: clamp(22px,4vw,40px); background: rgba(218,219,214,.93); }
+.discover-tool:first-child { grid-column: span 2; min-height: 245px; }
+.discover-tool > span { font: 500 8px "DM Mono",monospace; }
+.discover-tool h2 { margin: auto 0 0; font-family: "Archivo Black",sans-serif; font-size: clamp(30px,4vw,47px); line-height: .95; letter-spacing: -.045em; }
+.discover-tool p { max-width: 570px; margin: 17px 0 0; color: #3f403d; font-size: 13px; line-height: 1.65; }
+.discover-tool a { align-self: flex-start; display: inline-flex; gap: 25px; margin-top: 23px; border-bottom: 1px solid var(--ink); padding: 0 0 6px; color: var(--ink); font: 500 9px "DM Mono",monospace; letter-spacing: .08em; text-decoration: none; }
+.discover-tool a:hover { opacity: .55; }
+.how-block, .language-block { margin-top: 10px; border: 1px solid var(--ink); padding: clamp(25px,4vw,45px); background: rgba(205,206,201,.88); }
+.how-block > div, .language-block > div { display: grid; grid-template-columns: 90px minmax(0,1fr); gap: 25px; align-items: start; }
+.how-block h2, .language-block h2 { margin: 0; font-family: "Archivo Black",sans-serif; font-size: clamp(31px,5vw,58px); line-height: .95; letter-spacing: -.05em; }
+.how-block ol { margin: 32px 0 0 115px; padding: 0; list-style: none; border-top: 1px solid var(--ink); }
+.how-block li { display: grid; grid-template-columns: 44px minmax(0,1fr); padding: 18px 0; border-bottom: 1px solid rgba(17,18,16,.35); font-size: 14px; line-height: 1.5; }
+.how-block li b { font: 500 8px "DM Mono",monospace; }
+.how-block > p { margin: 20px 0 0 115px; color: var(--muted); font-size: 11px; }
+.language-block nav { display: grid; grid-template-columns: repeat(5,minmax(0,1fr)); gap: 8px; margin-top: 30px; }
+.language-block a { display: flex; align-items: center; justify-content: center; min-height: 48px; border: 1px solid var(--ink); color: var(--ink); font-size: 12px; text-align: center; text-decoration: none; }
+.language-block a:hover, .language-block a[aria-current="page"] { background: var(--ink); color: var(--white); }
+.discover-shell .site-footer { margin-top: 16px; }
+[dir="rtl"] .discover-hero h1, [dir="rtl"] .privacy-block h2, [dir="rtl"] .discover-tool h2, [dir="rtl"] .how-block h2, [dir="rtl"] .language-block h2 { letter-spacing: 0; }
+[dir="rtl"] .how-block ol, [dir="rtl"] .how-block > p { margin-left: 0; margin-right: 115px; }
+@media (max-width:700px) {
+  .discover-hero { padding: 30px 20px; }
+  .discover-hero h1 { font-size: 45px; }
+  .hero-bottom, .privacy-block { grid-template-columns: 1fr; }
+  .tool-grid { grid-template-columns: 1fr; }
+  .discover-tool:first-child { grid-column: auto; }
+  .discover-tool { min-height: 255px; }
+  .how-block > div, .language-block > div { grid-template-columns: 1fr; gap: 12px; }
+  .how-block ol, .how-block > p, [dir="rtl"] .how-block ol, [dir="rtl"] .how-block > p { margin-left: 0; margin-right: 0; }
+  .language-block nav { grid-template-columns: repeat(2,minmax(0,1fr)); }
+}

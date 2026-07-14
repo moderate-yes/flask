@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#a9aaa5">
+    <title>Free Multi Calculator — Percent, Discount, Tax & Tip</title>
+    <meta name="description" content="Calculate arithmetic, percentages, discounts, sales tax, tips, and split bills in your browser. Free, clear formulas, and no account required.">
+    <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large">
+    <link rel="canonical" href="{{ canonical_url }}">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Local Tools">
+    <meta property="og:title" content="Free Multi Calculator">
+    <meta property="og:description" content="Arithmetic, percentage, discount, tax, tip, and split-bill calculations with clear formulas.">
+    <meta property="og:url" content="{{ canonical_url }}">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Free Multi Calculator">
+    <meta name="twitter:description" content="Four practical calculators in one browser-first tool.">
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Multi Calculator","url":{{ canonical_url | tojson }},"description":"Calculate arithmetic, percentages, discounts, sales tax, tips, and split bills in your browser.","applicationCategory":"UtilitiesApplication","operatingSystem":"Any","browserRequirements":"JavaScript-enabled web browser","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"featureList":["Arithmetic","Percentage calculation","Percentage change","Discount and sales tax","Tip and split bill"]}</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/calculator.css') }}">
+  </head>
+  <body>
+    <main class="page-shell calculator-shell" id="calculatorApp">
+      {% include '_tool_launcher.html' %}
+
+      <section class="calculator-card" aria-label="Multi calculator">
+        <div class="calculator-tabs" role="tablist" aria-label="Calculation type">
+          <button id="tab-basic" role="tab" aria-label="Arithmetic" aria-selected="true" aria-controls="panel-basic" data-mode="basic">+ − × ÷</button>
+          <button id="tab-percent" role="tab" aria-selected="false" aria-controls="panel-percent" data-mode="percent">PERCENT</button>
+          <button id="tab-discount" role="tab" aria-selected="false" aria-controls="panel-discount" data-mode="discount">DISCOUNT</button>
+          <button id="tab-tip" role="tab" aria-selected="false" aria-controls="panel-tip" data-mode="tip">TIP / SPLIT</button>
+        </div>
+
+        <div class="calculator-panels">
+          <section id="panel-basic" class="calculator-panel" role="tabpanel" aria-labelledby="tab-basic" data-panel="basic">
+            <div class="calc-grid basic-grid">
+              <label><span>FIRST NUMBER</span><input id="basicA" type="number" inputmode="decimal" value="1250" step="any"></label>
+              <label><span>OPERATION</span><select id="basicOperator"><option value="add">+</option><option value="subtract">−</option><option value="multiply">×</option><option value="divide">÷</option></select></label>
+              <label><span>SECOND NUMBER</span><input id="basicB" type="number" inputmode="decimal" value="250" step="any"></label>
+            </div>
+            <p class="formula-note">FORMULA / FIRST NUMBER [OPERATOR] SECOND NUMBER</p>
+          </section>
+
+          <section id="panel-percent" class="calculator-panel" role="tabpanel" aria-labelledby="tab-percent" data-panel="percent" hidden>
+            <div class="submode-switch" role="group" aria-label="Percentage calculation">
+              <button class="active" type="button" data-percent-mode="of">PERCENT OF</button>
+              <button type="button" data-percent-mode="change">% CHANGE</button>
+            </div>
+            <div class="calc-grid" id="percentOfFields">
+              <label><span>PERCENT</span><div class="input-unit"><input id="percentRate" type="number" inputmode="decimal" value="15" step="any"><b>%</b></div></label>
+              <label><span>OF NUMBER</span><input id="percentValue" type="number" inputmode="decimal" value="240" step="any"></label>
+            </div>
+            <div class="calc-grid" id="percentChangeFields" hidden>
+              <label><span>STARTING VALUE</span><input id="percentFrom" type="number" inputmode="decimal" value="80" step="any"></label>
+              <label><span>NEW VALUE</span><input id="percentTo" type="number" inputmode="decimal" value="100" step="any"></label>
+            </div>
+            <p class="formula-note" id="percentFormula">FORMULA / PERCENT ÷ 100 × NUMBER</p>
+          </section>
+
+          <section id="panel-discount" class="calculator-panel" role="tabpanel" aria-labelledby="tab-discount" data-panel="discount" hidden>
+            <div class="calc-grid">
+              <label><span>ORIGINAL PRICE</span><input id="originalPrice" type="number" inputmode="decimal" value="120" min="0" step="any"></label>
+              <label><span>DISCOUNT</span><div class="input-unit"><input id="discountRate" type="number" inputmode="decimal" value="20" min="0" step="any"><b>%</b></div></label>
+              <label><span>SALES TAX AFTER DISCOUNT</span><div class="input-unit"><input id="taxRate" type="number" inputmode="decimal" value="8" min="0" step="any"><b>%</b></div></label>
+            </div>
+            <p class="formula-note">FORMULA / (PRICE − DISCOUNT) + TAX ON DISCOUNTED PRICE</p>
+          </section>
+
+          <section id="panel-tip" class="calculator-panel" role="tabpanel" aria-labelledby="tab-tip" data-panel="tip" hidden>
+            <div class="calc-grid">
+              <label><span>BILL AMOUNT</span><input id="billAmount" type="number" inputmode="decimal" value="86.50" min="0" step="any"></label>
+              <label><span>TIP</span><div class="input-unit"><input id="tipRate" type="number" inputmode="decimal" value="18" min="0" step="any"><b>%</b></div></label>
+              <label><span>NUMBER OF PEOPLE</span><input id="peopleCount" type="number" inputmode="numeric" value="2" min="1" step="1"></label>
+            </div>
+            <p class="formula-note">FORMULA / (BILL + TIP) ÷ PEOPLE</p>
+          </section>
+        </div>
+
+        <section class="calculator-result" aria-live="polite" aria-atomic="true">
+          <div><span id="resultLabel">RESULT</span><button id="copyCalculation" type="button">COPY</button></div>
+          <output id="calculationResult">1,500</output>
+          <p id="calculationDetails">1,250 + 250 = 1,500</p>
+        </section>
+        <div class="calculator-actions"><button id="resetCalculator" type="button">RESET CURRENT CALCULATOR</button></div>
+        <p class="calculator-local">CALCULATIONS RUN IN YOUR BROWSER · INPUTS ARE NOT SUBMITTED · FREE TO USE</p>
+      </section>
+
+      <article class="calculator-guide" aria-labelledby="calculatorGuideTitle">
+        <header><span>HOW IT WORKS</span><h2 id="calculatorGuideTitle">CLEAR FORMULAS.<br>USEFUL RESULTS.</h2></header>
+        <section><b>01</b><div><h3>Basic arithmetic</h3><p>Add, subtract, multiply, or divide two numbers. Example: 1,250 + 250 returns 1,500. Division by zero is shown as an error instead of an invented result.</p></div></section>
+        <section><b>02</b><div><h3>Percent and percentage change</h3><p>“15% of 240” uses 15 ÷ 100 × 240 and returns 36. Percentage change compares a new value with its starting value: (new − start) ÷ start × 100.</p></div></section>
+        <section><b>03</b><div><h3>Discount and sales tax</h3><p>A discount is removed first. Sales tax is then applied to the discounted subtotal. Local tax rules can differ, so confirm which amount is taxable where you live.</p></div></section>
+        <section><b>04</b><div><h3>Tip and split bill</h3><p>The tip is calculated from the entered bill, added to the total, and divided by the number of people. Rounding or service-charge rules may differ by venue.</p></div></section>
+        <aside><strong>IMPORTANT</strong><p>This general-purpose calculator is not financial, tax, accounting, or legal advice. Verify important figures and applicable local rules before making decisions.</p></aside>
+      </article>
+
+      {% include '_site_footer.html' %}
+    </main>
+    <script src="{{ url_for('static', filename='js/tool-launcher.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='js/calculator.js') }}" defer></script>
+  </body>
+</html>

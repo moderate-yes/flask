@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: local-tools
+    runtime: python
+    plan: free
+    region: singapore
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn --bind 0.0.0.0:$PORT --workers 2 --threads 4 --timeout 120 app:app
+    healthCheckPath: /healthz
+    autoDeployTrigger: commit
+    envVars:
+      - key: TRUST_PROXY_HEADERS
+        value: "1"

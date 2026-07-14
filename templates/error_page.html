@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#a9aaa5">
+    <title>{{ code }} — {{ title }} — Local Tools</title>
+    <meta name="robots" content="noindex">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/content-pages.css') }}">
+  </head>
+  <body>
+    <main class="page-shell content-shell">
+      <div class="content-topbar">
+        <a class="content-home" href="{{ url_for('index') }}">LOCAL TOOLS</a>
+        {% include '_tool_launcher.html' %}
+      </div>
+      <section class="content-card error-card">
+        <div class="content-hero">
+          <p class="content-eyebrow">ERROR / {{ code }}</p>
+          <h1>{{ title | upper }}</h1>
+          <p class="content-intro">{{ message }}</p>
+          <a class="section-link" href="{{ url_for('index') }}">RETURN TO LOCAL TOOLS <span aria-hidden="true">↗</span></a>
+        </div>
+      </section>
+      {% include '_site_footer.html' %}
+    </main>
+    <script src="{{ url_for('static', filename='js/tool-launcher.js') }}" defer></script>
+  </body>
+</html>

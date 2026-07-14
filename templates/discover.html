@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="{{ locale.html_lang }}" dir="{{ locale.dir }}">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#a9aaa5">
+    <title>{{ locale.title }}</title>
+    <meta name="description" content="{{ locale.description }}">
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
+    <link rel="canonical" href="{{ canonical_url }}">
+    {% for item in alternates %}<link rel="alternate" hreflang="{{ item.hreflang }}" href="{{ item.url }}">
+    {% endfor %}<link rel="alternate" hreflang="x-default" href="{{ default_url }}">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Local Tools">
+    <meta property="og:locale" content="{{ locale.og_locale }}">
+    <meta property="og:title" content="{{ locale.title }}">
+    <meta property="og:description" content="{{ locale.description }}">
+    <meta property="og:url" content="{{ canonical_url }}">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="{{ locale.title }}">
+    <meta name="twitter:description" content="{{ locale.description }}">
+    <script type="application/ld+json">{{ structured_data | tojson }}</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/discover.css') }}">
+  </head>
+  <body>
+    <main class="page-shell discover-shell">
+      <div class="discover-topbar">
+        <a class="discover-brand" href="{{ url_for('discover_default') }}">LOCAL TOOLS</a>
+        {% include '_tool_launcher.html' %}
+      </div>
+
+      <header class="discover-hero">
+        <p>{{ locale.eyebrow }}</p>
+        <h1>{{ locale.heading | replace('\n', '<br>') | safe }}</h1>
+        <div class="hero-bottom"><span>01 / 03</span><p>{{ locale.intro }}</p></div>
+      </header>
+
+      <section class="privacy-block">
+        <span>LOCAL PDF PROCESSING</span>
+        <div><h2>{{ locale.privacy_title }}</h2><p>{{ locale.privacy_text }}</p></div>
+      </section>
+
+      <section class="tool-grid" aria-label="Tools">
+        {% for tool in tools %}
+          <article class="discover-tool">
+            <span>{{ '%02d' | format(loop.index) }}</span>
+            <h2>{{ tool.title }}</h2>
+            <p>{{ tool.description }}</p>
+            <a href="{{ tool.url }}">{{ locale.open }} <b aria-hidden="true">↗</b></a>
+          </article>
+        {% endfor %}
+      </section>
+
+      <section class="how-block">
+        <div><span>02 / 03</span><h2>{{ locale.how_title }}</h2></div>
+        <ol>{% for step in locale.steps %}<li><b>{{ '%02d' | format(loop.index) }}</b>{{ step }}</li>{% endfor %}</ol>
+        <p>{{ locale.note }}</p>
+      </section>
+
+      <section class="language-block">
+        <div><span>03 / 03</span><h2>{{ locale.choose }}</h2></div>
+        <nav aria-label="Language selection">
+          {% for item in alternates %}<a href="{{ item.url }}" lang="{{ item.html_lang }}" dir="{{ item.dir }}"{% if item.code == language %} aria-current="page"{% endif %}>{{ item.name }}</a>{% endfor %}
+        </nav>
+      </section>
+
+      {% include '_site_footer.html' %}
+    </main>
+    <script src="{{ url_for('static', filename='js/tool-launcher.js') }}" defer></script>
+  </body>
+</html>

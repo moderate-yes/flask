@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#a9aaa5">
+    <title>Private PDF Split</title>
+    <meta name="description" content="Split PDF files locally in your browser. No uploads and no storage.">
+    <link rel="canonical" href="{{ canonical_url }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/pdf-merge.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/pdf-split.css') }}">
+  </head>
+  <body>
+    <main class="page-shell pdf-shell" id="splitApp"
+      data-worker-url="{{ url_for('static', filename='js/pdf-split-worker.js') }}"
+      data-pdfjs-url="{{ url_for('static', filename='vendor/pdf.min.mjs') }}"
+      data-pdfjs-worker-url="{{ url_for('static', filename='vendor/pdf.worker.min.mjs') }}">
+      {% include '_tool_launcher.html' %}
+
+      <section class="merge-card split-card" aria-labelledby="splitTitle">
+        <nav class="pdf-mode-switch" aria-label="Choose a PDF action">
+          <a href="{{ url_for('pdf_merge') }}">MERGE</a>
+          <a class="active" href="{{ url_for('pdf_split') }}" aria-current="page">SPLIT</a>
+        </nav>
+        <header class="merge-heading">
+          <h1 id="splitTitle">KEEP YOUR DATA PRIVATE.</h1>
+        </header>
+
+        <div class="privacy-strip" aria-label="Privacy features">
+          <span>NO UPLOADS</span>
+          <span>NO STORAGE</span>
+          <span>100% LOCAL</span>
+        </div>
+
+        <button class="drop-zone" id="splitDropZone" type="button">
+          <span class="add-mark" aria-hidden="true">+</span>
+          <strong>ADD ONE PDF</strong>
+          <span>Choose a file or drop it here</span>
+        </button>
+        <input id="splitFilePicker" class="visually-hidden" type="file" accept="application/pdf,.pdf">
+
+        <section class="split-options" id="splitOptions" hidden aria-label="Split settings">
+          <div class="selected-file-card">
+            <div class="selected-file-info">
+              <strong id="selectedFileName"></strong>
+              <span><span id="selectedFileSize"></span> / <span id="selectedPageCount"></span></span>
+            </div>
+            <button id="removeSplitFile" type="button" aria-label="Remove selected PDF">×</button>
+          </div>
+
+          <div class="preview-heading">
+            <div>
+              <h2>SELECT SPLIT POINTS</h2>
+              <p>Tap the line between two pages to create a cut.</p>
+            </div>
+            <span id="selectedCuts">0 CUTS</span>
+          </div>
+          <div class="preview-actions">
+            <button id="selectAllCuts" type="button">SELECT ALL</button>
+            <button id="clearCuts" type="button">CLEAR CUTS</button>
+          </div>
+          <div class="page-preview" id="pagePreview" aria-label="PDF page previews"></div>
+        </section>
+
+        <p class="merge-status" id="splitStatus" role="status" aria-live="polite">Add one PDF file to begin.</p>
+        <button class="merge-button" id="splitButton" type="button" disabled>SPLIT &amp; DOWNLOAD ZIP</button>
+        <p class="memory-note">The source PDF exists only in browser memory and is cleared when this page closes.</p>
+      </section>
+      {% include '_site_footer.html' %}
+    </main>
+    <script src="{{ url_for('static', filename='js/tool-launcher.js') }}" defer></script>
+    <script type="module" src="{{ url_for('static', filename='js/pdf-split.js') }}"></script>
+  </body>
+</html>
