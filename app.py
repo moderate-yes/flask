@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask, Response, abort, render_template, request, url_for
+from flask import Flask, Response, abort, render_template, request, send_from_directory, url_for
 from werkzeug.middleware.proxy_fix import ProxyFix
 
 from content_pages import PAGES
@@ -140,6 +140,11 @@ def content_page(slug):
 @app.get("/healthz")
 def health_check():
     return {"status": "ok"}
+
+
+@app.get("/googlebb29d5b1978e0f82.html")
+def google_site_verification():
+    return send_from_directory(app.root_path, "googlebb29d5b1978e0f82.html", mimetype="text/html")
 
 
 @app.get("/robots.txt")
