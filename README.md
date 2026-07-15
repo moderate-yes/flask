@@ -1,6 +1,6 @@
 # Browser Tools
 
-A privacy-first browser toolkit built with Flask.
+A privacy-first browser toolkit built with Flask. It includes local PDF and image processing, file hashing, QR generation, focus, calculation, and path-editing tools.
 
 ## Run locally
 
@@ -34,6 +34,12 @@ Before a public launch, configure these Render environment values:
 - PDF ordering and removal controls
 - Visual PDF splitting with page previews and selectable cut points
 - ZIP downloads for split PDF results
+- PDF page reordering, rotation, removal, and extraction
+- PDF page export to PNG or JPEG
+- JPG, PNG, and WebP conversion into PDF
+- Local image resizing, compression, and format conversion
+- SHA-256, SHA-384, and SHA-512 file checksums
+- Local QR code generation and PNG download
 - PDF processing in a browser worker
 - Wide path editor with selectable paths, visible start markers, color-coded endpoint hover, automatic endpoint joining, Alt-drag Bezier handles, image layers, opacity, and layer ordering
 - Downloadable project files that can be reopened to continue editing
@@ -51,6 +57,12 @@ Before a public launch, configure these Render environment values:
 
 - Private PDF Merge: `http://127.0.0.1:5000/`
 - Private PDF Split: `http://127.0.0.1:5000/pdf-split`
+- PDF Page Organizer: `http://127.0.0.1:5000/pdf-organizer`
+- PDF to Images: `http://127.0.0.1:5000/pdf-to-images`
+- Images to PDF: `http://127.0.0.1:5000/images-to-pdf`
+- Image Toolkit: `http://127.0.0.1:5000/image-toolkit`
+- File Hash Checker: `http://127.0.0.1:5000/file-hash`
+- QR Code Generator: `http://127.0.0.1:5000/qr-generator`
 - Timer: `http://127.0.0.1:5000/focus-timer`
 - Path Studio: `http://127.0.0.1:5000/path-studio`
 - Multi Calculator: `http://127.0.0.1:5000/calculator`

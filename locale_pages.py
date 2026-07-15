@@ -3,26 +3,38 @@
 TOOLS = [
     ("index", "merge"),
     ("pdf_split", "split"),
+    ("pdf_organizer", "organizer"),
+    ("pdf_to_images", "pdf_images"),
+    ("images_to_pdf", "images_pdf"),
+    ("image_toolkit", "image_toolkit"),
+    ("file_hash", "hash"),
+    ("qr_generator", "qr"),
     ("focus_timer", "timer"),
-    ("path_studio", "path"),
     ("calculator", "calculator"),
+    ("path_studio", "path"),
 ]
 
 LOCALES = {
     "en": {
         "hreflang": "en", "html_lang": "en", "dir": "ltr", "og_locale": "en_US", "name": "English",
-        "title": "Private Browser Tools for PDFs, Calculators, Focus & Paths",
-        "description": "Use practical browser tools for PDFs, everyday calculations, focus timing, and vector paths. PDF files stay on your device.",
+        "title": "Private Browser Tools for PDFs, Images, QR Codes & More",
+        "description": "Merge, split, organize, convert PDFs and images, create QR codes, verify file hashes, calculate, focus, and draw paths in your browser.",
         "eyebrow": "PRIVATE BROWSER TOOLKIT", "heading": "PRACTICAL TOOLS.\nLESS DATA SHARING.",
-        "intro": "A focused collection of browser-first utilities. Work with PDFs locally, calculate everyday values, stay on task, and sketch paths without an account.",
-        "privacy_title": "Your PDF files stay on your device",
-        "privacy_text": "PDF merge and split operations run in your browser. The site does not send those files to our server or store them in an account.",
+        "intro": "A focused collection of browser-first utilities. Work with PDFs and images locally, verify files, create QR codes, calculate, focus, and sketch paths without an account.",
+        "privacy_title": "Your working files stay on your device",
+        "privacy_text": "Supported PDF, image, checksum, and QR operations run in your browser. The site does not send that working content to our server or store it in an account.",
         "how_title": "Simple by design", "steps": ["Choose the tool you need.", "Complete the task in your browser.", "Download or save the result locally."],
         "open": "OPEN TOOL", "note": "Tool interfaces open in English.", "choose": "CHOOSE YOUR LANGUAGE",
         "tools": {
             "timer": ("Focus Timer", "Run a clean countdown with presets, pause, reset, sound, and locally saved state."),
             "merge": ("Merge PDFs", "Combine and reorder PDF files directly in your browser without uploading them."),
             "split": ("Split PDFs", "Preview three pages per row, choose cut points, and download separated PDF files."),
+            "organizer": ("Organize PDF Pages", "Reorder, rotate, remove, and extract pages before downloading a new PDF."),
+            "pdf_images": ("PDF to Images", "Render selected PDF pages as PNG or JPEG files and download them in a ZIP."),
+            "images_pdf": ("Images to PDF", "Arrange JPG, PNG, or WebP images and turn them into one downloadable PDF."),
+            "image_toolkit": ("Image Toolkit", "Resize, compress, and convert an image to PNG, JPEG, or WebP."),
+            "hash": ("File Hash Checker", "Calculate a SHA-256, SHA-384, or SHA-512 fingerprint for a local file."),
+            "qr": ("QR Code Generator", "Create and download a QR code for text or a URL without submitting its content."),
             "path": ("Path Studio", "Draw selectable Bezier paths, manage layers, import images, and save projects locally."),
             "calculator": ("Multi Calculator", "Calculate arithmetic, percentages, discounts, sales tax, tips, and split bills with clear formulas."),
         },
@@ -134,3 +146,20 @@ LOCALES = {
         "tools": {"timer": ("مؤقت التركيز", "عد تنازلي مع إعدادات جاهزة وإيقاف وإعادة ضبط وصوت وحفظ محلي."), "merge": ("دمج PDF", "رتّب ملفات PDF وادمجها في المتصفح من دون رفعها."), "split": ("تقسيم PDF", "عاين ثلاث صفحات في كل صف واختر نقاط الفصل."), "path": ("استوديو المسارات", "ارسم مسارات بيزيه وأدر الطبقات والصور واحفظ المشروع محليًا."), "calculator": ("حاسبة يومية", "احسب العمليات والنسب والخصومات والضرائب والإكراميات وتقسيم الفواتير.")},
     },
 }
+
+# Release copy keeps every discovery landing page aligned with the expanded toolkit.
+RELEASE_SEO = {
+    "ko": ("PDF·이미지·QR 코드를 위한 개인정보 보호 브라우저 도구", "PDF 합치기·분할·정리·변환, 이미지 변환, 파일 해시 확인, QR 코드 생성 등을 브라우저에서 이용하세요."),
+    "ja": ("PDF・画像・QRコードのためのプライベートブラウザツール", "PDFの結合・分割・整理・変換、画像変換、ファイルハッシュ確認、QRコード作成をブラウザで利用できます。"),
+    "es": ("Herramientas privadas para PDF, imágenes, códigos QR y más", "Combina, divide, organiza y convierte PDF e imágenes, verifica hashes y crea códigos QR directamente en tu navegador."),
+    "fr": ("Outils privés pour PDF, images, codes QR et plus", "Fusionnez, divisez, organisez et convertissez PDF et images, vérifiez les empreintes de fichiers et créez des codes QR dans votre navigateur."),
+    "de": ("Private Browser-Tools für PDFs, Bilder, QR-Codes und mehr", "PDFs und Bilder zusammenführen, teilen, ordnen und konvertieren, Datei-Hashes prüfen und QR-Codes direkt im Browser erstellen."),
+    "pt": ("Ferramentas privadas para PDF, imagens, códigos QR e mais", "Una, divida, organize e converta PDFs e imagens, verifique hashes e crie códigos QR diretamente no navegador."),
+    "zh-cn": ("用于 PDF、图像和二维码的隐私浏览器工具", "在浏览器中合并、拆分、整理和转换 PDF 与图像，校验文件哈希并生成二维码。"),
+    "hi": ("PDF, इमेज और QR कोड के लिए निजी ब्राउज़र टूल", "ब्राउज़र में PDF और इमेज जोड़ें, बाँटें, व्यवस्थित और कन्वर्ट करें, फ़ाइल हैश जाँचें और QR कोड बनाएँ।"),
+    "ar": ("أدوات متصفح خاصة لملفات PDF والصور ورموز QR والمزيد", "ادمج ملفات PDF والصور وقسّمها ونظّمها وحوّلها، وتحقق من بصمات الملفات وأنشئ رموز QR داخل المتصفح."),
+}
+
+for _code, (_title, _description) in RELEASE_SEO.items():
+    LOCALES[_code]["title"] = _title
+    LOCALES[_code]["description"] = _description

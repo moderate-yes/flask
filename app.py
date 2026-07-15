@@ -50,6 +50,36 @@ def pdf_split():
     return render_template("pdf_split.html")
 
 
+@app.get("/pdf-organizer")
+def pdf_organizer():
+    return render_template("pdf_organizer.html")
+
+
+@app.get("/pdf-to-images")
+def pdf_to_images():
+    return render_template("pdf_to_images.html")
+
+
+@app.get("/images-to-pdf")
+def images_to_pdf():
+    return render_template("images_to_pdf.html")
+
+
+@app.get("/image-toolkit")
+def image_toolkit():
+    return render_template("image_toolkit.html")
+
+
+@app.get("/file-hash")
+def file_hash():
+    return render_template("file_hash.html")
+
+
+@app.get("/qr-generator")
+def qr_generator():
+    return render_template("qr_generator.html")
+
+
 @app.get("/focus-timer")
 def focus_timer():
     return render_template("index.html")
@@ -82,10 +112,10 @@ def render_discover(language):
         }
         for code, item in LOCALES.items()
     ]
-    tools = [
-        {"title": locale["tools"][key][0], "description": locale["tools"][key][1], "url": url_for(endpoint)}
-        for endpoint, key in TOOLS
-    ]
+    tools = []
+    for endpoint, key in TOOLS:
+        title, description = locale["tools"].get(key, LOCALES["en"]["tools"][key])
+        tools.append({"title": title, "description": description, "url": url_for(endpoint)})
     structured_data = {
         "@context": "https://schema.org",
         "@type": "CollectionPage",
@@ -163,6 +193,12 @@ def sitemap_xml():
     pages = [
         public_url("index"),
         public_url("pdf_split"),
+        public_url("pdf_organizer"),
+        public_url("pdf_to_images"),
+        public_url("images_to_pdf"),
+        public_url("image_toolkit"),
+        public_url("file_hash"),
+        public_url("qr_generator"),
         public_url("focus_timer"),
         public_url("path_studio"),
         public_url("calculator"),

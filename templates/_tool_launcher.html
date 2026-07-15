@@ -22,19 +22,49 @@
         <span class="tool-copy"><strong>PDF SPLIT</strong><small>Cut pages privately.</small></span>
         <span class="tool-arrow" aria-hidden="true">↗</span>
       </a>
-      <a class="tool-card{% if request.endpoint == 'focus_timer' %} current{% endif %}" href="{{ url_for('focus_timer') }}"{% if request.endpoint == 'focus_timer' %} aria-current="page"{% endif %}>
+      <a class="tool-card{% if request.endpoint == 'pdf_organizer' %} current{% endif %}" href="{{ url_for('pdf_organizer') }}"{% if request.endpoint == 'pdf_organizer' %} aria-current="page"{% endif %}>
         <span class="tool-number">03</span>
+        <span class="tool-copy"><strong>PDF ORGANIZER</strong><small>Reorder, rotate, extract.</small></span>
+        <span class="tool-arrow" aria-hidden="true">↗</span>
+      </a>
+      <a class="tool-card{% if request.endpoint == 'pdf_to_images' %} current{% endif %}" href="{{ url_for('pdf_to_images') }}"{% if request.endpoint == 'pdf_to_images' %} aria-current="page"{% endif %}>
+        <span class="tool-number">04</span>
+        <span class="tool-copy"><strong>PDF TO IMAGES</strong><small>Export pages as pictures.</small></span>
+        <span class="tool-arrow" aria-hidden="true">↗</span>
+      </a>
+      <a class="tool-card{% if request.endpoint == 'images_to_pdf' %} current{% endif %}" href="{{ url_for('images_to_pdf') }}"{% if request.endpoint == 'images_to_pdf' %} aria-current="page"{% endif %}>
+        <span class="tool-number">05</span>
+        <span class="tool-copy"><strong>IMAGES TO PDF</strong><small>Build one PDF from images.</small></span>
+        <span class="tool-arrow" aria-hidden="true">↗</span>
+      </a>
+      <a class="tool-card{% if request.endpoint == 'image_toolkit' %} current{% endif %}" href="{{ url_for('image_toolkit') }}"{% if request.endpoint == 'image_toolkit' %} aria-current="page"{% endif %}>
+        <span class="tool-number">06</span>
+        <span class="tool-copy"><strong>IMAGE TOOLKIT</strong><small>Resize, compress, convert.</small></span>
+        <span class="tool-arrow" aria-hidden="true">↗</span>
+      </a>
+      <a class="tool-card{% if request.endpoint == 'file_hash' %} current{% endif %}" href="{{ url_for('file_hash') }}"{% if request.endpoint == 'file_hash' %} aria-current="page"{% endif %}>
+        <span class="tool-number">07</span>
+        <span class="tool-copy"><strong>FILE HASH</strong><small>Check a file fingerprint.</small></span>
+        <span class="tool-arrow" aria-hidden="true">↗</span>
+      </a>
+      <a class="tool-card{% if request.endpoint == 'qr_generator' %} current{% endif %}" href="{{ url_for('qr_generator') }}"{% if request.endpoint == 'qr_generator' %} aria-current="page"{% endif %}>
+        <span class="tool-number">08</span>
+        <span class="tool-copy"><strong>QR GENERATOR</strong><small>Turn text into a QR code.</small></span>
+        <span class="tool-arrow" aria-hidden="true">↗</span>
+      </a>
+      <a class="tool-card{% if request.endpoint == 'focus_timer' %} current{% endif %}" href="{{ url_for('focus_timer') }}"{% if request.endpoint == 'focus_timer' %} aria-current="page"{% endif %}>
+        <span class="tool-number">09</span>
         <span class="tool-copy"><strong>FOCUS TIMER</strong><small>Stay on one task.</small></span>
         <span class="tool-arrow" aria-hidden="true">↗</span>
       </a>
-      <a class="tool-card{% if request.endpoint == 'path_studio' %} current{% endif %}" href="{{ url_for('path_studio') }}"{% if request.endpoint == 'path_studio' %} aria-current="page"{% endif %}>
-        <span class="tool-number">04</span>
-        <span class="tool-copy"><strong>PATH STUDIO</strong><small>Draw and layer freely.</small></span>
+      <a class="tool-card{% if request.endpoint == 'calculator' %} current{% endif %}" href="{{ url_for('calculator') }}"{% if request.endpoint == 'calculator' %} aria-current="page"{% endif %}>
+        <span class="tool-number">10</span>
+        <span class="tool-copy"><strong>CALCULATOR</strong><small>Percent, discount, tax, tip.</small></span>
         <span class="tool-arrow" aria-hidden="true">↗</span>
       </a>
-      <a class="tool-card{% if request.endpoint == 'calculator' %} current{% endif %}" href="{{ url_for('calculator') }}"{% if request.endpoint == 'calculator' %} aria-current="page"{% endif %}>
-        <span class="tool-number">05</span>
-        <span class="tool-copy"><strong>CALCULATOR</strong><small>Percent, discount, tax, tip.</small></span>
+      <a class="tool-card{% if request.endpoint == 'path_studio' %} current{% endif %}" href="{{ url_for('path_studio') }}"{% if request.endpoint == 'path_studio' %} aria-current="page"{% endif %}>
+        <span class="tool-number">11</span>
+        <span class="tool-copy"><strong>PATH STUDIO</strong><small>Desktop path and layer editor.</small></span>
         <span class="tool-arrow" aria-hidden="true">↗</span>
       </a>
     </div>
