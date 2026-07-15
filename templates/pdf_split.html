@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#a9aaa5">
     <title>Private PDF Split — Browser Tools</title>
-    <meta name="description" content="Split PDF files locally in your browser. No uploads and no storage.">
+    <meta name="description" content="Split PDF files using your computer's local resources directly in the browser.">
     <link rel="canonical" href="{{ canonical_url }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -29,14 +29,8 @@
           <a class="active" href="{{ url_for('pdf_split') }}" aria-current="page">SPLIT</a>
         </nav>
         <header class="merge-heading">
-          <h1 id="splitTitle">KEEP YOUR DATA PRIVATE.</h1>
+          <h1 id="splitTitle">YOUR FILES STAY WITH YOU.</h1>
         </header>
-
-        <div class="privacy-strip" aria-label="Privacy features">
-          <span>NO UPLOADS</span>
-          <span>NO STORAGE</span>
-          <span>100% LOCAL</span>
-        </div>
 
         <button class="drop-zone" id="splitDropZone" type="button">
           <span class="add-mark" aria-hidden="true">+</span>
@@ -70,7 +64,7 @@
 
         <p class="merge-status" id="splitStatus" role="status" aria-live="polite">Add one PDF file to begin.</p>
         <button class="merge-button" id="splitButton" type="button" disabled>SPLIT &amp; DOWNLOAD ZIP</button>
-        <p class="memory-note">The source PDF exists only in browser memory and is cleared when this page closes.</p>
+        <p class="local-processing-note">This site performs PDF processing using your local computer's resources; no data is stored, ensuring there is no risk of data leakage.</p>
       </section>
       {% include '_site_footer.html' %}
     </main>

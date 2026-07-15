@@ -27,25 +27,6 @@
   line-height: 1.6;
 }
 
-.privacy-strip {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  margin-top: 23px;
-  border: 1px solid var(--ink);
-  background: rgba(17, 18, 16, .045);
-}
-
-.privacy-strip span {
-  padding: 9px 3px;
-  font-family: "DM Mono", monospace;
-  font-size: 8px;
-  font-weight: 500;
-  letter-spacing: .04em;
-  text-align: center;
-}
-
-.privacy-strip span + span { border-left: 1px solid var(--ink); }
-
 .drop-zone {
   width: 100%;
   min-height: 150px;
@@ -116,7 +97,7 @@
 .merge-button:hover:not(:disabled) { background: var(--accent); }
 .merge-button:disabled { background: transparent; color: var(--muted); cursor: not-allowed; opacity: .55; }
 .merge-button.processing { animation: processing 1s steps(2) infinite; }
-.memory-note { margin: 11px 4px 0; color: var(--muted); font-size: 8px; line-height: 1.5; text-align: center; }
+.local-processing-note { margin: 12px 4px 0; color: var(--muted); font-size: 8px; line-height: 1.6; text-align: center; }
 
 .pdf-mode-switch {
   display: grid;
