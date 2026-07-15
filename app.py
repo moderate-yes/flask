@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask, Response, abort, render_template, request, send_from_directory, url_for
+from flask import Flask, Response, abort, redirect, render_template, request, send_from_directory, url_for
 from werkzeug.middleware.proxy_fix import ProxyFix
 
 from content_pages import PAGES
@@ -37,12 +37,12 @@ def add_security_headers(response):
 
 @app.get("/")
 def index():
-    return render_template("index.html")
+    return render_template("pdf_merge.html")
 
 
 @app.get("/pdf-merge")
 def pdf_merge():
-    return render_template("pdf_merge.html")
+    return redirect(url_for("index"), code=308)
 
 
 @app.get("/pdf-split")
@@ -50,14 +50,14 @@ def pdf_split():
     return render_template("pdf_split.html")
 
 
+@app.get("/focus-timer")
+def focus_timer():
+    return render_template("index.html")
+
+
 @app.get("/path-studio")
 def path_studio():
     return render_template("path_studio.html")
-
-
-@app.get("/number-converter")
-def number_converter():
-    return render_template("number_converter.html")
 
 
 @app.get("/calculator")
@@ -162,10 +162,9 @@ def robots_txt():
 def sitemap_xml():
     pages = [
         public_url("index"),
-        public_url("pdf_merge"),
         public_url("pdf_split"),
+        public_url("focus_timer"),
         public_url("path_studio"),
-        public_url("number_converter"),
         public_url("calculator"),
         *[public_url("content_page", slug=slug) for slug in PAGES],
     ]

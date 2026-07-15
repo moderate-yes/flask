@@ -16,6 +16,14 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/path-studio.css') }}">
   </head>
   <body class="path-body">
+    <main class="path-mobile-blocker" aria-labelledby="pathMobileTitle">
+      <div class="path-mobile-message">
+        <span>DESKTOP REQUIRED</span>
+        <h1 id="pathMobileTitle">SWITCH TO A PC.</h1>
+        <p>Path Studio is disabled on screens narrower than 1080 pixels. Open this page on a desktop or laptop to use the canvas, paths, images, and layers.</p>
+        <a href="{{ url_for('index') }}">BACK TO PDF MERGE</a>
+      </div>
+    </main>
     <div class="path-app" id="pathApp">
       <header class="path-header">
         <div class="path-title">

@@ -1,4 +1,6 @@
 (() => {
+  if (window.matchMedia("(max-width: 1079px)").matches) return;
+
   const canvas = document.querySelector("#workCanvas");
   const ctx = canvas.getContext("2d");
   const status = document.querySelector("#editorStatus");

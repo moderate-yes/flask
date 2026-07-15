@@ -37,7 +37,6 @@ Before a public launch, configure these Render environment values:
 - PDF processing in a browser worker
 - Wide path editor with selectable paths, visible start markers, color-coded endpoint hover, automatic endpoint joining, Alt-drag Bezier handles, image layers, opacity, and layer ordering
 - Downloadable project files that can be reopened to continue editing
-- Automatic two-way conversion between US large-number units and Korean 만/억/조/경 units, including Korean spellings such as 빌리언
 - Multi calculator with arithmetic, percent-of, percentage-change, discount, sales-tax, tip, and split-bill modes
 - Detailed About, tool guides, FAQ, Privacy Policy, Terms, and Contact pages
 - International discovery pages in English, Korean, Japanese, Spanish, French, German, Portuguese, Simplified Chinese, Hindi, and Arabic, with reciprocal hreflang metadata
@@ -50,11 +49,10 @@ Before a public launch, configure these Render environment values:
 
 ## Pages
 
-- Timer: `http://127.0.0.1:5000/`
-- Private PDF Merge: `http://127.0.0.1:5000/pdf-merge`
+- Private PDF Merge: `http://127.0.0.1:5000/`
 - Private PDF Split: `http://127.0.0.1:5000/pdf-split`
+- Timer: `http://127.0.0.1:5000/focus-timer`
 - Path Studio: `http://127.0.0.1:5000/path-studio`
-- Number Converter: `http://127.0.0.1:5000/number-converter`
 - Multi Calculator: `http://127.0.0.1:5000/calculator`
 - About: `http://127.0.0.1:5000/about`
 - How to Use: `http://127.0.0.1:5000/guides`
