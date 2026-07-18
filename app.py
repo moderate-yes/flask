@@ -5,6 +5,7 @@ from werkzeug.middleware.proxy_fix import ProxyFix
 
 from content_pages import PAGES
 from locale_pages import LOCALES, TOOLS
+from seo_pages import TOOL_SEO
 
 
 app = Flask(__name__)
@@ -23,7 +24,67 @@ def public_url(endpoint, **values):
 def inject_public_metadata():
     site_url = os.getenv("SITE_URL", "").strip().rstrip("/")
     canonical_url = f"{site_url}{request.path}" if site_url else request.base_url
-    return {"canonical_url": canonical_url}
+    seo_page = TOOL_SEO.get(request.endpoint)
+    tool_structured_data = None
+    related_tools = []
+    if seo_page:
+        related_tools = [
+            {
+                "label": item[1],
+                "url": url_for(item[0], **(item[2] if len(item) > 2 else {})),
+            }
+            for item in seo_page["related"]
+        ]
+        tool_structured_data = {
+            "@context": "https://schema.org",
+            "@graph": [
+                {
+                    "@type": "WebApplication",
+                    "name": seo_page["name"],
+                    "url": canonical_url,
+                    "description": seo_page["description"],
+                    "applicationCategory": "UtilitiesApplication",
+                    "operatingSystem": "Any",
+                    "browserRequirements": "JavaScript-enabled web browser",
+                    "isAccessibleForFree": True,
+                    "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"},
+                },
+                {
+                    "@type": "HowTo",
+                    "name": seo_page["heading"].title(),
+                    "description": seo_page["summary"],
+                    "step": [
+                        {"@type": "HowToStep", "position": position, "text": step}
+                        for position, step in enumerate(seo_page["steps"], start=1)
+                    ],
+                },
+                {
+                    "@type": "FAQPage",
+                    "mainEntity": [
+                        {
+                            "@type": "Question",
+                            "name": question,
+                            "acceptedAnswer": {"@type": "Answer", "text": answer},
+                        }
+                        for question, answer in seo_page["faq"]
+                    ],
+                },
+                {
+                    "@type": "BreadcrumbList",
+                    "itemListElement": [
+                        {"@type": "ListItem", "position": 1, "name": "Browser Tools", "item": public_url("index")},
+                        {"@type": "ListItem", "position": 2, "name": seo_page["name"], "item": canonical_url},
+                    ],
+                },
+            ],
+        }
+    return {
+        "canonical_url": canonical_url,
+        "seo_page": seo_page,
+        "related_tools": related_tools,
+        "tool_structured_data": tool_structured_data,
+        "og_image_url": public_url("static", filename="og-browser-tools.jpg"),
+    }
 
 
 @app.after_request
@@ -190,7 +251,7 @@ def robots_txt():
 
 @app.get("/sitemap.xml")
 def sitemap_xml():
-    pages = [
+    page_urls = [
         public_url("index"),
         public_url("pdf_split"),
         public_url("pdf_organizer"),
@@ -204,9 +265,11 @@ def sitemap_xml():
         public_url("calculator"),
         *[public_url("content_page", slug=slug) for slug in PAGES],
     ]
+    pages = [{"loc": page, "lastmod": "2026-07-18"} for page in page_urls]
     locale_pages = [
         {
             "loc": public_url("discover_default") if code == "en" else public_url("discover_localized", language=code),
+            "lastmod": "2026-07-18",
             "alternates": [
                 {
                     "hreflang": item["hreflang"],

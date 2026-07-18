@@ -1,0 +1,52 @@
+.seo-guide {
+  margin-top: 16px;
+  border: 1px solid var(--ink);
+  background: rgba(205, 206, 201, .88);
+  color: var(--ink);
+}
+
+.seo-guide-header { padding: 24px 18px 22px; border-bottom: 1px solid var(--ink); }
+.seo-guide-header > span,
+.seo-section-label span,
+.seo-related > span { color: var(--muted); font: 7px "DM Mono", monospace; letter-spacing: .09em; }
+.seo-guide-header h2 { margin: 12px 0 0; font-family: "Archivo Black", "Inter", sans-serif; font-size: clamp(25px, 7.4vw, 34px); line-height: .96; letter-spacing: -.055em; }
+.seo-guide-header p { margin: 14px 0 0; color: var(--muted); font-size: 10px; line-height: 1.65; }
+
+.seo-how,
+.seo-faq { padding: 19px 18px; border-bottom: 1px solid var(--ink); }
+.seo-section-label { display: flex; align-items: baseline; gap: 12px; }
+.seo-section-label h3 { margin: 0; font: 500 9px "DM Mono", monospace; letter-spacing: .08em; }
+.seo-how ol { margin: 15px 0 0; padding: 0; border-top: 1px solid var(--line); list-style: none; }
+.seo-how li { min-height: 47px; display: grid; grid-template-columns: 28px 1fr; gap: 9px; align-items: center; border-bottom: 1px solid var(--line); }
+.seo-how li b { color: var(--muted); font: 500 8px "DM Mono", monospace; }
+.seo-how li span { font-size: 9px; line-height: 1.45; }
+
+.seo-notes { display: grid; grid-template-columns: 1fr; border-bottom: 1px solid var(--ink); }
+.seo-notes div { padding: 19px 18px; }
+.seo-notes div + div { border-top: 1px solid var(--ink); }
+.seo-notes span { color: var(--muted); font: 7px "DM Mono", monospace; }
+.seo-notes h3 { margin: 10px 0 0; font-size: 11px; letter-spacing: .02em; }
+.seo-notes p { margin: 8px 0 0; color: var(--muted); font-size: 9px; line-height: 1.6; }
+
+.seo-faq-list { margin-top: 15px; border-top: 1px solid var(--ink); }
+.seo-faq details { border-bottom: 1px solid var(--line); }
+.seo-faq summary { padding: 13px 22px 13px 0; position: relative; font-size: 9px; font-weight: 700; line-height: 1.45; cursor: pointer; list-style: none; }
+.seo-faq summary::-webkit-details-marker { display: none; }
+.seo-faq summary::after { content: "+"; position: absolute; top: 12px; right: 2px; font: 15px "DM Mono", monospace; }
+.seo-faq details[open] summary::after { content: "−"; }
+.seo-faq details p { margin: -2px 20px 14px 0; color: var(--muted); font-size: 9px; line-height: 1.6; }
+
+.seo-related { padding: 18px; }
+.seo-related div { margin-top: 12px; display: grid; grid-template-columns: 1fr; gap: 7px; }
+.seo-related a { min-height: 38px; padding: 0 11px; display: flex; align-items: center; justify-content: space-between; border: 1px solid var(--line); color: var(--ink); font: 500 8px "DM Mono", monospace; letter-spacing: .05em; text-decoration: none; }
+.seo-related a:hover { border-color: var(--ink); background: var(--ink); color: var(--white); }
+
+@media (min-width: 520px) {
+  .seo-guide-header { padding: 27px 22px 24px; }
+  .seo-how, .seo-faq { padding: 21px 22px; }
+  .seo-notes { grid-template-columns: 1fr 1fr; }
+  .seo-notes div { padding: 21px 22px; }
+  .seo-notes div + div { border-top: 0; border-left: 1px solid var(--ink); }
+  .seo-related { padding: 20px 22px; }
+  .seo-related div { grid-template-columns: repeat(3, 1fr); }
+}

@@ -1,0 +1,36 @@
+{% if seo_page %}
+<article class="seo-guide" aria-labelledby="seoGuideTitle">
+  <header class="seo-guide-header">
+    <span>GUIDE / {{ seo_page.name | upper }}</span>
+    <h2 id="seoGuideTitle">{{ seo_page.heading }}</h2>
+    <p>{{ seo_page.summary }}</p>
+  </header>
+
+  <section class="seo-how" aria-labelledby="seoHowTitle">
+    <div class="seo-section-label"><span>01</span><h3 id="seoHowTitle">HOW TO USE IT</h3></div>
+    <ol>
+      {% for step in seo_page.steps %}<li><b>{{ '%02d' | format(loop.index) }}</b><span>{{ step }}</span></li>{% endfor %}
+    </ol>
+  </section>
+
+  <section class="seo-notes" aria-label="Useful information">
+    {% for note in seo_page.notes %}
+      <div><span>{{ '%02d' | format(loop.index + 1) }}</span><h3>{{ note.0 }}</h3><p>{{ note.1 }}</p></div>
+    {% endfor %}
+  </section>
+
+  <section class="seo-faq" aria-labelledby="seoFaqTitle">
+    <div class="seo-section-label"><span>04</span><h3 id="seoFaqTitle">FREQUENTLY ASKED QUESTIONS</h3></div>
+    <div class="seo-faq-list">
+      {% for question, answer in seo_page.faq %}
+        <details><summary>{{ question }}</summary><p>{{ answer }}</p></details>
+      {% endfor %}
+    </div>
+  </section>
+
+  <nav class="seo-related" aria-label="Related browser tools">
+    <span>RELATED TOOLS</span>
+    <div>{% for tool in related_tools %}<a href="{{ tool.url }}">{{ tool.label }} <b aria-hidden="true">↗</b></a>{% endfor %}</div>
+  </nav>
+</article>
+{% endif %}

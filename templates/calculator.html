@@ -6,18 +6,10 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#a9aaa5">
-    <title>Free Multi Calculator — Browser Tools</title>
-    <meta name="description" content="Calculate arithmetic, percentages, discounts, sales tax, tips, and split bills in your browser. Free, clear formulas, and no account required.">
-    <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large">
+    <title>{{ seo_page.title }}</title>
+    <meta name="description" content="{{ seo_page.description }}">
     <link rel="canonical" href="{{ canonical_url }}">
-    <meta property="og:type" content="website">
-    <meta property="og:title" content="Free Multi Calculator">
-    <meta property="og:description" content="Arithmetic, percentage, discount, tax, tip, and split-bill calculations with clear formulas.">
-    <meta property="og:url" content="{{ canonical_url }}">
-    <meta name="twitter:card" content="summary">
-    <meta name="twitter:title" content="Free Multi Calculator">
-    <meta name="twitter:description" content="Four practical calculators in one browser-first tool.">
-    <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Multi Calculator","url":{{ canonical_url | tojson }},"description":"Calculate arithmetic, percentages, discounts, sales tax, tips, and split bills in your browser.","applicationCategory":"UtilitiesApplication","operatingSystem":"Any","browserRequirements":"JavaScript-enabled web browser","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"featureList":["Arithmetic","Percentage calculation","Percentage change","Discount and sales tax","Tip and split bill"]}</script>
+    {% include '_tool_seo_head.html' %}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
@@ -98,6 +90,8 @@
         <section><b>04</b><div><h3>Tip and split bill</h3><p>The tip is calculated from the entered bill, added to the total, and divided by the number of people. Rounding or service-charge rules may differ by venue.</p></div></section>
         <aside><strong>IMPORTANT</strong><p>This general-purpose calculator is not financial, tax, accounting, or legal advice. Verify important figures and applicable local rules before making decisions.</p></aside>
       </article>
+
+      {% include '_tool_seo.html' %}
 
       {% include '_site_footer.html' %}
     </main>

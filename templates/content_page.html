@@ -8,7 +8,16 @@
     <meta name="theme-color" content="#a9aaa5">
     <title>{{ page.title }} — Browser Tools</title>
     <meta name="description" content="{{ page.description }}">
+    <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1">
     <link rel="canonical" href="{{ canonical_url }}">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="{{ page.title }} — Browser Tools">
+    <meta property="og:description" content="{{ page.description }}">
+    <meta property="og:url" content="{{ canonical_url }}">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ page.title }} — Browser Tools">
+    <meta name="twitter:description" content="{{ page.description }}">
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":{{ page.title | tojson }},"description":{{ page.description | tojson }},"url":{{ canonical_url | tojson }},"isPartOf":{"@type":"WebSite","name":"Browser Tools","url":{{ url_for('index', _external=True) | tojson }}}}</script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
