@@ -6,6 +6,8 @@
   box-shadow: 7px 7px 0 rgba(17,18,16,.13);
 }
 .utility-heading h1 { margin: 0; color: #3e3f3b; font-family: "Archivo Black", "Inter", sans-serif; font-size: clamp(34px, 10.5vw, 48px); line-height: .92; letter-spacing: -.07em; }
+.conversion-mode-switch { margin-bottom: 24px; }
+.conversion-mode-switch a { font-size: 9px; line-height: 1.2; text-align: center; }
 .utility-heading p { margin: 14px 0 0; color: var(--muted); font-size: 11px; line-height: 1.55; }
 .utility-drop { margin-top: 18px; }
 .utility-workspace { margin-top: 18px; }
