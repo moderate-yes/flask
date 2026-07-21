@@ -233,9 +233,9 @@ def health_check():
     return {"status": "ok"}
 
 
-@app.get("/googlebb29d5b1978e0f82.html")
+@app.get("/googleab522432670c34d4.html")
 def google_site_verification():
-    return send_from_directory(app.root_path, "googlebb29d5b1978e0f82.html", mimetype="text/html")
+    return send_from_directory(app.root_path, "googleab522432670c34d4.html", mimetype="text/html")
 
 
 @app.get("/ads.txt")
