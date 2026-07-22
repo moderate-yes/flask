@@ -219,6 +219,7 @@ async function inspectFile(file) {
 
 async function splitPdf() {
   if (!selectedFile || processing || !totalPages || cuts.size === 0) return;
+  window.reportGoogleAdsConversion?.();
   processing = true;
   splitButton.disabled = true;
   splitButton.classList.add("processing");

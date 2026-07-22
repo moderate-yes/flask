@@ -109,6 +109,7 @@
 
   async function mergeFiles() {
     if (processing || files.length < 2) return;
+    window.reportGoogleAdsConversion?.();
     processing = true;
     mergeButton.classList.add("processing");
     mergeButton.textContent = "PREPARING FILES";
