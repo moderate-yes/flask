@@ -27,6 +27,11 @@
 .contact-channel h2 { margin: 18px 0 0; overflow-wrap: anywhere; font-family: "Archivo Black", sans-serif; font-size: clamp(22px, 5vw, 38px); line-height: 1; letter-spacing: -.04em; }
 .contact-channel h2 a { color: inherit; }
 .contact-channel p { margin: 13px 0 0; color: var(--muted); font-size: 12px; line-height: 1.55; }
+.operator-card { margin: clamp(20px, 5vw, 45px); padding: 25px; border: 1px solid var(--ink); background: #c8c9c4; }
+.operator-card > span { font: 500 8px "DM Mono", monospace; letter-spacing: .1em; }
+.operator-card h2 { margin: 18px 0 0; font-family: "Archivo Black", sans-serif; font-size: clamp(28px, 6vw, 46px); line-height: 1; letter-spacing: -.04em; }
+.operator-card p { max-width: 620px; margin: 14px 0 0; color: #353633; font-size: 13px; line-height: 1.7; }
+.operator-card a { display: inline-block; margin-top: 15px; color: var(--ink); overflow-wrap: anywhere; font: 500 10px "DM Mono", monospace; }
 
 .content-shell .site-footer { margin-top: 18px; }
 .error-card .content-hero { min-height: 560px; display: flex; flex-direction: column; align-items: flex-start; justify-content: center; border-bottom: 0; }
@@ -38,4 +43,5 @@
   .content-sections { padding: 0 18px; }
   .content-section { grid-template-columns: 28px minmax(0, 1fr); gap: 9px; padding: 27px 0; }
   .contact-channel { margin: 18px; padding: 19px; }
+  .operator-card { margin: 18px; padding: 19px; }
 }

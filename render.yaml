@@ -11,3 +11,7 @@ services:
     envVars:
       - key: TRUST_PROXY_HEADERS
         value: "1"
+      - key: CONTACT_EMAIL
+        value: "khh901001@proton.me"
+      - key: SITE_OPERATOR
+        value: "khh go"

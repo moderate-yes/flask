@@ -26,6 +26,10 @@ PAGES = {
             {
                 "title": "CURRENT TOOLKIT",
                 "text": "The collection includes PDF merge, split, page organization, PDF-image conversion, an image toolkit, file hashing, QR generation, a focus timer, a multi calculator, and a desktop path editor."
+            },
+            {
+                "title": "TESTING AND MAINTENANCE",
+                "text": "Each release is checked through its complete browser workflow: selecting input, changing options, producing an output, and reopening or inspecting that output where applicable. Browser behavior and file complexity vary, so the original file should always be kept until a result has been reviewed. Compatibility notes and known limits are documented in the tool guides and FAQ."
             }
         ]
     },
@@ -141,7 +145,7 @@ PAGES = {
         "eyebrow": "POLICY / PRIVACY",
         "heading": "YOUR FILES STAY\nCLOSE TO YOU.",
         "intro": "This policy explains what the current Browser Tools website processes, what may be stored on your device, and how third-party resources and advertising may process technical information.",
-        "updated": "Last updated: July 15, 2026",
+        "updated": "Last updated: July 26, 2026",
         "sections": [
             {"title": "FILES AND TOOL INPUTS", "text": "PDF documents, images, Path Studio projects, files selected for hashing, and text entered for QR generation are processed in the browser. These tools do not send that working content to the application server. Temporary working data is normally cleared when the page closes."},
             {"title": "LOCAL BROWSER STORAGE", "text": "The focus timer may use local browser storage to preserve timer state on the same device. You can remove this information by clearing site data in your browser."},

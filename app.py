@@ -14,15 +14,22 @@ if os.getenv("TRUST_PROXY_HEADERS") == "1":
     app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1)
 
 
+def configured_site_url():
+    return (
+        os.getenv("SITE_URL", "").strip().rstrip("/")
+        or os.getenv("RENDER_EXTERNAL_URL", "").strip().rstrip("/")
+    )
+
+
 def public_url(endpoint, **values):
-    site_url = os.getenv("SITE_URL", "").strip().rstrip("/")
+    site_url = configured_site_url()
     path = url_for(endpoint, **values)
     return f"{site_url}{path}" if site_url else url_for(endpoint, _external=True, **values)
 
 
 @app.context_processor
 def inject_public_metadata():
-    site_url = os.getenv("SITE_URL", "").strip().rstrip("/")
+    site_url = configured_site_url()
     canonical_url = f"{site_url}{request.path}" if site_url else request.base_url
     seo_page = TOOL_SEO.get(request.endpoint)
     tool_structured_data = None
@@ -84,6 +91,8 @@ def inject_public_metadata():
         "related_tools": related_tools,
         "tool_structured_data": tool_structured_data,
         "og_image_url": public_url("static", filename="og-browser-tools.jpg"),
+        "site_home_url": public_url("index"),
+        "adsense_enabled": request.endpoint in TOOL_SEO,
     }
 
 
@@ -200,6 +209,7 @@ def render_discover(language):
         alternates=alternates,
         default_url=public_url("discover_default"),
         structured_data=structured_data,
+        localized_page=language != "en",
     )
 
 
@@ -224,7 +234,8 @@ def content_page(slug):
         "content_page.html",
         page=page,
         slug=slug,
-        contact_email=os.getenv("CONTACT_EMAIL", "").strip(),
+        contact_email=os.getenv("CONTACT_EMAIL", "khh901001@proton.me").strip(),
+        site_operator=os.getenv("SITE_OPERATOR", "khh go").strip(),
     )
 
 
@@ -265,21 +276,15 @@ def sitemap_xml():
         public_url("calculator"),
         *[public_url("content_page", slug=slug) for slug in PAGES],
     ]
-    pages = [{"loc": page, "lastmod": "2026-07-18"} for page in page_urls]
-    locale_pages = [
-        {
-            "loc": public_url("discover_default") if code == "en" else public_url("discover_localized", language=code),
-            "lastmod": "2026-07-18",
-            "alternates": [
-                {
-                    "hreflang": item["hreflang"],
-                    "url": public_url("discover_default") if alternate == "en" else public_url("discover_localized", language=alternate),
-                }
-                for alternate, item in LOCALES.items()
-            ],
-        }
-        for code in LOCALES
-    ]
+    pages = [{"loc": page, "lastmod": "2026-07-26"} for page in page_urls]
+    # Localized discovery pages currently lead to English-only tools. Keep them
+    # available to visitors, but exclude them from the index until the complete
+    # tool experience is localized.
+    locale_pages = [{
+        "loc": public_url("discover_default"),
+        "lastmod": "2026-07-26",
+        "alternates": [],
+    }]
     return Response(render_template("sitemap.xml", pages=pages, locale_pages=locale_pages, default_url=public_url("discover_default")), mimetype="application/xml")
 
 
