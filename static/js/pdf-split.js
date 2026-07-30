@@ -19,6 +19,7 @@ const splitWorkerUrl = app.dataset.workerUrl;
 
 let selectedFile = null;
 let pdfDocument = null;
+let pdfLoadingTask = null;
 let totalPages = 0;
 let cuts = new Set();
 let processing = false;
@@ -54,13 +55,14 @@ function updateCutUi() {
   }
 }
 
-async function resetFile() {
+function resetFile() {
   loadToken += 1;
   if (splitWorker) splitWorker.terminate();
   splitWorker = null;
   if (previewObserver) previewObserver.disconnect();
   previewObserver = null;
-  if (pdfDocument) await pdfDocument.destroy().catch(() => {});
+  const loadingTaskToDestroy = pdfLoadingTask;
+  pdfLoadingTask = null;
   pdfDocument = null;
   selectedFile = null;
   totalPages = 0;
@@ -74,6 +76,11 @@ async function resetFile() {
   splitButton.textContent = "SPLIT & DOWNLOAD ZIP";
   filePicker.value = "";
   setStatus("Add one PDF file to begin.");
+  // PDF.js may still be finishing a thumbnail render. The loading task owns
+  // destroy(); update the UI first and let that cleanup finish in the background.
+  if (typeof loadingTaskToDestroy?.destroy === "function") {
+    Promise.resolve(loadingTaskToDestroy.destroy()).catch(() => {});
+  }
 }
 
 async function renderPage(pageNumber, paper, token) {
@@ -186,7 +193,7 @@ async function inspectFile(file) {
     return;
   }
 
-  await resetFile();
+  resetFile();
   const token = loadToken;
   selectedFile = file;
   processing = true;
@@ -200,7 +207,8 @@ async function inspectFile(file) {
 
   try {
     const bytes = new Uint8Array(await file.arrayBuffer());
-    pdfDocument = await pdfjsLib.getDocument({ data: bytes }).promise;
+    pdfLoadingTask = pdfjsLib.getDocument({ data: bytes });
+    pdfDocument = await pdfLoadingTask.promise;
     if (token !== loadToken) return;
     totalPages = pdfDocument.numPages;
     pageCount.textContent = `${totalPages} PAGE${totalPages === 1 ? "" : "S"}`;
@@ -211,6 +219,7 @@ async function inspectFile(file) {
     }
     buildPageList(token);
   } catch (_) {
+    if (token !== loadToken) return;
     processing = false;
     pageCount.textContent = "UNREADABLE";
     setStatus("This PDF could not be previewed. It may be encrypted or damaged.", true);
