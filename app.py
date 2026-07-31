@@ -140,6 +140,11 @@ def image_toolkit():
     return render_template("image_toolkit.html")
 
 
+@app.get("/image-transform")
+def image_transform():
+    return render_template("image_transform.html")
+
+
 @app.get("/file-hash")
 def file_hash():
     return render_template("file_hash.html")
@@ -269,6 +274,7 @@ def sitemap_xml():
         public_url("pdf_to_images"),
         public_url("images_to_pdf"),
         public_url("image_toolkit"),
+        public_url("image_transform"),
         public_url("file_hash"),
         public_url("qr_generator"),
         public_url("focus_timer"),

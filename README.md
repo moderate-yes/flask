@@ -45,6 +45,7 @@ S3 or CloudFront. Run `python build_static.py` for a local preview, or use
 - PDF page export to PNG or JPEG
 - JPG, PNG, and WebP conversion into PDF
 - Local image resizing, compression, and format conversion
+- Local image mirroring, upside-down flipping, and free-angle rotation
 - SHA-256, SHA-384, and SHA-512 file checksums
 - Local QR code generation and PNG download
 - PDF processing in a browser worker
@@ -68,6 +69,7 @@ S3 or CloudFront. Run `python build_static.py` for a local preview, or use
 - PDF to Images: `http://127.0.0.1:5000/pdf-to-images`
 - Images to PDF: `http://127.0.0.1:5000/images-to-pdf`
 - Image Toolkit: `http://127.0.0.1:5000/image-toolkit`
+- Image Transform: `http://127.0.0.1:5000/image-transform`
 - File Hash Checker: `http://127.0.0.1:5000/file-hash`
 - QR Code Generator: `http://127.0.0.1:5000/qr-generator`
 - Timer: `http://127.0.0.1:5000/focus-timer`

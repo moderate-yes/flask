@@ -107,7 +107,25 @@ TOOL_SEO = {
             ("What does aspect ratio mean?", "It is the relationship between width and height. Locking it prevents accidental distortion."),
             ("Can I enlarge a small image?", "Yes, but enlargement cannot recreate detail that was not present in the source."),
         ],
-        "related": [("images_to_pdf", "IMAGES TO PDF"), ("pdf_to_images", "PDF TO IMAGES"), ("qr_generator", "QR GENERATOR")],
+        "related": [("image_transform", "IMAGE TRANSFORM"), ("images_to_pdf", "IMAGES TO PDF"), ("pdf_to_images", "PDF TO IMAGES")],
+    },
+    "image_transform": {
+        "name": "Image Mirror, Flip and Rotate Tool",
+        "title": "Mirror, Flip and Rotate Images Locally — Browser Tools",
+        "description": "Mirror, flip upside down, and rotate JPG, PNG, or WebP images directly in your browser, then download the result privately.",
+        "heading": "MIRROR, FLIP AND ROTATE IMAGES",
+        "summary": "Correct image orientation or create a mirrored copy without uploading the original. Use quick 90-degree controls or fine-tune the angle before downloading.",
+        "steps": ["Add a JPG, PNG, or WebP image.", "Mirror it horizontally, flip it vertically, or rotate it.", "Use the angle slider for precise adjustments.", "Choose an output format and download the transformed image."],
+        "notes": [
+            ("NON-DESTRUCTIVE EDITING", "The original file is never overwritten. Reset returns the preview to its starting orientation, and download creates a new file."),
+            ("ROTATED IMAGE SIZE", "Rotating at an angle other than 90 degrees expands the output canvas so the image is not cropped. Transparent corners are preserved in PNG and WebP."),
+        ],
+        "faq": [
+            ("What is the difference between mirror and flip?", "Mirror reverses the image from left to right. Flip turns it upside down from top to bottom."),
+            ("Are my images uploaded?", "No. Loading, transforming, and exporting happen in your browser."),
+            ("Which output format should I use?", "PNG preserves transparent corners. JPEG fills transparent areas with white. WebP can preserve transparency with a smaller file size."),
+        ],
+        "related": [("image_toolkit", "IMAGE TOOLKIT"), ("images_to_pdf", "IMAGES TO PDF"), ("pdf_to_images", "PDF TO IMAGES")],
     },
     "file_hash": {
         "name": "File Hash Checker",
