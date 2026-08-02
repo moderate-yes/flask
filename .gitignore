@@ -11,3 +11,6 @@ htmlcov/
 work/
 outputs/
 s3-site/
+instance/*.db
+instance/*.db-shm
+instance/*.db-wal

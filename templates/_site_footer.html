@@ -1,4 +1,15 @@
 <footer class="site-footer">
+  <div class="visitor-counter-preview" aria-label="Approximate visitor counter">
+    <div class="visitor-counter-heading">
+      <span class="visitor-counter-mark" aria-hidden="true"></span>
+      <span>VISITOR COUNTER</span>
+      <small>APPROX.</small>
+    </div>
+    <div class="visitor-counter-stats">
+      <span><small>TOTAL VISITS</small><strong data-visit-total>—</strong></span>
+      <span><small>TODAY</small><strong data-visit-today>—</strong></span>
+    </div>
+  </div>
   <nav aria-label="Site information">
     <a href="{{ url_for('discover_default') }}">DISCOVER</a>
     <a href="{{ url_for('content_page', slug='about') }}">ABOUT</a>
@@ -10,3 +21,4 @@
   </nav>
   <p>BROWSER TOOLS · BROWSER-FIRST UTILITIES</p>
 </footer>
+<script src="{{ url_for('static', filename='js/visitor-counter.js') }}" defer></script>

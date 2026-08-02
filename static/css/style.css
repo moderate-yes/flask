@@ -103,6 +103,23 @@ button { color: inherit; }
 .launcher-info a:hover { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
 
 .site-footer { margin-top: 14px; padding: 14px 8px 3px; border-top: 1px solid rgba(17, 18, 16, .42); color: var(--muted); }
+.visitor-counter-preview {
+  width: fit-content;
+  margin: 0 auto 15px;
+  padding: 7px 9px;
+  border: 1px solid rgba(17, 18, 16, .42);
+  background: rgba(205, 206, 201, .5);
+  font-family: "DM Mono", monospace;
+  letter-spacing: .08em;
+}
+.visitor-counter-mark { width: 6px; height: 6px; border-radius: 50%; background: var(--ink); }
+.visitor-counter-heading { display: flex; align-items: center; gap: 7px; color: var(--muted); font-size: 6px; }
+.visitor-counter-heading small { margin-left: auto; padding-left: 14px; color: var(--muted); font-size: 5px; letter-spacing: .12em; }
+.visitor-counter-stats { margin-top: 7px; display: grid; grid-template-columns: repeat(2,auto); }
+.visitor-counter-stats > span { min-width: 89px; padding: 3px 10px 2px 0; display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+.visitor-counter-stats > span + span { padding-right: 0; padding-left: 10px; border-left: 1px solid var(--line); }
+.visitor-counter-stats small { color: var(--muted); font-size: 5px; letter-spacing: .09em; }
+.visitor-counter-stats strong { color: var(--ink); font-size: 12px; font-weight: 500; font-variant-numeric: tabular-nums; letter-spacing: .03em; }
 .site-footer nav { display: flex; flex-wrap: wrap; justify-content: center; gap: 9px 15px; }
 .site-footer a { color: inherit; font-family: "DM Mono", monospace; font-size: 7px; letter-spacing: .08em; text-decoration: none; }
 .site-footer a:hover { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }

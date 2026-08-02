@@ -1,6 +1,9 @@
 import os
+import sqlite3
+from datetime import datetime, timedelta, timezone
+from pathlib import Path
 
-from flask import Flask, Response, abort, redirect, render_template, request, send_from_directory, url_for
+from flask import Flask, Response, abort, jsonify, redirect, render_template, request, send_from_directory, url_for
 from werkzeug.middleware.proxy_fix import ProxyFix
 
 from content_pages import PAGES
@@ -9,6 +12,7 @@ from seo_pages import TOOL_SEO
 
 
 app = Flask(__name__)
+KOREA_TIME = timezone(timedelta(hours=9))
 
 if os.getenv("TRUST_PROXY_HEADERS") == "1":
     app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1)
@@ -25,6 +29,35 @@ def public_url(endpoint, **values):
     site_url = configured_site_url()
     path = url_for(endpoint, **values)
     return f"{site_url}{path}" if site_url else url_for(endpoint, _external=True, **values)
+
+
+def visitor_database_path():
+    configured_path = os.getenv("VISITOR_DB_PATH", "").strip()
+    if configured_path:
+        path = Path(configured_path)
+        return path if path.is_absolute() else Path(app.root_path) / path
+    return Path(app.instance_path) / "visits.db"
+
+
+def open_visitor_database():
+    path = visitor_database_path()
+    path.parent.mkdir(parents=True, exist_ok=True)
+    connection = sqlite3.connect(path, timeout=5)
+    connection.execute("PRAGMA busy_timeout = 5000")
+    connection.execute("PRAGMA journal_mode = WAL")
+    connection.execute(
+        "CREATE TABLE IF NOT EXISTS visit_totals ("
+        "id INTEGER PRIMARY KEY CHECK (id = 1), "
+        "visits INTEGER NOT NULL DEFAULT 0 CHECK (visits >= 0))"
+    )
+    connection.execute(
+        "CREATE TABLE IF NOT EXISTS daily_visits ("
+        "visit_date TEXT PRIMARY KEY, "
+        "visits INTEGER NOT NULL DEFAULT 0 CHECK (visits >= 0))"
+    )
+    connection.execute("INSERT OR IGNORE INTO visit_totals (id, visits) VALUES (1, 0)")
+    connection.commit()
+    return connection
 
 
 @app.context_processor
@@ -247,6 +280,37 @@ def content_page(slug):
 @app.get("/healthz")
 def health_check():
     return {"status": "ok"}
+
+
+@app.route("/api/visits", methods=["GET", "POST"])
+def visitor_counts():
+    visit_date = datetime.now(KOREA_TIME).date().isoformat()
+    payload = request.get_json(silent=True) or {} if request.method == "POST" else {}
+    count_total = payload.get("countTotal") is True
+    count_today = payload.get("countToday") is True
+
+    connection = open_visitor_database()
+    try:
+        with connection:
+            if count_total:
+                connection.execute("UPDATE visit_totals SET visits = visits + 1 WHERE id = 1")
+            if count_today:
+                connection.execute(
+                    "INSERT INTO daily_visits (visit_date, visits) VALUES (?, 1) "
+                    "ON CONFLICT(visit_date) DO UPDATE SET visits = visits + 1",
+                    (visit_date,),
+                )
+            total = connection.execute("SELECT visits FROM visit_totals WHERE id = 1").fetchone()[0]
+            today_row = connection.execute(
+                "SELECT visits FROM daily_visits WHERE visit_date = ?",
+                (visit_date,),
+            ).fetchone()
+    finally:
+        connection.close()
+
+    response = jsonify({"total": total, "today": today_row[0] if today_row else 0, "date": visit_date})
+    response.headers["Cache-Control"] = "no-store"
+    return response
 
 
 @app.get("/googleab522432670c34d4.html")
