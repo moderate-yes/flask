@@ -1,0 +1,117 @@
+.annotation-shell { max-width: 980px; }
+.annotation-card { min-width: 0; }
+.annotation-workspace { margin-top: 18px; }
+.annotation-workspace[hidden] { display: none; }
+
+.annotation-toolbar {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border: 1px solid var(--ink);
+}
+.annotation-toolbar button {
+  min-height: 42px;
+  padding: 8px 5px;
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  font: 8px "DM Mono", monospace;
+  font-weight: 500;
+  letter-spacing: .08em;
+  cursor: pointer;
+}
+.annotation-toolbar button + button { border-left: 1px solid var(--ink); }
+.annotation-toolbar button:hover, .annotation-toolbar button.active { background: var(--ink); color: var(--white); }
+
+.annotation-layout { margin-top: 10px; display: grid; gap: 10px; }
+.annotation-viewer-column { min-width: 0; }
+.page-navigation {
+  min-height: 38px;
+  display: grid;
+  grid-template-columns: 38px 1fr 38px;
+  align-items: center;
+  border: 1px solid var(--line);
+  border-bottom: 0;
+}
+.page-navigation button { height: 37px; border: 0; background: transparent; font: 13px "DM Mono", monospace; cursor: pointer; }
+.page-navigation button:hover:not(:disabled) { background: var(--ink); color: var(--white); }
+.page-navigation button:disabled { opacity: .25; cursor: default; }
+.page-navigation label { text-align: center; color: var(--muted); font: 7px "DM Mono", monospace; letter-spacing: .08em; }
+.page-navigation input { width: 45px; min-height: 27px; margin: 0 5px; border: 1px solid var(--line); background: #d7d8d3; text-align: center; font: 10px "DM Mono", monospace; }
+
+.annotation-viewer {
+  min-height: 440px;
+  padding: 12px;
+  display: grid;
+  align-items: start;
+  justify-items: center;
+  overflow: auto;
+  border: 1px solid var(--ink);
+  background: #8f908c;
+}
+.pdf-page-stage { position: relative; line-height: 0; background: white; box-shadow: 0 8px 24px rgba(17,18,16,.25); touch-action: none; }
+.pdf-page-stage canvas { display: block; max-width: none; }
+.annotation-overlay { position: absolute; inset: 0; line-height: normal; cursor: default; }
+.annotation-overlay.mode-highlight { cursor: crosshair; }
+.annotation-overlay.mode-comment { cursor: copy; }
+.annotation-mark { position: absolute; margin: 0; padding: 0; border: 1px solid rgba(17,18,16,.52); cursor: pointer; }
+.annotation-mark.highlight { background: color-mix(in srgb, var(--annotation-color) 46%, transparent); mix-blend-mode: multiply; }
+.annotation-mark.comment {
+  width: 23px !important;
+  height: 23px !important;
+  display: grid;
+  place-items: center;
+  border-radius: 50% 50% 50% 3px;
+  background: var(--annotation-color);
+  color: var(--ink);
+  font: 12px "DM Mono", monospace;
+  box-shadow: 2px 2px 0 rgba(17,18,16,.28);
+}
+.annotation-mark.selected { outline: 3px solid var(--ink); outline-offset: 2px; z-index: 3; }
+.annotation-draft { position: absolute; border: 1px dashed var(--ink); background: rgba(255,228,92,.42); pointer-events: none; }
+.annotation-hint { margin: 8px 2px 0; color: var(--muted); font: 7px/1.5 "DM Mono", monospace; letter-spacing: .04em; }
+
+.annotation-inspector { min-width: 0; padding: 13px; border: 1px solid var(--ink); background: rgba(212,213,208,.55); }
+.inspector-empty { min-height: 190px; display: grid; align-content: center; text-align: center; }
+.inspector-empty span { font: 8px "DM Mono", monospace; letter-spacing: .1em; }
+.inspector-empty p { max-width: 230px; margin: 9px auto 0; color: var(--muted); font-size: 9px; line-height: 1.5; }
+.inspector-heading { margin-bottom: 14px; padding-bottom: 10px; display: flex; align-items: end; justify-content: space-between; border-bottom: 1px solid var(--line); }
+.inspector-heading span { color: var(--muted); font: 7px "DM Mono", monospace; letter-spacing: .08em; }
+.inspector-heading strong { font: 10px "Archivo Black", "Inter", sans-serif; }
+.annotation-inspector .field + .field { margin-top: 10px; }
+.color-field input { height: 38px; padding: 4px; cursor: pointer; }
+.annotation-inspector .tool-action { margin-top: 12px; min-height: 40px; font-size: 8px; }
+.annotation-summary { margin-top: 13px; padding-top: 11px; display: flex; justify-content: space-between; border-top: 1px solid var(--line); color: var(--muted); font: 7px "DM Mono", monospace; letter-spacing: .08em; }
+.annotation-summary strong { color: var(--ink); font-size: 10px; }
+.document-comments-heading { margin-top: 13px; padding-top: 11px; display: flex; justify-content: space-between; border-top: 1px solid var(--line); color: var(--muted); font: 7px "DM Mono", monospace; letter-spacing: .08em; }
+.document-comments-heading strong { color: var(--ink); font-size: 10px; }
+.document-comments { max-height: 285px; margin-top: 8px; display: grid; gap: 6px; overflow: auto; }
+.document-comments > p { margin: 4px 0; color: var(--muted); font: 8px/1.5 "DM Mono", monospace; }
+.document-comment {
+  width: 100%;
+  padding: 9px;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 8px;
+  align-items: start;
+  border: 1px solid var(--line);
+  background: rgba(255,255,255,.25);
+  color: var(--ink);
+  text-align: left;
+  cursor: pointer;
+}
+.document-comment:hover, .document-comment.active { border-color: var(--ink); background: var(--white); }
+.document-comment span { padding: 3px 4px; background: var(--ink); color: var(--white); font: 7px "DM Mono", monospace; white-space: nowrap; }
+.document-comment strong { font: 8px/1.45 "Inter", sans-serif; font-weight: 600; overflow-wrap: anywhere; }
+.annotation-downloads { display: grid; gap: 8px; }
+
+@media (min-width: 720px) {
+  .annotation-layout { grid-template-columns: minmax(0, 1fr) 260px; align-items: start; }
+  .annotation-inspector { position: sticky; top: 12px; }
+  .annotation-downloads { grid-template-columns: 1fr 1.5fr; }
+  .annotation-viewer { min-height: 620px; }
+}
+
+@media (max-width: 519px) {
+  .annotation-card { padding-right: 11px; padding-left: 11px; }
+  .annotation-viewer { padding: 8px; }
+}

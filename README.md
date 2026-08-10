@@ -42,6 +42,7 @@ S3 or CloudFront. Run `python build_static.py` for a local preview, or use
 - Visual PDF splitting with page previews and selectable cut points
 - ZIP downloads for split PDF results
 - PDF page reordering, rotation, removal, and extraction
+- Clickable PDF highlight and comment viewing, editing, and creation
 - PDF page export to PNG or JPEG
 - JPG, PNG, and WebP conversion into PDF
 - Local image resizing, compression, and format conversion
@@ -66,6 +67,7 @@ S3 or CloudFront. Run `python build_static.py` for a local preview, or use
 - Private PDF Merge: `http://127.0.0.1:5000/`
 - Private PDF Split: `http://127.0.0.1:5000/pdf-split`
 - PDF Page Organizer: `http://127.0.0.1:5000/pdf-organizer`
+- PDF Annotation Editor: `http://127.0.0.1:5000/pdf-annotations`
 - PDF to Images: `http://127.0.0.1:5000/pdf-to-images`
 - Images to PDF: `http://127.0.0.1:5000/images-to-pdf`
 - Image Toolkit: `http://127.0.0.1:5000/image-toolkit`

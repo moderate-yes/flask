@@ -53,7 +53,25 @@ TOOL_SEO = {
             ("Does rotation change the original?", "No. Rotation is applied only to the new downloaded PDF."),
             ("Can I combine several PDFs here?", "Use PDF Merge for multiple documents; this organizer works with one PDF at a time."),
         ],
-        "related": [("index", "MERGE PDF"), ("pdf_split", "SPLIT PDF"), ("images_to_pdf", "IMAGES TO PDF")],
+        "related": [("pdf_annotations", "PDF ANNOTATIONS"), ("index", "MERGE PDF"), ("pdf_split", "SPLIT PDF")],
+    },
+    "pdf_annotations": {
+        "name": "Private PDF Annotation Editor",
+        "title": "View, Edit and Add PDF Highlights and Comments — Browser Tools",
+        "description": "Open a PDF locally, click existing highlights and comments, edit their details, add new annotations, and download an updated PDF without uploading it.",
+        "heading": "EDIT PDF HIGHLIGHTS AND COMMENTS",
+        "summary": "Review existing highlight and note annotations in one place. Add rectangular highlights or comment pins, edit their text and color, and save a new annotated PDF in your browser.",
+        "steps": ["Add one PDF file.", "Click an existing highlight or comment to inspect and edit it.", "Choose HIGHLIGHT and drag, or choose COMMENT and click the page.", "Download a new PDF containing the updated annotations."],
+        "notes": [
+            ("CLICKABLE PDF ANNOTATIONS", "Highlights and comment pins are saved as standard PDF annotations so compatible PDF readers can display and open them."),
+            ("LOCAL AND NON-DESTRUCTIVE", "The source PDF remains on your device and is not overwritten. The editor creates a separate downloadable copy."),
+        ],
+        "faq": [
+            ("Are existing comments supported?", "Yes. The editor finds comments attached to highlights, text notes, shapes, stamps, ink, and other common PDF annotations, then lists them by page for quick review."),
+            ("Can I highlight exact text?", "Drag a rectangle across the line or area you want to mark. The first version creates rectangular highlights rather than selecting individual text glyphs."),
+            ("Is the PDF uploaded?", "No. Reading, editing, and saving happen locally in your browser."),
+        ],
+        "related": [("pdf_organizer", "ORGANIZE PAGES"), ("pdf_split", "SPLIT PDF"), ("index", "MERGE PDF")],
     },
     "pdf_to_images": {
         "name": "PDF to Image Converter",

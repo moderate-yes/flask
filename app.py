@@ -158,6 +158,11 @@ def pdf_organizer():
     return render_template("pdf_organizer.html")
 
 
+@app.get("/pdf-annotations")
+def pdf_annotations():
+    return render_template("pdf_annotations.html")
+
+
 @app.get("/pdf-to-images")
 def pdf_to_images():
     return render_template("pdf_to_images.html")
@@ -335,6 +340,7 @@ def sitemap_xml():
         public_url("index"),
         public_url("pdf_split"),
         public_url("pdf_organizer"),
+        public_url("pdf_annotations"),
         public_url("pdf_to_images"),
         public_url("images_to_pdf"),
         public_url("image_toolkit"),

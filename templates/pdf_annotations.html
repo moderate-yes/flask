@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+  {% include '_adsense_head.html' %}{% include '_brand_head.html' %}
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#a9aaa5">
+  <title>{{ seo_page.title }}</title>
+  <meta name="description" content="{{ seo_page.description }}">
+  <link rel="canonical" href="{{ canonical_url }}">
+  {% include '_tool_seo_head.html' %}
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static',filename='css/style.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static',filename='css/pdf-merge.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static',filename='css/tool-pages.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static',filename='css/pdf-annotations.css') }}">
+</head>
+<body>
+<main class="page-shell pdf-shell annotation-shell" id="annotationApp" data-pdfjs="{{ url_for('static',filename='vendor/pdf.min.mjs') }}" data-worker="{{ url_for('static',filename='vendor/pdf.worker.min.mjs') }}">
+  {% include '_tool_launcher.html' %}
+  <section class="utility-card annotation-card">
+    <header class="utility-heading">
+      <h1>PDF<br>ANNOTATIONS.</h1>
+      <p>Click, edit, and add highlights or comments without uploading your PDF.</p>
+    </header>
+
+    <button class="drop-zone utility-drop" id="dropZone" type="button">
+      <span class="add-mark">+</span><strong>ADD ONE PDF</strong><span>Choose a file or drop it here</span>
+    </button>
+    <input class="visually-hidden" id="filePicker" type="file" accept="application/pdf,.pdf">
+
+    <section class="annotation-workspace" id="workspace" hidden>
+      <div class="annotation-toolbar" aria-label="Annotation tools">
+        <button class="active" type="button" data-mode="select">SELECT</button>
+        <button type="button" data-mode="highlight">HIGHLIGHT</button>
+        <button type="button" data-mode="comment">COMMENT</button>
+      </div>
+
+      <div class="annotation-layout">
+        <div class="annotation-viewer-column">
+          <div class="page-navigation">
+            <button id="previousPage" type="button" aria-label="Previous page">←</button>
+            <label>PAGE <input id="pageNumber" type="number" min="1" value="1"> / <span id="pageCount">1</span></label>
+            <button id="nextPage" type="button" aria-label="Next page">→</button>
+          </div>
+          <div class="annotation-viewer" id="viewer">
+            <div class="pdf-page-stage" id="pageStage">
+              <canvas id="pdfCanvas" aria-label="PDF page preview"></canvas>
+              <div class="annotation-overlay" id="annotationOverlay" aria-label="Editable PDF annotations"></div>
+            </div>
+          </div>
+          <p class="annotation-hint" id="modeHint">Click an annotation to inspect it.</p>
+        </div>
+
+        <aside class="annotation-inspector" aria-labelledby="inspectorTitle">
+          <div class="inspector-empty" id="inspectorEmpty">
+            <span>NO SELECTION</span>
+            <p>Select a highlight or comment on the page to edit it.</p>
+          </div>
+          <div id="inspectorFields" hidden>
+            <div class="inspector-heading"><span id="annotationKind">HIGHLIGHT</span><strong id="inspectorTitle">ANNOTATION</strong></div>
+            <label class="field">AUTHOR<input id="annotationAuthor" type="text" maxlength="100" placeholder="Optional"></label>
+            <label class="field">COMMENT<textarea id="annotationComment" maxlength="2000" placeholder="Write a comment…"></textarea></label>
+            <label class="field color-field">COLOR<input id="annotationColor" type="color" value="#ffe45c"></label>
+            <button class="tool-action secondary" id="deleteAnnotation" type="button">DELETE ANNOTATION</button>
+          </div>
+          <div class="annotation-summary"><span>PAGE ANNOTATIONS</span><strong id="pageAnnotationCount">0</strong></div>
+          <div class="document-comments-heading">
+            <span>COMMENTS IN FILE</span><strong id="documentCommentCount">0</strong>
+          </div>
+          <div class="document-comments" id="documentComments">
+            <p>No comments found.</p>
+          </div>
+        </aside>
+      </div>
+
+      <p class="tool-status" id="status" role="status" aria-live="polite"></p>
+      <div class="annotation-downloads">
+        <button class="tool-action secondary" id="replacePdf" type="button">CHOOSE ANOTHER PDF</button>
+        <button class="tool-action" id="downloadPdf" type="button">DOWNLOAD ANNOTATED PDF</button>
+      </div>
+    </section>
+    <p class="local-tool-note">The PDF stays in this browser. Comments attached to highlights, text notes, shapes, stamps, ink, and other common annotations are editable.</p>
+  </section>
+  {% include '_tool_seo.html' %}{% include '_site_footer.html' %}
+</main>
+<script src="{{ url_for('static',filename='js/tool-launcher.js') }}" defer></script>
+<script src="{{ url_for('static',filename='vendor/pdf-lib.min.js') }}"></script>
+<script type="module" src="{{ url_for('static',filename='js/pdf-annotations.js') }}"></script>
+</body>
+</html>
