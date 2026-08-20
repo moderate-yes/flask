@@ -92,25 +92,24 @@ async function renderPage(pageNumber, paper, token) {
     const page = await pdfDocument.getPage(pageNumber);
     if (token !== loadToken) return;
     const baseViewport = page.getViewport({ scale: 1 });
-    const targetWidth = Math.max(72, Math.min(150, paper.clientWidth || 110));
-    const outputScale = Math.min(window.devicePixelRatio || 1, 1.5);
-    const viewport = page.getViewport({ scale: targetWidth / baseViewport.width });
+    const targetWidth = Math.max(80, Math.min(160, paper.clientWidth || 110));
+    const outputScale = Math.min(window.devicePixelRatio || 1, 2);
+    const scale = (targetWidth / baseViewport.width) * outputScale;
+    const viewport = page.getViewport({ scale, rotation: page.rotate || 0 });
     const canvas = document.createElement("canvas");
-    const context = canvas.getContext("2d", { alpha: false });
-    canvas.width = Math.floor(viewport.width * outputScale);
-    canvas.height = Math.floor(viewport.height * outputScale);
-    canvas.style.width = `${Math.floor(viewport.width)}px`;
-    canvas.style.height = `${Math.floor(viewport.height)}px`;
-    context.fillStyle = "#ffffff";
-    context.fillRect(0, 0, canvas.width, canvas.height);
+    const context = canvas.getContext("2d");
+    canvas.width = Math.floor(viewport.width);
+    canvas.height = Math.floor(viewport.height);
+    canvas.style.width = `${Math.floor(viewport.width / outputScale)}px`;
+    canvas.style.height = `${Math.floor(viewport.height / outputScale)}px`;
     await page.render({
       canvasContext: context,
-      viewport,
-      transform: outputScale === 1 ? null : [outputScale, 0, 0, outputScale, 0, 0]
+      viewport: viewport
     }).promise;
     if (token !== loadToken) return;
     paper.replaceChildren(canvas);
-  } catch (_) {
+  } catch (error) {
+    console.error("PDF page render error:", error);
     paper.dataset.rendered = "false";
     paper.querySelector(".page-loading").textContent = "PREVIEW UNAVAILABLE";
   }
