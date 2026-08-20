@@ -16,8 +16,8 @@ const clearCutsButton = document.querySelector("#clearCuts");
 const status = document.querySelector("#splitStatus");
 const splitButton = document.querySelector("#splitButton");
 const splitWorkerUrl = app.dataset.workerUrl;
-const CMAP_URL = "https://cdn.jsdelivr.net/npm/pdfjs-dist@4.10.38/cmaps/";
-const STANDARD_FONT_DATA_URL = "https://cdn.jsdelivr.net/npm/pdfjs-dist@4.10.38/standard_fonts/";
+const CMAP_URL = "/static/vendor/cmaps/";
+const STANDARD_FONT_DATA_URL = "/static/vendor/standard_fonts/";
 
 let selectedFile = null;
 let pdfDocument = null;

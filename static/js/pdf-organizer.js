@@ -11,8 +11,8 @@ let pages = [];
 
 const pdfjs = await import(app.dataset.pdfjs);
 pdfjs.GlobalWorkerOptions.workerSrc = app.dataset.worker;
-const CMAP_URL = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@4.10.38/cmaps/';
-const STANDARD_FONT_DATA_URL = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@4.10.38/standard_fonts/';
+const CMAP_URL = '/static/vendor/cmaps/';
+const STANDARD_FONT_DATA_URL = '/static/vendor/standard_fonts/';
 const setStatus = (message, error = false) => { status.textContent = message; status.classList.toggle('error', error); };
 const downloadBytes = (bytes, name) => { const url = URL.createObjectURL(new Blob([bytes], {type:'application/pdf'})); const a = document.createElement('a'); a.href=url; a.download=name; a.click(); setTimeout(()=>URL.revokeObjectURL(url), 1000); };
 

@@ -1,7 +1,7 @@
 const app=document.querySelector('#pdfImageApp'),picker=document.querySelector('#filePicker'),drop=document.querySelector('#dropZone'),workspace=document.querySelector('#workspace'),grid=document.querySelector('#pageGrid'),status=document.querySelector('#status');
 const pdfjs=await import(app.dataset.pdfjs); pdfjs.GlobalWorkerOptions.workerSrc=app.dataset.worker;
-const CMAP_URL='https://cdn.jsdelivr.net/npm/pdfjs-dist@4.10.38/cmaps/';
-const STANDARD_FONT_DATA_URL='https://cdn.jsdelivr.net/npm/pdfjs-dist@4.10.38/standard_fonts/';
+const CMAP_URL='/static/vendor/cmaps/';
+const STANDARD_FONT_DATA_URL='/static/vendor/standard_fonts/';
 let pdf=null,fileBase='pdf';
 const setStatus=(m,e=false)=>{status.textContent=m;status.classList.toggle('error',e);};
 async function load(file){if(!file)return;try{pdf=await pdfjs.getDocument({data:await file.arrayBuffer(),cMapUrl:CMAP_URL,cMapPacked:true,standardFontDataUrl:STANDARD_FONT_DATA_URL}).promise;fileBase=file.name.replace(/\.pdf$/i,'');workspace.hidden=false;grid.replaceChildren();document.querySelector('#pageRange').placeholder=`All pages (1-${pdf.numPages})`;for(let i=1;i<=pdf.numPages;i++){const page=await pdf.getPage(i),vp=page.getViewport({scale:.25}),c=document.createElement('canvas');c.width=vp.width;c.height=vp.height;const ctx=c.getContext('2d');ctx.fillStyle='#ffffff';ctx.fillRect(0,0,c.width,c.height);await page.render({canvasContext:ctx,viewport:vp}).promise;const li=document.createElement('li');li.className='asset-card';const p=document.createElement('p');p.className='asset-name';p.textContent=`Page ${i}`;li.append(c,p);grid.append(li);}setStatus(`${pdf.numPages} pages ready.`);}catch(e){console.error(e);setStatus('This PDF could not be opened.',true);}}

@@ -24,8 +24,8 @@ const modeHint = document.querySelector("#modeHint");
 
 const pdfjs = await import(app.dataset.pdfjs);
 pdfjs.GlobalWorkerOptions.workerSrc = app.dataset.worker;
-const CMAP_URL = "https://cdn.jsdelivr.net/npm/pdfjs-dist@4.10.38/cmaps/";
-const STANDARD_FONT_DATA_URL = "https://cdn.jsdelivr.net/npm/pdfjs-dist@4.10.38/standard_fonts/";
+const CMAP_URL = "/static/vendor/cmaps/";
+const STANDARD_FONT_DATA_URL = "/static/vendor/standard_fonts/";
 
 let sourceBytes = null;
 let sourceName = "annotated";
