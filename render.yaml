@@ -15,3 +15,7 @@ services:
         value: "khh901001@proton.me"
       - key: SITE_OPERATOR
         value: "khh go"
+      - key: INITIAL_TOTAL_VISITS
+        value: "1"
+      - key: INITIAL_TODAY_VISITS
+        value: "1"

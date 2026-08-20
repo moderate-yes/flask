@@ -11,6 +11,8 @@ let pages = [];
 
 const pdfjs = await import(app.dataset.pdfjs);
 pdfjs.GlobalWorkerOptions.workerSrc = app.dataset.worker;
+const CMAP_URL = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@4.10.38/cmaps/';
+const STANDARD_FONT_DATA_URL = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@4.10.38/standard_fonts/';
 const setStatus = (message, error = false) => { status.textContent = message; status.classList.toggle('error', error); };
 const downloadBytes = (bytes, name) => { const url = URL.createObjectURL(new Blob([bytes], {type:'application/pdf'})); const a = document.createElement('a'); a.href=url; a.download=name; a.click(); setTimeout(()=>URL.revokeObjectURL(url), 1000); };
 
@@ -18,7 +20,12 @@ async function loadFile(file) {
   if (!file || (!file.name.toLowerCase().endsWith('.pdf') && file.type !== 'application/pdf')) return setStatus('Choose a valid PDF file.', true);
   try {
     sourceBytes = await file.arrayBuffer(); sourceName = file.name.replace(/\.pdf$/i,'');
-    pdf = await pdfjs.getDocument({data: sourceBytes.slice(0)}).promise;
+    pdf = await pdfjs.getDocument({
+      data: sourceBytes.slice(0),
+      cMapUrl: CMAP_URL,
+      cMapPacked: true,
+      standardFontDataUrl: STANDARD_FONT_DATA_URL
+    }).promise;
     pages = Array.from({length: pdf.numPages}, (_, index) => ({source:index, rotation:0, selected:false}));
     workspace.hidden = false; drop.querySelector('strong').textContent = file.name; await render();
   } catch (error) { console.error(error); setStatus('This PDF could not be opened. It may be encrypted or damaged.', true); }
@@ -28,7 +35,7 @@ async function render() {
   grid.replaceChildren(); setStatus(`${pages.length} page${pages.length===1?'':'s'} ready. Drag cards to reorder.`);
   for (let index=0; index<pages.length; index += 1) {
     const item = pages[index]; const li = document.createElement('li'); li.className=`asset-card${item.selected?' selected':''}`; li.draggable=true; li.dataset.index=index;
-    const canvas=document.createElement('canvas'); const sourcePage=await pdf.getPage(item.source+1); const viewport=sourcePage.getViewport({scale:.42, rotation:(sourcePage.rotate+item.rotation)%360}); canvas.width=viewport.width; canvas.height=viewport.height; await sourcePage.render({canvasContext:canvas.getContext('2d'),viewport}).promise;
+    const canvas=document.createElement('canvas'); const sourcePage=await pdf.getPage(item.source+1); const viewport=sourcePage.getViewport({scale:.42, rotation:(sourcePage.rotate+item.rotation)%360}); canvas.width=viewport.width; canvas.height=viewport.height; const ctx=canvas.getContext('2d'); ctx.fillStyle='#ffffff'; ctx.fillRect(0,0,canvas.width,canvas.height); await sourcePage.render({canvasContext:ctx,viewport}).promise;
     const meta=document.createElement('p'); meta.className='asset-name'; meta.textContent=`Page ${item.source+1}`;
     const detail=document.createElement('p'); detail.className='asset-meta'; detail.textContent=`POSITION ${index+1} · ROTATE ${item.rotation}°`;
     const actions=document.createElement('div'); actions.className='asset-actions';

@@ -24,6 +24,8 @@ const modeHint = document.querySelector("#modeHint");
 
 const pdfjs = await import(app.dataset.pdfjs);
 pdfjs.GlobalWorkerOptions.workerSrc = app.dataset.worker;
+const CMAP_URL = "https://cdn.jsdelivr.net/npm/pdfjs-dist@4.10.38/cmaps/";
+const STANDARD_FONT_DATA_URL = "https://cdn.jsdelivr.net/npm/pdfjs-dist@4.10.38/standard_fonts/";
 
 let sourceBytes = null;
 let sourceName = "annotated";
@@ -316,7 +318,12 @@ async function loadFile(file) {
     setStatus("Opening PDF…");
     sourceBytes = await file.arrayBuffer();
     sourceName = file.name.replace(/\.pdf$/i, "") || "annotated";
-    pdfDocument = await pdfjs.getDocument({ data: sourceBytes.slice(0) }).promise;
+    pdfDocument = await pdfjs.getDocument({
+      data: sourceBytes.slice(0),
+      cMapUrl: CMAP_URL,
+      cMapPacked: true,
+      standardFontDataUrl: STANDARD_FONT_DATA_URL,
+    }).promise;
     annotationsByPage.clear();
     loadedPages.clear();
     existingSourcesByPage.clear();

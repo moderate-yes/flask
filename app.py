@@ -39,6 +39,20 @@ def visitor_database_path():
     return Path(app.instance_path) / "visits.db"
 
 
+def initial_total_visits():
+    try:
+        return max(0, int(os.getenv("INITIAL_TOTAL_VISITS", "1")))
+    except ValueError:
+        return 1
+
+
+def initial_today_visits():
+    try:
+        return max(0, int(os.getenv("INITIAL_TODAY_VISITS", "1")))
+    except ValueError:
+        return 1
+
+
 def open_visitor_database():
     path = visitor_database_path()
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -55,7 +69,10 @@ def open_visitor_database():
         "visit_date TEXT PRIMARY KEY, "
         "visits INTEGER NOT NULL DEFAULT 0 CHECK (visits >= 0))"
     )
-    connection.execute("INSERT OR IGNORE INTO visit_totals (id, visits) VALUES (1, 0)")
+    connection.execute(
+        "INSERT OR IGNORE INTO visit_totals (id, visits) VALUES (1, ?)",
+        (initial_total_visits(),),
+    )
     connection.commit()
     return connection
 
@@ -294,6 +311,7 @@ def visitor_counts():
     count_total = payload.get("countTotal") is True
     count_today = payload.get("countToday") is True
 
+    init_today = initial_today_visits()
     connection = open_visitor_database()
     try:
         with connection:
@@ -301,19 +319,25 @@ def visitor_counts():
                 connection.execute("UPDATE visit_totals SET visits = visits + 1 WHERE id = 1")
             if count_today:
                 connection.execute(
-                    "INSERT INTO daily_visits (visit_date, visits) VALUES (?, 1) "
+                    "INSERT INTO daily_visits (visit_date, visits) VALUES (?, ?) "
                     "ON CONFLICT(visit_date) DO UPDATE SET visits = visits + 1",
-                    (visit_date,),
+                    (visit_date, init_today),
                 )
             total = connection.execute("SELECT visits FROM visit_totals WHERE id = 1").fetchone()[0]
             today_row = connection.execute(
                 "SELECT visits FROM daily_visits WHERE visit_date = ?",
                 (visit_date,),
             ).fetchone()
+            if today_row is None:
+                connection.execute(
+                    "INSERT OR IGNORE INTO daily_visits (visit_date, visits) VALUES (?, ?)",
+                    (visit_date, init_today),
+                )
+                today_row = (init_today,)
     finally:
         connection.close()
 
-    response = jsonify({"total": total, "today": today_row[0] if today_row else 0, "date": visit_date})
+    response = jsonify({"total": total, "today": today_row[0] if today_row else init_today, "date": visit_date})
     response.headers["Cache-Control"] = "no-store"
     return response
 

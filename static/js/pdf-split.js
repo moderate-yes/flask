@@ -16,6 +16,8 @@ const clearCutsButton = document.querySelector("#clearCuts");
 const status = document.querySelector("#splitStatus");
 const splitButton = document.querySelector("#splitButton");
 const splitWorkerUrl = app.dataset.workerUrl;
+const CMAP_URL = "https://cdn.jsdelivr.net/npm/pdfjs-dist@4.10.38/cmaps/";
+const STANDARD_FONT_DATA_URL = "https://cdn.jsdelivr.net/npm/pdfjs-dist@4.10.38/standard_fonts/";
 
 let selectedFile = null;
 let pdfDocument = null;
@@ -99,6 +101,8 @@ async function renderPage(pageNumber, paper, token) {
     canvas.height = Math.floor(viewport.height * outputScale);
     canvas.style.width = `${Math.floor(viewport.width)}px`;
     canvas.style.height = `${Math.floor(viewport.height)}px`;
+    context.fillStyle = "#ffffff";
+    context.fillRect(0, 0, canvas.width, canvas.height);
     await page.render({
       canvasContext: context,
       viewport,
@@ -207,7 +211,12 @@ async function inspectFile(file) {
 
   try {
     const bytes = new Uint8Array(await file.arrayBuffer());
-    pdfLoadingTask = pdfjsLib.getDocument({ data: bytes });
+    pdfLoadingTask = pdfjsLib.getDocument({
+      data: bytes,
+      cMapUrl: CMAP_URL,
+      cMapPacked: true,
+      standardFontDataUrl: STANDARD_FONT_DATA_URL,
+    });
     pdfDocument = await pdfLoadingTask.promise;
     if (token !== loadToken) return;
     totalPages = pdfDocument.numPages;
