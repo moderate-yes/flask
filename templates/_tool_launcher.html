@@ -1,4 +1,6 @@
+{% set language_tool_endpoints = ('index', 'pdf_merge', 'pdf_split', 'pdf_organizer', 'pdf_annotations', 'pdf_to_images', 'images_to_pdf', 'image_toolkit', 'image_transform', 'file_hash', 'qr_generator', 'focus_timer', 'calculator', 'path_studio') %}
 <div class="tools-bar">
+  {% if request.endpoint in language_tool_endpoints %}<button class="language-switch" type="button" data-language-switch aria-label="한국어로 전환">한국어</button>{% endif %}
   <button class="tools-trigger" type="button" data-tools-open aria-expanded="false" aria-controls="toolLauncher">
     <span>MENU</span><span aria-hidden="true">+</span>
   </button>
@@ -91,3 +93,5 @@
     <p class="launcher-note">INDEPENDENT TOOLS · ONE TAP AWAY</p>
   </div>
 </dialog>
+
+{% if request.endpoint in language_tool_endpoints %}<script src="{{ url_for('static', filename='js/site-language.js') }}?v=20260822_1" defer></script>{% endif %}

@@ -131,7 +131,7 @@
   });
   copyButton.addEventListener("click", async () => {
     if (!copyValue) return;
-    await navigator.clipboard.writeText(copyValue);
+    await navigator.clipboard.writeText(`${resultLabel.textContent}: ${resultOutput.textContent}\n${details.textContent}`);
     copyButton.textContent = "COPIED";
     setTimeout(() => { copyButton.textContent = "COPY"; }, 1200);
   });

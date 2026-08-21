@@ -99,7 +99,13 @@
       if (action === "rotate-left") rotation -= 90;
       if (action === "rotate-right") rotation += 90;
       render();
-      setStatus(`${button.textContent.trim()} applied.`);
+      const actionLabel = {
+        mirror: "MIRROR",
+        flip: "UPSIDE DOWN",
+        "rotate-left": "LEFT 90°",
+        "rotate-right": "RIGHT 90°"
+      }[action];
+      setStatus(`${actionLabel} applied.`);
     });
   });
 
