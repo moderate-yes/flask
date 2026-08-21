@@ -153,7 +153,8 @@ LOCALES = {
 
 # Release copy keeps every discovery landing page aligned with the expanded toolkit.
 RELEASE_SEO = {
-    "ko": ("PDF·이미지·QR 코드를 위한 개인정보 보호 브라우저 도구", "PDF 합치기·분할·정리·변환, 이미지 변환, 파일 해시 확인, QR 코드 생성 등을 브라우저에서 이용하세요."),
+    "en": ("Private Browser Tools for PDFs, Images, QR Codes & More", "Free private browser tools for PDF and images: merge, split, organize, convert, edit, and create QR codes for users in Vietnam, India, Indonesia, Korea, and worldwide."),
+    "ko": ("PDF·이미지·QR 코드를 위한 개인정보 보호 브라우저 도구", "베트남·인도·인도네시아·한국 등 전 세계 사용자를 위한 무료 브라우저 PDF·이미지 도구입니다. PDF 합치기·분할·정리·변환과 QR 코드 생성을 이용하세요."),
     "ja": ("PDF・画像・QRコードのためのプライベートブラウザツール", "PDFの結合・分割・整理・変換、画像変換、ファイルハッシュ確認、QRコード作成をブラウザで利用できます。"),
     "es": ("Herramientas privadas para PDF, imágenes, códigos QR y más", "Combina, divide, organiza y convierte PDF e imágenes, verifica hashes y crea códigos QR directamente en tu navegador."),
     "fr": ("Outils privés pour PDF, images, codes QR et plus", "Fusionnez, divisez, organisez et convertissez PDF et images, vérifiez les empreintes de fichiers et créez des codes QR dans votre navigateur."),
