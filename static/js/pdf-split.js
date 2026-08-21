@@ -1,6 +1,8 @@
 const app = document.querySelector("#splitApp");
-const pdfjsLib = await import(app.dataset.pdfjsUrl);
-pdfjsLib.GlobalWorkerOptions.workerSrc = app.dataset.pdfjsWorkerUrl;
+const popupPdfjsLib = window.pdfjsLib;
+const pdfjsLib = popupPdfjsLib;
+if (!pdfjsLib) throw new Error("PDF renderer is unavailable.");
+pdfjsLib.GlobalWorkerOptions.workerSrc = app.dataset.popupWorkerUrl;
 
 const filePicker = document.querySelector("#splitFilePicker");
 const dropZone = document.querySelector("#splitDropZone");
@@ -15,6 +17,17 @@ const selectAllButton = document.querySelector("#selectAllCuts");
 const clearCutsButton = document.querySelector("#clearCuts");
 const status = document.querySelector("#splitStatus");
 const splitButton = document.querySelector("#splitButton");
+const previewModal = document.querySelector("#pdfPreviewModal");
+const previewClose = document.querySelector("#pdfPreviewClose");
+const previewStage = document.querySelector("#pdfPreviewStage");
+const previewCanvas = document.querySelector("#pdfPreviewCanvas");
+const previewLoading = document.querySelector("#pdfPreviewLoading");
+const previewTitle = document.querySelector("#pdfPreviewTitle");
+const previewPrevious = document.querySelector("#pdfPreviewPrevious");
+const previewNext = document.querySelector("#pdfPreviewNext");
+const previewZoomOut = document.querySelector("#pdfPreviewZoomOut");
+const previewZoomIn = document.querySelector("#pdfPreviewZoomIn");
+const previewZoomValue = document.querySelector("#pdfPreviewZoomValue");
 const splitWorkerUrl = app.dataset.workerUrl;
 const CMAP_URL = "/static/vendor/cmaps/";
 const STANDARD_FONT_DATA_URL = "/static/vendor/standard_fonts/";
@@ -28,7 +41,14 @@ let processing = false;
 let splitWorker = null;
 let previewObserver = null;
 let loadToken = 0;
-let selectedFileUrl = null;
+let popupPdfDocument = null;
+let popupLoadingTask = null;
+let popupLoadPromise = null;
+let popupRenderTask = null;
+let popupPageNumber = 1;
+let popupZoom = 1;
+let popupRequestToken = 0;
+let previewReturnTarget = null;
 
 function formatBytes(bytes) {
   if (bytes < 1024 * 1024) return `${Math.max(1, Math.round(bytes / 1024))} KB`;
@@ -60,15 +80,18 @@ function updateCutUi() {
 
 function resetFile() {
   loadToken += 1;
+  closeZoomPreview();
   if (splitWorker) splitWorker.terminate();
   splitWorker = null;
   if (previewObserver) previewObserver.disconnect();
   previewObserver = null;
-  if (selectedFileUrl) URL.revokeObjectURL(selectedFileUrl);
-  selectedFileUrl = null;
   const loadingTaskToDestroy = pdfLoadingTask;
+  const popupTaskToDestroy = popupLoadingTask;
   pdfLoadingTask = null;
+  popupLoadingTask = null;
   pdfDocument = null;
+  popupPdfDocument = null;
+  popupLoadPromise = null;
   selectedFile = null;
   totalPages = 0;
   cuts = new Set();
@@ -86,17 +109,111 @@ function resetFile() {
   if (typeof loadingTaskToDestroy?.destroy === "function") {
     Promise.resolve(loadingTaskToDestroy.destroy()).catch(() => {});
   }
+  if (typeof popupTaskToDestroy?.destroy === "function") {
+    Promise.resolve(popupTaskToDestroy.destroy()).catch(() => {});
+  }
+}
+
+async function loadPopupDocument() {
+  if (popupPdfDocument) return popupPdfDocument;
+  if (popupLoadPromise) return popupLoadPromise;
+  if (!popupPdfjsLib || !selectedFile) throw new Error("Popup PDF renderer is unavailable.");
+  popupLoadPromise = (async () => {
+    const bytes = new Uint8Array(await selectedFile.arrayBuffer());
+    popupLoadingTask = popupPdfjsLib.getDocument({ data: bytes, isEvalSupported: false });
+    popupPdfDocument = await popupLoadingTask.promise;
+    return popupPdfDocument;
+  })();
+  try {
+    return await popupLoadPromise;
+  } catch (error) {
+    popupLoadPromise = null;
+    throw error;
+  }
+}
+
+function closeZoomPreview() {
+  popupRequestToken += 1;
+  if (popupRenderTask) popupRenderTask.cancel();
+  popupRenderTask = null;
+  previewModal.hidden = true;
+  document.body.classList.remove("preview-open");
+  const context = previewCanvas.getContext("2d");
+  context.clearRect(0, 0, previewCanvas.width, previewCanvas.height);
+  previewCanvas.width = 0;
+  previewCanvas.height = 0;
+  if (previewReturnTarget?.isConnected) previewReturnTarget.focus();
+  previewReturnTarget = null;
+}
+
+function updatePopupControls() {
+  previewTitle.textContent = `PAGE ${popupPageNumber} / ${totalPages}`;
+  previewPrevious.disabled = popupPageNumber <= 1;
+  previewNext.disabled = popupPageNumber >= totalPages;
+  previewZoomOut.disabled = popupZoom <= 0.6;
+  previewZoomIn.disabled = popupZoom >= 2.2;
+  previewZoomValue.textContent = `${Math.round(popupZoom * 100)}%`;
+}
+
+async function renderZoomPreview() {
+  const requestToken = ++popupRequestToken;
+  previewLoading.hidden = false;
+  previewLoading.textContent = "LOADING PAGE...";
+  updatePopupControls();
+  try {
+    const popupDocument = await loadPopupDocument();
+    const page = await popupDocument.getPage(popupPageNumber);
+    if (requestToken !== popupRequestToken) return;
+    if (popupRenderTask) popupRenderTask.cancel();
+    const baseViewport = page.getViewport({ scale: 1 });
+    const availableWidth = Math.max(260, previewStage.clientWidth - 44);
+    const cssScale = (Math.min(1040, availableWidth) / baseViewport.width) * popupZoom;
+    const outputScale = Math.min(window.devicePixelRatio || 1, 2);
+    const viewport = page.getViewport({ scale: cssScale * outputScale });
+    const context = previewCanvas.getContext("2d", { alpha: false });
+    previewCanvas.width = Math.floor(viewport.width);
+    previewCanvas.height = Math.floor(viewport.height);
+    previewCanvas.style.width = `${Math.floor(viewport.width / outputScale)}px`;
+    previewCanvas.style.height = `${Math.floor(viewport.height / outputScale)}px`;
+    popupRenderTask = page.render({ canvasContext: context, viewport });
+    await popupRenderTask.promise;
+    if (requestToken !== popupRequestToken) return;
+    previewLoading.hidden = true;
+    previewStage.scrollTo({ top: 0, left: 0 });
+  } catch (error) {
+    if (error?.name === "RenderingCancelledException") return;
+    console.error("Enlarged PDF preview error:", error);
+    previewLoading.hidden = false;
+    previewLoading.textContent = "THIS PAGE COULD NOT BE PREVIEWED";
+  } finally {
+    popupRenderTask = null;
+  }
 }
 
 function openZoomPreview(pageNumber) {
-  if (!pdfDocument || processing || !selectedFileUrl) return;
-  const previewUrl = `${selectedFileUrl}#page=${pageNumber}&zoom=page-width`;
-  const previewLink = document.createElement("a");
-  previewLink.href = previewUrl;
-  previewLink.target = "_blank";
-  previewLink.rel = "noopener noreferrer";
-  previewLink.click();
-  setStatus(`Opened page ${pageNumber} in the enlarged PDF preview.`);
+  if (!pdfDocument || processing || !selectedFile) return;
+  previewReturnTarget = document.activeElement;
+  popupPageNumber = Math.min(totalPages, Math.max(1, pageNumber));
+  popupZoom = 1;
+  previewModal.hidden = false;
+  document.body.classList.add("preview-open");
+  previewClose.focus();
+  renderZoomPreview();
+  setStatus(`Showing page ${popupPageNumber} in the enlarged preview.`);
+}
+
+function changePopupPage(offset) {
+  const nextPage = Math.min(totalPages, Math.max(1, popupPageNumber + offset));
+  if (nextPage === popupPageNumber) return;
+  popupPageNumber = nextPage;
+  renderZoomPreview();
+}
+
+function changePopupZoom(amount) {
+  const nextZoom = Math.min(2.2, Math.max(0.6, Number((popupZoom + amount).toFixed(1))));
+  if (nextZoom === popupZoom) return;
+  popupZoom = nextZoom;
+  renderZoomPreview();
 }
 
 async function renderPage(pageNumber, paper, token) {
@@ -216,7 +333,6 @@ async function inspectFile(file) {
   resetFile();
   const token = loadToken;
   selectedFile = file;
-  selectedFileUrl = URL.createObjectURL(file);
   processing = true;
   dropZone.hidden = true;
   options.hidden = false;
@@ -233,9 +349,11 @@ async function inspectFile(file) {
       cMapUrl: CMAP_URL,
       cMapPacked: true,
       standardFontDataUrl: STANDARD_FONT_DATA_URL,
+      isEvalSupported: false,
     });
     pdfDocument = await pdfLoadingTask.promise;
     if (token !== loadToken) return;
+    popupPdfDocument = pdfDocument;
     totalPages = pdfDocument.numPages;
     pageCount.textContent = `${totalPages} PAGE${totalPages === 1 ? "" : "S"}`;
     processing = false;
@@ -244,7 +362,8 @@ async function inspectFile(file) {
       return;
     }
     buildPageList(token);
-  } catch (_) {
+  } catch (error) {
+    console.error("PDF inspection error:", error);
     if (token !== loadToken) return;
     processing = false;
     pageCount.textContent = "UNREADABLE";
@@ -356,6 +475,23 @@ clearCutsButton.addEventListener("click", () => {
   if (processing) return;
   cuts.clear();
   updateCutUi();
+});
+
+previewModal.addEventListener("click", (event) => {
+  if (event.target.closest("[data-preview-close]")) closeZoomPreview();
+});
+previewClose.addEventListener("click", closeZoomPreview);
+previewPrevious.addEventListener("click", () => changePopupPage(-1));
+previewNext.addEventListener("click", () => changePopupPage(1));
+previewZoomOut.addEventListener("click", () => changePopupZoom(-0.2));
+previewZoomIn.addEventListener("click", () => changePopupZoom(0.2));
+document.addEventListener("keydown", (event) => {
+  if (previewModal.hidden) return;
+  if (event.key === "Escape") closeZoomPreview();
+  if (event.key === "ArrowLeft") changePopupPage(-1);
+  if (event.key === "ArrowRight") changePopupPage(1);
+  if (event.key === "+" || event.key === "=") changePopupZoom(0.2);
+  if (event.key === "-") changePopupZoom(-0.2);
 });
 
 splitButton.addEventListener("click", splitPdf);
