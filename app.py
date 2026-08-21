@@ -376,15 +376,18 @@ def sitemap_xml():
         public_url("calculator"),
         *[public_url("content_page", slug=slug) for slug in PAGES],
     ]
-    pages = [{"loc": page, "lastmod": "2026-07-26"} for page in page_urls]
-    # Localized discovery pages currently lead to English-only tools. Keep them
-    # available to visitors, but exclude them from the index until the complete
-    # tool experience is localized.
-    locale_pages = [{
-        "loc": public_url("discover_default"),
-        "lastmod": "2026-07-26",
-        "alternates": [],
-    }]
+    pages = [{"loc": page, "lastmod": "2026-08-22"} for page in page_urls]
+    alternates = [
+        {
+            "hreflang": item["hreflang"],
+            "url": public_url("discover_default") if code == "en" else public_url("discover_localized", language=code),
+        }
+        for code, item in LOCALES.items()
+    ]
+    locale_pages = [
+        {"loc": alternate["url"], "lastmod": "2026-08-22", "alternates": alternates}
+        for alternate in alternates
+    ]
     return Response(render_template("sitemap.xml", pages=pages, locale_pages=locale_pages, default_url=public_url("discover_default")), mimetype="application/xml")
 
 

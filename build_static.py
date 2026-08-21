@@ -39,6 +39,8 @@ ROUTES = {
     "/de/discover": "de/discover/index.html",
     "/pt/discover": "pt/discover/index.html",
     "/zh-cn/discover": "zh-cn/discover/index.html",
+    "/vi/discover": "vi/discover/index.html",
+    "/id/discover": "id/discover/index.html",
     "/hi/discover": "hi/discover/index.html",
     "/ar/discover": "ar/discover/index.html",
     "/about": "about/index.html",
@@ -64,6 +66,17 @@ INDEXED_ROUTES = (
     "/path-studio",
     "/calculator",
     "/discover",
+    "/ko/discover",
+    "/ja/discover",
+    "/es/discover",
+    "/fr/discover",
+    "/de/discover",
+    "/pt/discover",
+    "/zh-cn/discover",
+    "/vi/discover",
+    "/id/discover",
+    "/hi/discover",
+    "/ar/discover",
     "/about",
     "/guides",
     "/faq",
@@ -161,18 +174,32 @@ def redirect_page(site_url: str) -> str:
 
 
 def sitemap(site_url: str) -> str:
+    from locale_pages import LOCALES
+
     entries = []
+    locale_routes = {
+        "en": "/discover",
+        **{code: f"/{code}/discover" for code in LOCALES if code != "en"},
+    }
     for route in INDEXED_ROUTES:
         public_path = "/" if route == "/" else f"{route}/"
+        alternates = ""
+        if route in locale_routes.values():
+            alternates = "".join(
+                f'    <xhtml:link rel="alternate" hreflang="{LOCALES[code]["hreflang"]}" href="{site_url}{path}/" />\n'
+                for code, path in locale_routes.items()
+            )
+            alternates += f'    <xhtml:link rel="alternate" hreflang="x-default" href="{site_url}/discover/" />\n'
         entries.append(
             "  <url>\n"
             f"    <loc>{site_url}{public_path}</loc>\n"
-            "    <lastmod>2026-07-26</lastmod>\n"
+            "    <lastmod>2026-08-22</lastmod>\n"
+            f"{alternates}"
             "  </url>"
         )
     return (
         '<?xml version="1.0" encoding="UTF-8"?>\n'
-        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n'
         + "\n".join(entries)
         + "\n</urlset>\n"
     )
@@ -227,11 +254,9 @@ def validate_output(output: Path) -> None:
     sitemap_text = (output / "sitemap.xml").read_text(encoding="utf-8")
     if sitemap_text.count("<url>") != len(INDEXED_ROUTES):
         errors.append("sitemap.xml does not contain every indexed route")
-    if re.search(
-        r"/(ko|ja|es|fr|de|pt|zh-cn|hi|ar)/discover/",
-        sitemap_text,
-    ):
-        errors.append("A noindex localized discovery page appears in sitemap.xml")
+    for code in ("vi", "id", "hi"):
+        if f"/{code}/discover/" not in sitemap_text:
+            errors.append(f"Missing {code} discovery page in sitemap.xml")
 
     if errors:
         raise RuntimeError("\n".join(errors))

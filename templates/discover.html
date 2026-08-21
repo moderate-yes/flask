@@ -8,14 +8,10 @@
     <meta name="theme-color" content="#a9aaa5">
     <title>{{ locale.title }}</title>
     <meta name="description" content="{{ locale.description }}">
-    {% if localized_page %}
-    <meta name="robots" content="noindex,follow">
-    {% else %}
     <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
-    {% endif %}
     <link rel="canonical" href="{{ canonical_url }}">
-    {% if not localized_page %}<link rel="alternate" hreflang="en" href="{{ default_url }}">
-    <link rel="alternate" hreflang="x-default" href="{{ default_url }}">{% endif %}
+    {% for alternate in alternates %}<link rel="alternate" hreflang="{{ alternate.hreflang }}" href="{{ alternate.url }}">
+    {% endfor %}<link rel="alternate" hreflang="x-default" href="{{ default_url }}">
     <meta property="og:type" content="website">
     <meta property="og:locale" content="{{ locale.og_locale }}">
     <meta property="og:title" content="{{ locale.title }}">
