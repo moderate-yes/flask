@@ -52,7 +52,7 @@
           <div class="preview-heading">
             <div>
               <h2>SELECT SPLIT POINTS</h2>
-              <p>Tap the line between two pages to create a cut.</p>
+              <p>Tap a page to enlarge it. Tap the line between pages to create a cut.</p>
             </div>
             <span id="selectedCuts">0 CUTS</span>
           </div>
@@ -70,7 +70,8 @@
       {% include '_tool_seo.html' %}
       {% include '_site_footer.html' %}
     </main>
+
     <script src="{{ url_for('static', filename='js/tool-launcher.js') }}" defer></script>
-    <script type="module" src="{{ url_for('static', filename='js/pdf-split.js') }}?v=20260820_3"></script>
+    <script type="module" src="{{ url_for('static', filename='js/pdf-split.js') }}?v=20260821_1"></script>
   </body>
 </html>

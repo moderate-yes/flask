@@ -37,8 +37,11 @@
 .page-row { position: relative; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; align-items: start; }
 .page-row + .page-row { margin-top: 0; }
 .page-tile { min-width: 0; margin: 0; }
-.page-paper { position: relative; min-height: 105px; display: grid; place-items: center; overflow: hidden; border: 1px solid var(--line); background: #e3e3df; }
+.page-paper { position: relative; min-height: 105px; display: grid; place-items: center; overflow: hidden; border: 1px solid var(--line); background: #e3e3df; cursor: zoom-in; }
 .page-paper canvas { display: block; max-width: 100%; height: auto; background: white; }
+.page-paper:hover, .page-paper:focus-visible { border-color: var(--ink); outline: 2px solid var(--ink); outline-offset: 2px; }
+.page-paper::after { content: "ENLARGE"; position: absolute; right: 4px; bottom: 4px; padding: 3px 4px; border: 1px solid var(--ink); background: rgba(227,227,223,.92); color: var(--ink); font: 5px "DM Mono", monospace; letter-spacing: .04em; opacity: 0; transition: opacity .15s ease; }
+.page-paper:hover::after, .page-paper:focus-visible::after { opacity: 1; }
 .page-loading { padding: 6px; color: #858681; font-family: "DM Mono", monospace; font-size: 6px; letter-spacing: .04em; text-align: center; }
 .page-label { display: block; margin-top: 5px; color: var(--muted); font-family: "DM Mono", monospace; font-size: 7px; text-align: center; }
 

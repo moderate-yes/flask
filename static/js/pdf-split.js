@@ -28,6 +28,7 @@ let processing = false;
 let splitWorker = null;
 let previewObserver = null;
 let loadToken = 0;
+let selectedFileUrl = null;
 
 function formatBytes(bytes) {
   if (bytes < 1024 * 1024) return `${Math.max(1, Math.round(bytes / 1024))} KB`;
@@ -63,6 +64,8 @@ function resetFile() {
   splitWorker = null;
   if (previewObserver) previewObserver.disconnect();
   previewObserver = null;
+  if (selectedFileUrl) URL.revokeObjectURL(selectedFileUrl);
+  selectedFileUrl = null;
   const loadingTaskToDestroy = pdfLoadingTask;
   pdfLoadingTask = null;
   pdfDocument = null;
@@ -83,6 +86,17 @@ function resetFile() {
   if (typeof loadingTaskToDestroy?.destroy === "function") {
     Promise.resolve(loadingTaskToDestroy.destroy()).catch(() => {});
   }
+}
+
+function openZoomPreview(pageNumber) {
+  if (!pdfDocument || processing || !selectedFileUrl) return;
+  const previewUrl = `${selectedFileUrl}#page=${pageNumber}&zoom=page-width`;
+  const previewLink = document.createElement("a");
+  previewLink.href = previewUrl;
+  previewLink.target = "_blank";
+  previewLink.rel = "noopener noreferrer";
+  previewLink.click();
+  setStatus(`Opened page ${pageNumber} in the enlarged PDF preview.`);
 }
 
 async function renderPage(pageNumber, paper, token) {
@@ -164,6 +178,9 @@ function buildPageList(token) {
       paper.className = "page-paper";
       paper.dataset.page = String(pageNumber);
       paper.dataset.rendered = "false";
+      paper.tabIndex = 0;
+      paper.setAttribute("role", "button");
+      paper.setAttribute("aria-label", `Enlarge preview of page ${pageNumber}`);
       const loading = document.createElement("span");
       loading.className = "page-loading";
       loading.textContent = "LOADING PREVIEW";
@@ -199,6 +216,7 @@ async function inspectFile(file) {
   resetFile();
   const token = loadToken;
   selectedFile = file;
+  selectedFileUrl = URL.createObjectURL(file);
   processing = true;
   dropZone.hidden = true;
   options.hidden = false;
@@ -308,11 +326,24 @@ removeButton.addEventListener("click", resetFile);
 
 pagePreview.addEventListener("click", (event) => {
   const button = event.target.closest(".cut-control");
-  if (!button || processing) return;
+  if (!button) {
+    const paper = event.target.closest(".page-paper");
+    if (paper) openZoomPreview(Number(paper.dataset.page));
+    return;
+  }
+  if (processing) return;
   const afterPage = Number(button.dataset.after);
   if (cuts.has(afterPage)) cuts.delete(afterPage);
   else cuts.add(afterPage);
   updateCutUi();
+});
+
+pagePreview.addEventListener("keydown", (event) => {
+  if (event.key !== "Enter" && event.key !== " ") return;
+  const paper = event.target.closest(".page-paper");
+  if (!paper) return;
+  event.preventDefault();
+  openZoomPreview(Number(paper.dataset.page));
 });
 
 selectAllButton.addEventListener("click", () => {
