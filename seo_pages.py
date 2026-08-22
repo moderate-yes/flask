@@ -4,7 +4,7 @@ TOOL_SEO = {
     "index": {
         "name": "Private PDF Merger",
         "title": "Merge PDF Files Locally and Privately — Browser Tools",
-        "description": "Merge and reorder PDF files directly in your browser. Files stay on your device and the combined PDF downloads locally.",
+        "description": "Merge PDF Online Free – No Upload. Merge and reorder PDF files directly in your browser while files stay on your device.",
         "heading": "HOW TO MERGE PDF FILES",
         "summary": "Combine two or more PDF documents in the order you choose. Processing happens in browser memory, so the source files are not uploaded to an application server.",
         "steps": ["Add at least two PDF files.", "Use the arrow controls to arrange the documents.", "Remove any file you do not want in the result.", "Select MERGE and save the downloaded PDF."],
@@ -22,7 +22,7 @@ TOOL_SEO = {
     "pdf_split": {
         "name": "Private PDF Splitter",
         "title": "Split PDF Pages Locally and Download a ZIP — Browser Tools",
-        "description": "Preview PDF pages, choose exact cut points, and split a document locally in your browser. Download multiple results as a ZIP.",
+        "description": "Split PDF Pages Online Free. Preview pages, choose exact cut points, and split a document locally in your browser.",
         "heading": "HOW TO SPLIT A PDF",
         "summary": "See each page before choosing boundaries. A cut marker separates the pages on its left and right into different output documents.",
         "steps": ["Add one PDF file.", "Review the page thumbnails in reading order.", "Select the cut lines where a new document should begin.", "Choose SPLIT & DOWNLOAD ZIP and inspect the results."],
@@ -76,7 +76,7 @@ TOOL_SEO = {
     "pdf_to_images": {
         "name": "PDF to Image Converter",
         "title": "Convert PDF Pages to PNG or JPG Locally — Browser Tools",
-        "description": "Convert selected PDF pages to PNG or JPEG images in your browser. Choose page ranges and download the images in a ZIP file.",
+        "description": "PDF to JPG or PNG Converter. Convert selected PDF pages in your browser, choose page ranges, and download the images in a ZIP file.",
         "heading": "CONVERT PDF TO IMAGES",
         "summary": "Render an entire PDF or selected pages as PNG or JPEG files. Page-range controls help avoid processing pages you do not need.",
         "steps": ["Add one PDF.", "Enter a range such as 1-3, 5 or leave it blank for all pages.", "Choose PNG or JPEG and a rendering scale.", "Download the generated images as a ZIP."],
@@ -94,7 +94,7 @@ TOOL_SEO = {
     "images_to_pdf": {
         "name": "Images to PDF Converter",
         "title": "Convert JPG, PNG and WebP Images to PDF — Browser Tools",
-        "description": "Arrange JPG, PNG, or WebP images and convert them into one PDF locally. Choose automatic, A4, or US Letter page sizes.",
+        "description": "JPG to PDF Converter – Private & Free. Arrange JPG, PNG, or WebP images and convert them into one PDF locally in your browser.",
         "heading": "CONVERT IMAGES TO PDF",
         "summary": "Turn a sequence of JPG, PNG, or WebP images into one downloadable PDF. Reorder the images and select how each image fits on its page.",
         "steps": ["Add one or more supported images.", "Arrange or remove image cards.", "Choose matched image pages, A4, or US Letter and set a margin.", "Select CREATE PDF and review the download."],
@@ -112,7 +112,7 @@ TOOL_SEO = {
     "image_toolkit": {
         "name": "Image Resizer and Converter",
         "title": "Resize, Compress and Convert Images Locally — Browser Tools",
-        "description": "Resize an image, adjust JPEG or WebP quality, and convert between JPG, PNG, and WebP directly in your browser.",
+        "description": "Resize and Compress Image Online. Resize Image for Online Forms, adjust quality, and convert between JPG, PNG, and WebP in your browser.",
         "heading": "RESIZE AND CONVERT IMAGES",
         "summary": "Prepare one image for sharing, websites, documents, or storage. Set exact pixel dimensions and download it as JPEG, PNG, or WebP.",
         "steps": ["Add a JPG, PNG, or WebP image.", "Enter the required width or height.", "Keep the aspect ratio on unless you intentionally want stretching.", "Choose a format and quality, then process the download."],
@@ -148,7 +148,7 @@ TOOL_SEO = {
     "file_hash": {
         "name": "File Hash Checker",
         "title": "SHA-256, SHA-384 and SHA-512 File Hash Checker",
-        "description": "Calculate a SHA-256, SHA-384, or SHA-512 checksum for a local file and compare its cryptographic fingerprint without uploading it.",
+        "description": "Check File SHA-256 Hash Online. Calculate a SHA-256, SHA-384, or SHA-512 checksum and compare it without uploading your file.",
         "heading": "CHECK A FILE CHECKSUM",
         "summary": "Calculate a repeatable cryptographic fingerprint for any local file. Compare the result with a checksum published by a trusted source.",
         "steps": ["Choose the file you want to verify.", "Select SHA-256, SHA-384, or SHA-512.", "Wait for the hexadecimal hash to appear.", "Copy it and compare every character with the trusted reference."],
