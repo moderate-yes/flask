@@ -41,7 +41,7 @@
       <header class="discover-hero">
         <p>{{ locale.eyebrow }}</p>
         <h1>{{ locale.heading | replace('\n', '<br>') | safe }}</h1>
-        <div class="hero-bottom"><span>01 / 03</span><p>{{ locale.intro }}</p></div>
+        <div class="hero-bottom"><span>01 / 02</span><p>{{ locale.intro }}</p></div>
       </header>
 
       <section class="privacy-block">
@@ -61,16 +61,9 @@
       </section>
 
       <section class="how-block">
-        <div><span>02 / 03</span><h2>{{ locale.how_title }}</h2></div>
+        <div><span>02 / 02</span><h2>{{ locale.how_title }}</h2></div>
         <ol>{% for step in locale.steps %}<li><b>{{ '%02d' | format(loop.index) }}</b>{{ step }}</li>{% endfor %}</ol>
         <p>{{ locale.note }}</p>
-      </section>
-
-      <section class="language-block">
-        <div><span>03 / 03</span><h2>{{ locale.choose }}</h2></div>
-        <nav aria-label="Language selection">
-          {% for item in alternates %}<a href="{{ item.url }}" lang="{{ item.html_lang }}" dir="{{ item.dir }}"{% if item.code == language %} aria-current="page"{% endif %}>{{ item.name }}</a>{% endfor %}
-        </nav>
       </section>
 
       {% include '_site_footer.html' %}

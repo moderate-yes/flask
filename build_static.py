@@ -32,15 +32,6 @@ ROUTES = {
     "/path-studio": "path-studio/index.html",
     "/calculator": "calculator/index.html",
     "/discover": "discover/index.html",
-    "/ko/discover": "ko/discover/index.html",
-    "/ja/discover": "ja/discover/index.html",
-    "/es/discover": "es/discover/index.html",
-    "/fr/discover": "fr/discover/index.html",
-    "/de/discover": "de/discover/index.html",
-    "/pt/discover": "pt/discover/index.html",
-    "/zh-cn/discover": "zh-cn/discover/index.html",
-    "/hi/discover": "hi/discover/index.html",
-    "/ar/discover": "ar/discover/index.html",
     "/about": "about/index.html",
     "/guides": "guides/index.html",
     "/faq": "faq/index.html",
@@ -227,12 +218,6 @@ def validate_output(output: Path) -> None:
     sitemap_text = (output / "sitemap.xml").read_text(encoding="utf-8")
     if sitemap_text.count("<url>") != len(INDEXED_ROUTES):
         errors.append("sitemap.xml does not contain every indexed route")
-    if re.search(
-        r"/(ko|ja|es|fr|de|pt|zh-cn|hi|ar)/discover/",
-        sitemap_text,
-    ):
-        errors.append("A noindex localized discovery page appears in sitemap.xml")
-
     if errors:
         raise RuntimeError("\n".join(errors))
 

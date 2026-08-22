@@ -225,11 +225,8 @@ def calculator():
     return render_template("calculator.html")
 
 
-def discover_path(language):
-    return url_for("discover_default") if language == "en" else url_for("discover_localized", language=language)
-
-
-def render_discover(language):
+def render_discover():
+    language = "en"
     locale = LOCALES[language]
     alternates = [
         {
@@ -238,7 +235,7 @@ def render_discover(language):
             "html_lang": item["html_lang"],
             "dir": item["dir"],
             "name": item["name"],
-            "url": public_url("discover_default") if code == "en" else public_url("discover_localized", language=code),
+            "url": public_url("discover_default"),
         }
         for code, item in LOCALES.items()
     ]
@@ -251,7 +248,7 @@ def render_discover(language):
         "@type": "CollectionPage",
         "name": locale["title"],
         "description": locale["description"],
-        "url": public_url("discover_default") if language == "en" else public_url("discover_localized", language=language),
+        "url": public_url("discover_default"),
         "inLanguage": locale["html_lang"],
         "mainEntity": {
             "@type": "ItemList",
@@ -269,20 +266,13 @@ def render_discover(language):
         alternates=alternates,
         default_url=public_url("discover_default"),
         structured_data=structured_data,
-        localized_page=language != "en",
+        localized_page=False,
     )
 
 
 @app.get("/discover")
 def discover_default():
-    return render_discover("en")
-
-
-@app.get("/<language>/discover")
-def discover_localized(language):
-    if language == "en" or language not in LOCALES:
-        abort(404)
-    return render_discover(language)
+    return render_discover()
 
 
 @app.get("/<any(about,guides,faq,privacy,terms,contact):slug>")
