@@ -55,9 +55,10 @@ function formatBytes(bytes) {
   return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
 }
 
-function setStatus(message, isError = false) {
+function setStatus(message, isError = false, variant = "") {
   status.textContent = message;
   status.classList.toggle("error", isError);
+  status.classList.toggle("single-page", variant === "single-page");
 }
 
 function updateCutUi() {
@@ -358,7 +359,7 @@ async function inspectFile(file) {
     pageCount.textContent = `${totalPages} PAGE${totalPages === 1 ? "" : "S"}`;
     processing = false;
     if (totalPages < 2) {
-      setStatus("This PDF has only one page and cannot be split.", true);
+      setStatus("This PDF has only one page and cannot be split.", true, "single-page");
       return;
     }
     buildPageList(token);
