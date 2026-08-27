@@ -4,7 +4,7 @@ services:
     runtime: python
     plan: free
     region: singapore
-    buildCommand: pip install -r requirements.txt
+    buildCommand: python capture_visit_seed.py && pip install -r requirements.txt
     startCommand: gunicorn --bind 0.0.0.0:$PORT --workers 2 --threads 4 --timeout 120 app:app
     healthCheckPath: /healthz
     autoDeployTrigger: commit
@@ -16,6 +16,6 @@ services:
       - key: SITE_OPERATOR
         value: "khh go"
       - key: INITIAL_TOTAL_VISITS
-        value: "1"
+        value: "863"
       - key: INITIAL_TODAY_VISITS
         value: "1"

@@ -16,6 +16,7 @@ const selectedCuts = document.querySelector("#selectedCuts");
 const selectAllButton = document.querySelector("#selectAllCuts");
 const clearCutsButton = document.querySelector("#clearCuts");
 const status = document.querySelector("#splitStatus");
+const singlePageNotice = document.querySelector("#singlePageNotice");
 const splitButton = document.querySelector("#splitButton");
 const previewModal = document.querySelector("#pdfPreviewModal");
 const previewClose = document.querySelector("#pdfPreviewClose");
@@ -55,10 +56,10 @@ function formatBytes(bytes) {
   return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
 }
 
-function setStatus(message, isError = false, variant = "") {
+function setStatus(message, isError = false) {
+  status.hidden = false;
   status.textContent = message;
   status.classList.toggle("error", isError);
-  status.classList.toggle("single-page", variant === "single-page");
 }
 
 function updateCutUi() {
@@ -104,6 +105,7 @@ function resetFile() {
   splitButton.classList.remove("processing");
   splitButton.textContent = "SPLIT & DOWNLOAD ZIP";
   filePicker.value = "";
+  singlePageNotice.hidden = true;
   setStatus("Add one PDF file to begin.");
   // PDF.js may still be finishing a thumbnail render. The loading task owns
   // destroy(); update the UI first and let that cleanup finish in the background.
@@ -359,7 +361,8 @@ async function inspectFile(file) {
     pageCount.textContent = `${totalPages} PAGE${totalPages === 1 ? "" : "S"}`;
     processing = false;
     if (totalPages < 2) {
-      setStatus("This PDF has only one page and cannot be split.", true, "single-page");
+      singlePageNotice.hidden = false;
+      status.hidden = true;
       return;
     }
     buildPageList(token);

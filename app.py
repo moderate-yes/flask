@@ -1,3 +1,4 @@
+import json
 import os
 import sqlite3
 from datetime import datetime, timedelta, timezone
@@ -39,18 +40,39 @@ def visitor_database_path():
     return Path(app.instance_path) / "visits.db"
 
 
+def deploy_visit_seed():
+    try:
+        value = json.loads((Path(app.root_path) / "deploy_visit_seed.json").read_text(encoding="utf-8"))
+        return value if isinstance(value, dict) else {}
+    except (OSError, json.JSONDecodeError):
+        return {}
+
+
 def initial_total_visits():
     try:
-        return max(0, int(os.getenv("INITIAL_TOTAL_VISITS", "1")))
+        configured = max(0, int(os.getenv("INITIAL_TOTAL_VISITS", "1")))
     except ValueError:
-        return 1
+        configured = 1
+    try:
+        captured = max(0, int(deploy_visit_seed().get("total", 1)))
+    except (TypeError, ValueError):
+        captured = 1
+    return max(configured, captured)
 
 
 def initial_today_visits():
     try:
-        return max(0, int(os.getenv("INITIAL_TODAY_VISITS", "1")))
+        configured = max(0, int(os.getenv("INITIAL_TODAY_VISITS", "1")))
     except ValueError:
-        return 1
+        configured = 1
+    captured_seed = deploy_visit_seed()
+    if captured_seed.get("date") != datetime.now(KOREA_TIME).date().isoformat():
+        return configured
+    try:
+        captured = max(0, int(captured_seed.get("today", 1)))
+    except (TypeError, ValueError):
+        captured = 1
+    return max(configured, captured)
 
 
 def open_visitor_database():
@@ -70,7 +92,8 @@ def open_visitor_database():
         "visits INTEGER NOT NULL DEFAULT 0 CHECK (visits >= 0))"
     )
     connection.execute(
-        "INSERT OR IGNORE INTO visit_totals (id, visits) VALUES (1, ?)",
+        "INSERT INTO visit_totals (id, visits) VALUES (1, ?) "
+        "ON CONFLICT(id) DO UPDATE SET visits = MAX(visit_totals.visits, excluded.visits)",
         (initial_total_visits(),),
     )
     connection.commit()
@@ -305,25 +328,20 @@ def visitor_counts():
     connection = open_visitor_database()
     try:
         with connection:
+            connection.execute(
+                "INSERT INTO daily_visits (visit_date, visits) VALUES (?, ?) "
+                "ON CONFLICT(visit_date) DO UPDATE SET visits = MAX(daily_visits.visits, excluded.visits)",
+                (visit_date, init_today),
+            )
             if count_total:
                 connection.execute("UPDATE visit_totals SET visits = visits + 1 WHERE id = 1")
             if count_today:
-                connection.execute(
-                    "INSERT INTO daily_visits (visit_date, visits) VALUES (?, ?) "
-                    "ON CONFLICT(visit_date) DO UPDATE SET visits = visits + 1",
-                    (visit_date, init_today),
-                )
+                connection.execute("UPDATE daily_visits SET visits = visits + 1 WHERE visit_date = ?", (visit_date,))
             total = connection.execute("SELECT visits FROM visit_totals WHERE id = 1").fetchone()[0]
             today_row = connection.execute(
                 "SELECT visits FROM daily_visits WHERE visit_date = ?",
                 (visit_date,),
             ).fetchone()
-            if today_row is None:
-                connection.execute(
-                    "INSERT OR IGNORE INTO daily_visits (visit_date, visits) VALUES (?, ?)",
-                    (visit_date, init_today),
-                )
-                today_row = (init_today,)
     finally:
         connection.close()
 

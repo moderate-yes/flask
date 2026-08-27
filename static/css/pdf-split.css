@@ -73,25 +73,24 @@
 .edge-boundary.end { margin-top: 9px; }
 
 .split-card .merge-status { margin-top: 19px; }
-.split-card .merge-status.single-page {
-  min-height: 0;
-  margin: 20px 0 12px;
+.single-page-notice {
+  margin: 20px 0 28px;
   padding: 18px 20px;
   border: 2px solid var(--ink);
   background: #e5c85b;
   color: var(--ink);
-  font-size: 13px;
-  font-weight: 700;
-  line-height: 1.45;
-  letter-spacing: .025em;
 }
-.split-card .merge-status.single-page::before {
-  content: "ONE-PAGE PDF";
+.single-page-notice[hidden] { display: none; }
+.single-page-notice span {
   display: block;
   margin-bottom: 7px;
-  font-size: 8px;
-  font-weight: 500;
+  font: 500 8px "DM Mono", monospace;
   letter-spacing: .12em;
+}
+.single-page-notice strong {
+  display: block;
+  font: 700 13px/1.45 "DM Mono", monospace;
+  letter-spacing: .025em;
 }
 
 body.preview-open { overflow: hidden; }
