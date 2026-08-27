@@ -1,0 +1,41 @@
+{
+  "id": "/",
+  "name": "Browser Tools",
+  "short_name": "Browser Tools",
+  "description": "Private PDF, image, file, and everyday tools that run in your browser.",
+  "start_url": "/discover?source=pwa",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#a9aaa5",
+  "theme_color": "#a9aaa5",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "/static/icons/browser-tools-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/static/icons/browser-tools-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Merge PDF",
+      "short_name": "Merge PDF",
+      "url": "/?source=pwa-shortcut"
+    },
+    {
+      "name": "Split PDF",
+      "short_name": "Split PDF",
+      "url": "/pdf-split?source=pwa-shortcut"
+    },
+    {
+      "name": "Image Transform",
+      "short_name": "Transform Image",
+      "url": "/image-transform?source=pwa-shortcut"
+    }
+  ]
+}

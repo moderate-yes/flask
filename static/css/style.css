@@ -31,7 +31,8 @@ button { color: inherit; }
 
 .tools-bar { display: flex; justify-content: space-between; gap: 8px; margin-bottom: 9px; }
 
-.tools-trigger {
+.tools-trigger,
+.install-trigger {
   margin-left: auto;
   min-width: 88px;
   height: 34px;
@@ -49,8 +50,32 @@ button { color: inherit; }
   cursor: pointer;
 }
 
-.tools-trigger:hover { background: var(--ink); color: var(--white); }
-.tools-trigger span:last-child { font-size: 15px; line-height: 1; }
+.install-trigger { margin-left: 0; min-width: 116px; }
+.tools-trigger:hover,
+.install-trigger:hover { background: var(--ink); color: var(--white); }
+.tools-trigger span:last-child,
+.install-trigger span:last-child { font-size: 15px; line-height: 1; }
+
+.install-guide {
+  width: min(calc(100% - 28px), 390px);
+  margin: auto;
+  padding: 0;
+  border: 2px solid var(--ink);
+  border-radius: 0;
+  background:
+    radial-gradient(circle at 1px 1px, rgba(17, 18, 16, .08) 0 .65px, transparent .8px) 0 0 / 6px 6px,
+    #c9cac5;
+  color: var(--ink);
+  box-shadow: 12px 12px 0 rgba(17, 18, 16, .22);
+}
+.install-guide::backdrop { background: rgba(17, 18, 16, .72); backdrop-filter: blur(3px); }
+.install-guide[open] { animation: launcher-in .18s ease-out; }
+.install-guide-panel { padding: 26px 22px 22px; }
+.install-guide-kicker { font: 500 7px "DM Mono", monospace; letter-spacing: .12em; }
+.install-guide h2 { margin: 13px 0 0; font-family: "Archivo Black", "Inter", sans-serif; font-size: 31px; line-height: .94; letter-spacing: -.05em; }
+.install-guide p { margin: 17px 0 21px; color: var(--muted); font-size: 11px; line-height: 1.65; }
+.install-guide button { width: 100%; min-height: 42px; border: 1px solid var(--ink); background: var(--ink); color: var(--white); font: 500 9px "DM Mono", monospace; letter-spacing: .09em; cursor: pointer; }
+.install-guide button:hover { background: transparent; color: var(--ink); }
 
 .tool-launcher {
   width: min(calc(100% - 28px), 430px);

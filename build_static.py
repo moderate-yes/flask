@@ -262,6 +262,8 @@ def build(site_url: str, output: Path) -> None:
     )
     write_text(resolved_output / "sitemap.xml", sitemap(site_url))
     shutil.copy2(ROOT / "ads.txt", resolved_output / "ads.txt")
+    shutil.copy2(ROOT / "static" / "manifest.webmanifest", resolved_output / "manifest.webmanifest")
+    shutil.copy2(ROOT / "static" / "service-worker.js", resolved_output / "service-worker.js")
     shutil.copy2(
         ROOT / "googleab522432670c34d4.html",
         resolved_output / "googleab522432670c34d4.html",

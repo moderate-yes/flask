@@ -1,8 +1,20 @@
 <div class="tools-bar">
+  <button class="install-trigger" type="button" data-install-app hidden>
+    <span>INSTALL APP</span><span aria-hidden="true">↓</span>
+  </button>
   <button class="tools-trigger" type="button" data-tools-open aria-expanded="false" aria-controls="toolLauncher">
     <span>MENU</span><span aria-hidden="true">+</span>
   </button>
 </div>
+
+<dialog class="install-guide" id="installGuide" aria-labelledby="installGuideTitle">
+  <div class="install-guide-panel">
+    <span class="install-guide-kicker">ADD TO HOME SCREEN</span>
+    <h2 id="installGuideTitle">INSTALL BROWSER TOOLS.</h2>
+    <p>Tap the Share button in your browser, then choose <strong>Add to Home Screen</strong>.</p>
+    <button type="button" data-install-guide-close>GOT IT ×</button>
+  </div>
+</dialog>
 
 <dialog class="tool-launcher" id="toolLauncher" aria-labelledby="launcherTitle">
   <div class="launcher-panel">
