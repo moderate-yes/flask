@@ -5,7 +5,7 @@ services:
     plan: free
     region: singapore
     buildCommand: python capture_visit_seed.py && pip install -r requirements.txt
-    startCommand: gunicorn --bind 0.0.0.0:$PORT --workers 2 --threads 4 --timeout 120 app:app
+    startCommand: python capture_visit_seed.py && gunicorn --bind 0.0.0.0:$PORT --workers 2 --threads 4 --timeout 120 app:app
     healthCheckPath: /healthz
     autoDeployTrigger: commit
     envVars:
