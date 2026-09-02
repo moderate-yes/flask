@@ -31,7 +31,12 @@ ROUTES = {
     "/focus-timer": "focus-timer/index.html",
     "/path-studio": "path-studio/index.html",
     "/calculator": "calculator/index.html",
-    "/discover": "discover/index.html",
+    "/learn": "learn/index.html",
+    "/learn/scanned-pdf-preview-problems": "learn/scanned-pdf-preview-problems/index.html",
+    "/learn/pdf-comments-compatibility": "learn/pdf-comments-compatibility/index.html",
+    "/learn/resize-image-for-online-forms": "learn/resize-image-for-online-forms/index.html",
+    "/learn/verify-sha256-checksum": "learn/verify-sha256-checksum/index.html",
+    "/learn/local-browser-file-processing": "learn/local-browser-file-processing/index.html",
     "/about": "about/index.html",
     "/guides": "guides/index.html",
     "/faq": "faq/index.html",
@@ -54,7 +59,12 @@ INDEXED_ROUTES = (
     "/focus-timer",
     "/path-studio",
     "/calculator",
-    "/discover",
+    "/learn",
+    "/learn/scanned-pdf-preview-problems",
+    "/learn/pdf-comments-compatibility",
+    "/learn/resize-image-for-online-forms",
+    "/learn/verify-sha256-checksum",
+    "/learn/local-browser-file-processing",
     "/about",
     "/guides",
     "/faq",
@@ -158,7 +168,7 @@ def sitemap(site_url: str) -> str:
         entries.append(
             "  <url>\n"
             f"    <loc>{site_url}{public_path}</loc>\n"
-            "    <lastmod>2026-07-26</lastmod>\n"
+            "    <lastmod>2026-09-03</lastmod>\n"
             "  </url>"
         )
     return (
@@ -256,6 +266,7 @@ def build(site_url: str, output: Path) -> None:
         )
 
     write_text(resolved_output / "pdf-merge" / "index.html", redirect_page(site_url))
+    write_text(resolved_output / "discover" / "index.html", redirect_page(site_url))
     write_text(
         resolved_output / "robots.txt",
         f"User-agent: *\nAllow: /\nSitemap: {site_url}/sitemap.xml\n",

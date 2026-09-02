@@ -1,7 +1,7 @@
-const CACHE_NAME = "browser-tools-v1";
+const CACHE_NAME = "browser-tools-v3";
 const CORE_ASSETS = [
   "/manifest.webmanifest",
-  "/discover",
+  "/",
   "/static/favicon.svg",
   "/static/icons/browser-tools-192.png",
   "/static/icons/browser-tools-512.png",
@@ -36,7 +36,7 @@ self.addEventListener("fetch", (event) => {
           if (response.ok) caches.open(CACHE_NAME).then((cache) => cache.put(request, response.clone()));
           return response;
         })
-        .catch(() => caches.match(request).then((cached) => cached || caches.match("/discover")))
+        .catch(() => caches.match(request).then((cached) => cached || caches.match("/")))
     );
     return;
   }

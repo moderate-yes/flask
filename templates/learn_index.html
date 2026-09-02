@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    {% include '_adsense_head.html' %}
+    {% include '_brand_head.html' %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#a9aaa5">
+    <title>Practical PDF, Image and File Guides — Browser Tools</title>
+    <meta name="description" content="Original Browser Tools field guides for PDF preview failures, annotations, image resizing, SHA-256 verification, and local file processing.">
+    <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1">
+    <link rel="canonical" href="{{ canonical_url }}">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Practical PDF, Image and File Guides — Browser Tools">
+    <meta property="og:description" content="Detailed diagnostic guides based on real browser-tool workflows.">
+    <meta property="og:url" content="{{ canonical_url }}">
+    <meta name="twitter:card" content="summary_large_image">
+    <script type="application/ld+json">{{ structured_data | tojson }}</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/learn.css') }}">
+  </head>
+  <body>
+    <main class="page-shell learn-shell">
+      <div class="learn-topbar">
+        <a class="learn-home" href="{{ url_for('index') }}">BROWSER TOOLS</a>
+        {% include '_tool_launcher.html' %}
+      </div>
+
+      <header class="learn-hero">
+        <p>LEARN / FIELD GUIDES</p>
+        <h1>USEFUL ANSWERS.<br>TESTABLE STEPS.</h1>
+        <div>
+          <span>{{ '%02d' | format(articles | length) }} GUIDES</span>
+          <p>Original explanations for problems that appear while working with PDFs, images, checksums, and local browser processing. Each guide separates symptoms, likely causes, safe checks, and important limits.</p>
+        </div>
+      </header>
+
+      <section class="learn-grid" aria-label="Learning guides">
+        {% for slug, article in articles.items() %}
+          <article class="learn-card">
+            <span>{{ '%02d' | format(loop.index) }} / {{ article.category }}</span>
+            <h2><a href="{{ url_for('learn_article', slug=slug) }}">{{ article.title }}</a></h2>
+            <p>{{ article.description }}</p>
+            <footer><span>{{ article.reading_time }}</span><a href="{{ url_for('learn_article', slug=slug) }}">READ GUIDE <b aria-hidden="true">↗</b></a></footer>
+          </article>
+        {% endfor %}
+      </section>
+
+      <section class="learn-method">
+        <span>EDITORIAL METHOD</span>
+        <div>
+          <h2>BASED ON THE TOOL'S ACTUAL BEHAVIOR.</h2>
+          <p>These guides document the browser workflows, boundaries, and failure modes behind Browser Tools. They avoid promises that a preview, conversion, checksum, or local-processing claim cannot support. Important files should always be preserved and verified independently.</p>
+        </div>
+      </section>
+
+      {% include '_site_footer.html' %}
+    </main>
+    <script src="{{ url_for('static', filename='js/tool-launcher.js') }}" defer></script>
+  </body>
+</html>

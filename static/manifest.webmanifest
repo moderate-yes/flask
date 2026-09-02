@@ -3,7 +3,7 @@
   "name": "Browser Tools",
   "short_name": "Browser Tools",
   "description": "Private PDF, image, file, and everyday tools that run in your browser.",
-  "start_url": "/discover?source=pwa",
+  "start_url": "/?source=pwa",
   "scope": "/",
   "display": "standalone",
   "background_color": "#a9aaa5",

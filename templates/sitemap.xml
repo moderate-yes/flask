@@ -4,10 +4,4 @@
     <loc>{{ page.loc }}</loc>
     <lastmod>{{ page.lastmod }}</lastmod>
   </url>
-{% endfor %}{% for page in locale_pages %}  <url>
-    <loc>{{ page.loc }}</loc>
-    <lastmod>{{ page.lastmod }}</lastmod>
-{% for alternate in page.alternates %}    <xhtml:link rel="alternate" hreflang="{{ alternate.hreflang }}" href="{{ alternate.url }}" />
-{% endfor %}    <xhtml:link rel="alternate" hreflang="x-default" href="{{ default_url }}" />
-  </url>
 {% endfor %}</urlset>

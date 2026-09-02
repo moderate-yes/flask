@@ -30,6 +30,12 @@ PAGES = {
             {
                 "title": "TESTING AND MAINTENANCE",
                 "text": "Each release is checked through its complete browser workflow: selecting input, changing options, producing an output, and reopening or inspecting that output where applicable. Browser behavior and file complexity vary, so the original file should always be kept until a result has been reviewed. Compatibility notes and known limits are documented in the tool guides and FAQ."
+            },
+            {
+                "title": "ORIGINAL FIELD GUIDES",
+                "text": "The Learn library documents specific problems observed in browser-based PDF, image, and file workflows. Each guide distinguishes symptoms from likely causes, provides checks that do not modify the source file, and states what the tool cannot prove or preserve.",
+                "endpoint": "learn_index",
+                "link_label": "OPEN LEARN LIBRARY"
             }
         ]
     },

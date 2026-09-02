@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    {% include '_adsense_head.html' %}
+    {% include '_brand_head.html' %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#a9aaa5">
+    <title>{{ article.title }} — Browser Tools</title>
+    <meta name="description" content="{{ article.description }}">
+    <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1">
+    <link rel="canonical" href="{{ canonical_url }}">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="{{ article.title }} — Browser Tools">
+    <meta property="og:description" content="{{ article.description }}">
+    <meta property="og:url" content="{{ canonical_url }}">
+    <meta property="article:published_time" content="{{ article.published }}">
+    <meta property="article:modified_time" content="{{ article.updated }}">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ article.title }} — Browser Tools">
+    <meta name="twitter:description" content="{{ article.description }}">
+    <script type="application/ld+json">{{ structured_data | tojson }}</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/learn.css') }}">
+  </head>
+  <body>
+    <main class="page-shell learn-shell article-shell">
+      <div class="learn-topbar">
+        <a class="learn-home" href="{{ url_for('learn_index') }}">← LEARN</a>
+        {% include '_tool_launcher.html' %}
+      </div>
+
+      <article class="guide-article">
+        <header class="guide-hero">
+          <p>{{ article.category }} / FIELD GUIDE</p>
+          <h1>{{ article.heading }}</h1>
+          <p class="guide-dek">{{ article.intro }}</p>
+          <div class="guide-byline">
+            <span>BY {{ site_operator | upper }}</span>
+            <span>PUBLISHED {{ article.published }}</span>
+            <span>UPDATED {{ article.updated }}</span>
+            <span>{{ article.reading_time }}</span>
+          </div>
+        </header>
+
+        <nav class="guide-contents" aria-label="On this page">
+          <span>ON THIS PAGE</span>
+          <ol>{% for section in article.sections %}<li><a href="#section-{{ loop.index }}">{{ section.title }}</a></li>{% endfor %}</ol>
+        </nav>
+
+        <div class="guide-body">
+          {% for section in article.sections %}
+            <section id="section-{{ loop.index }}" class="guide-section">
+              <span class="guide-number">{{ '%02d' | format(loop.index) }}</span>
+              <div class="guide-copy">
+                <h2>{{ section.title }}</h2>
+                {% for paragraph in section.paragraphs %}<p>{{ paragraph }}</p>{% endfor %}
+                {% if section.get('table') %}
+                  <div class="guide-table-wrap">
+                    <table>
+                      <thead><tr>{% for header in section.table.headers %}<th>{{ header }}</th>{% endfor %}</tr></thead>
+                      <tbody>{% for row in section.table.rows %}<tr>{% for cell in row %}<td>{{ cell }}</td>{% endfor %}</tr>{% endfor %}</tbody>
+                    </table>
+                  </div>
+                {% endif %}
+                {% if section.get('checklist') %}
+                  <div class="guide-checklist">
+                    <strong>CHECKLIST</strong>
+                    <ul>{% for item in section.checklist %}<li>{{ item }}</li>{% endfor %}</ul>
+                  </div>
+                {% endif %}
+                {% if section.get('callout') %}<p class="guide-callout"><strong>IMPORTANT</strong>{{ section.callout }}</p>{% endif %}
+              </div>
+            </section>
+          {% endfor %}
+        </div>
+
+        <section class="guide-action">
+          <div><span>RELATED TOOL</span><h2>APPLY THE GUIDE.</h2></div>
+          <a href="{{ url_for(article.tool_endpoint) }}">{{ article.tool_label }} <b aria-hidden="true">↗</b></a>
+        </section>
+
+        <aside class="guide-related" aria-labelledby="relatedGuides">
+          <span>CONTINUE READING</span>
+          <h2 id="relatedGuides">RELATED FIELD GUIDES</h2>
+          <div>{% for related_slug, related in related_articles %}<a href="{{ url_for('learn_article', slug=related_slug) }}"><small>{{ related.category }}</small><strong>{{ related.title }}</strong><b aria-hidden="true">↗</b></a>{% endfor %}</div>
+        </aside>
+      </article>
+
+      {% include '_site_footer.html' %}
+    </main>
+    <script src="{{ url_for('static', filename='js/tool-launcher.js') }}" defer></script>
+  </body>
+</html>

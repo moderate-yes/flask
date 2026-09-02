@@ -54,7 +54,7 @@ S3 or CloudFront. Run `python build_static.py` for a local preview, or use
 - Downloadable project files that can be reopened to continue editing
 - Multi calculator with arithmetic, percent-of, percentage-change, discount, sales-tax, tip, and split-bill modes
 - Detailed About, tool guides, FAQ, Privacy Policy, Terms, and Contact pages
-- International discovery pages in English, Korean, Japanese, Spanish, French, German, Portuguese, Simplified Chinese, Hindi, and Arabic, with reciprocal hreflang metadata
+- Original long-form Learn guides for PDF diagnostics, annotation compatibility, image preparation, checksum verification, and local-processing privacy
 - 5, 15, 25, and 45-minute presets
 - Custom durations from 1 to 180 minutes
 - Start, pause, and reset controls
@@ -83,5 +83,3 @@ S3 or CloudFront. Run `python build_static.py` for a local preview, or use
 - Privacy Policy: `http://127.0.0.1:5000/privacy`
 - Terms: `http://127.0.0.1:5000/terms`
 - Contact: `http://127.0.0.1:5000/contact`
-- International discovery hub: `http://127.0.0.1:5000/discover`
-- Localized hubs: `/ko/discover`, `/ja/discover`, `/es/discover`, `/fr/discover`, `/de/discover`, `/pt/discover`, `/zh-cn/discover`, `/hi/discover`, `/ar/discover`

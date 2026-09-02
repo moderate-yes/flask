@@ -8,7 +8,7 @@ from flask import Flask, Response, abort, jsonify, redirect, render_template, re
 from werkzeug.middleware.proxy_fix import ProxyFix
 
 from content_pages import PAGES
-from locale_pages import LOCALES, TOOLS
+from learn_pages import LEARN_PAGES
 from seo_pages import TOOL_SEO
 
 
@@ -165,7 +165,9 @@ def inject_public_metadata():
         "tool_structured_data": tool_structured_data,
         "og_image_url": public_url("static", filename="og-browser-tools.jpg"),
         "site_home_url": public_url("index"),
-        "adsense_enabled": request.endpoint in TOOL_SEO,
+        # Ads belong beside substantial editorial content, not inside utility,
+        # navigation, policy, or error screens.
+        "adsense_enabled": request.endpoint == "learn_article",
     }
 
 
@@ -248,54 +250,71 @@ def calculator():
     return render_template("calculator.html")
 
 
-def render_discover():
-    language = "en"
-    locale = LOCALES[language]
-    alternates = [
-        {
-            "code": code,
-            "hreflang": item["hreflang"],
-            "html_lang": item["html_lang"],
-            "dir": item["dir"],
-            "name": item["name"],
-            "url": public_url("discover_default"),
-        }
-        for code, item in LOCALES.items()
-    ]
-    tools = []
-    for endpoint, key in TOOLS:
-        title, description = locale["tools"].get(key, LOCALES["en"]["tools"][key])
-        tools.append({"title": title, "description": description, "url": url_for(endpoint)})
+@app.get("/learn")
+def learn_index():
     structured_data = {
         "@context": "https://schema.org",
         "@type": "CollectionPage",
-        "name": locale["title"],
-        "description": locale["description"],
-        "url": public_url("discover_default"),
-        "inLanguage": locale["html_lang"],
+        "name": "Browser Tools Learning Library",
+        "description": "Original field guides for diagnosing PDF, image, checksum, and browser privacy problems.",
+        "url": public_url("learn_index"),
         "mainEntity": {
             "@type": "ItemList",
             "itemListElement": [
-                {"@type": "ListItem", "position": index, "name": tool["title"], "url": public_url(endpoint)}
-                for index, ((endpoint, _key), tool) in enumerate(zip(TOOLS, tools), start=1)
+                {
+                    "@type": "ListItem",
+                    "position": position,
+                    "name": article["title"],
+                    "url": public_url("learn_article", slug=slug),
+                }
+                for position, (slug, article) in enumerate(LEARN_PAGES.items(), start=1)
             ],
         },
     }
-    return render_template(
-        "discover.html",
-        locale=locale,
-        language=language,
-        tools=tools,
-        alternates=alternates,
-        default_url=public_url("discover_default"),
-        structured_data=structured_data,
-        localized_page=False,
-    )
+    return render_template("learn_index.html", articles=LEARN_PAGES, structured_data=structured_data)
 
 
 @app.get("/discover")
-def discover_default():
-    return render_discover()
+def retired_discover():
+    return redirect(url_for("index"), code=308)
+
+
+@app.get("/learn/<slug>")
+def learn_article(slug):
+    article = LEARN_PAGES.get(slug)
+    if article is None:
+        abort(404)
+    structured_data = {
+        "@context": "https://schema.org",
+        "@graph": [
+            {
+                "@type": "Article",
+                "headline": article["title"],
+                "description": article["description"],
+                "datePublished": article["published"],
+                "dateModified": article["updated"],
+                "author": {"@type": "Person", "name": os.getenv("SITE_OPERATOR", "khh go").strip()},
+                "publisher": {"@type": "Organization", "name": "Browser Tools"},
+                "mainEntityOfPage": public_url("learn_article", slug=slug),
+            },
+            {
+                "@type": "BreadcrumbList",
+                "itemListElement": [
+                    {"@type": "ListItem", "position": 1, "name": "Browser Tools", "item": public_url("index")},
+                    {"@type": "ListItem", "position": 2, "name": "Learn", "item": public_url("learn_index")},
+                    {"@type": "ListItem", "position": 3, "name": article["title"], "item": public_url("learn_article", slug=slug)},
+                ],
+            },
+        ],
+    }
+    return render_template(
+        "learn_article.html",
+        article=article,
+        slug=slug,
+        structured_data=structured_data,
+        site_operator=os.getenv("SITE_OPERATOR", "khh go").strip(),
+        related_articles=[(key, value) for key, value in LEARN_PAGES.items() if key != slug][:3],
+    )
 
 
 @app.get("/<any(about,guides,faq,privacy,terms,contact):slug>")
@@ -397,18 +416,12 @@ def sitemap_xml():
         public_url("focus_timer"),
         public_url("path_studio"),
         public_url("calculator"),
+        public_url("learn_index"),
+        *[public_url("learn_article", slug=slug) for slug in LEARN_PAGES],
         *[public_url("content_page", slug=slug) for slug in PAGES],
     ]
-    pages = [{"loc": page, "lastmod": "2026-07-26"} for page in page_urls]
-    # Localized discovery pages currently lead to English-only tools. Keep them
-    # available to visitors, but exclude them from the index until the complete
-    # tool experience is localized.
-    locale_pages = [{
-        "loc": public_url("discover_default"),
-        "lastmod": "2026-07-26",
-        "alternates": [],
-    }]
-    return Response(render_template("sitemap.xml", pages=pages, locale_pages=locale_pages, default_url=public_url("discover_default")), mimetype="application/xml")
+    pages = [{"loc": page, "lastmod": "2026-09-03"} for page in page_urls]
+    return Response(render_template("sitemap.xml", pages=pages), mimetype="application/xml")
 
 
 @app.errorhandler(404)
