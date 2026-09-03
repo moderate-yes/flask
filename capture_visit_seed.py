@@ -10,7 +10,7 @@ from urllib.request import Request, urlopen
 
 ROOT = Path(__file__).resolve().parent
 SEED_PATH = ROOT / "deploy_visit_seed.json"
-DEFAULT_URL = "https://browsertools.kr/api/visits"
+DEFAULT_URL = "https://browserfiletools.net/api/visits"
 
 
 def read_existing_seed() -> dict:

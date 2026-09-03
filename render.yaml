@@ -8,9 +8,18 @@ services:
     startCommand: python capture_visit_seed.py && gunicorn --bind 0.0.0.0:$PORT --workers 2 --threads 4 --timeout 120 app:app
     healthCheckPath: /healthz
     autoDeployTrigger: commit
+    domains:
+      - browserfiletools.net
+    # Keep the Render hostname reachable so the app can issue a true 301 to
+    # the canonical domain instead of Render returning a non-redirecting 404.
+    renderSubdomainPolicy: enabled
     envVars:
       - key: TRUST_PROXY_HEADERS
         value: "1"
+      - key: SITE_URL
+        value: "https://browserfiletools.net"
+      - key: LEGACY_HOSTS
+        value: "flask-v57n.onrender.com,browsertools.kr,www.browsertools.kr,www.browserfiletools.net"
       - key: CONTACT_EMAIL
         value: "khh901001@proton.me"
       - key: SITE_OPERATOR

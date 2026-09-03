@@ -3,6 +3,7 @@ import os
 import sqlite3
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
+from urllib.parse import urlsplit
 
 from flask import Flask, Response, abort, jsonify, redirect, render_template, request, send_from_directory, url_for
 from werkzeug.middleware.proxy_fix import ProxyFix
@@ -14,6 +15,13 @@ from seo_pages import TOOL_SEO
 
 app = Flask(__name__)
 KOREA_TIME = timezone(timedelta(hours=9))
+PRIMARY_SITE_URL = "https://browserfiletools.net"
+DEFAULT_LEGACY_HOSTS = {
+    "flask-v57n.onrender.com",
+    "browsertools.kr",
+    "www.browsertools.kr",
+    "www.browserfiletools.net",
+}
 
 if os.getenv("TRUST_PROXY_HEADERS") == "1":
     app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1)
@@ -22,8 +30,34 @@ if os.getenv("TRUST_PROXY_HEADERS") == "1":
 def configured_site_url():
     return (
         os.getenv("SITE_URL", "").strip().rstrip("/")
-        or os.getenv("RENDER_EXTERNAL_URL", "").strip().rstrip("/")
+        or PRIMARY_SITE_URL
     )
+
+
+def legacy_hosts():
+    configured_hosts = os.getenv("LEGACY_HOSTS", "").strip()
+    if not configured_hosts:
+        return DEFAULT_LEGACY_HOSTS
+    return {
+        host.strip().lower().split(":", 1)[0]
+        for host in configured_hosts.split(",")
+        if host.strip()
+    }
+
+
+@app.before_request
+def redirect_legacy_domains():
+    """Keep every public legacy hostname on one permanent canonical origin."""
+    if request.endpoint == "health_check":
+        return None
+
+    request_host = request.host.lower().split(":", 1)[0]
+    canonical_host = urlsplit(configured_site_url()).hostname
+    if request_host not in legacy_hosts() or request_host == canonical_host:
+        return None
+
+    path_and_query = request.full_path if request.query_string else request.path
+    return redirect(f"{configured_site_url()}{path_and_query}", code=301)
 
 
 def public_url(endpoint, **values):
