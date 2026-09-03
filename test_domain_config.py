@@ -30,6 +30,15 @@ class DomainConfigurationTests(unittest.TestCase):
         )
         self.assertEqual(response.status_code, 200)
 
+    def test_browsertools_domain_is_not_redirected_to_primary_site(self):
+        for hostname in ("browsertools.kr", "www.browsertools.kr"):
+            response = self.client.get(
+                "/pdf-split?source=test",
+                base_url=f"https://{hostname}",
+            )
+            self.assertEqual(response.status_code, 200)
+            self.assertNotIn("Location", response.headers)
+
     def test_page_metadata_uses_primary_domain(self):
         response = self.client.get(
             "/pdf-split",

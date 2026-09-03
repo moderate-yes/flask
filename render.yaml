@@ -19,7 +19,7 @@ services:
       - key: SITE_URL
         value: "https://browserfiletools.net"
       - key: LEGACY_HOSTS
-        value: "flask-v57n.onrender.com,browsertools.kr,www.browsertools.kr,www.browserfiletools.net"
+        value: "flask-v57n.onrender.com,www.browserfiletools.net"
       - key: CONTACT_EMAIL
         value: "khh901001@proton.me"
       - key: SITE_OPERATOR

@@ -18,8 +18,6 @@ KOREA_TIME = timezone(timedelta(hours=9))
 PRIMARY_SITE_URL = "https://browserfiletools.net"
 DEFAULT_LEGACY_HOSTS = {
     "flask-v57n.onrender.com",
-    "browsertools.kr",
-    "www.browsertools.kr",
     "www.browserfiletools.net",
 }
 
