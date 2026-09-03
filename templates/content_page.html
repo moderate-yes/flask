@@ -31,21 +31,28 @@
         {% include '_tool_launcher.html' %}
       </div>
 
-      <article class="content-card">
+      <article class="content-card{% if page.contact_page %} contact-only-card{% endif %}">
+        {% if page.contact_page %}
+          <section class="contact-channel contact-channel-only">
+            <a href="mailto:{{ contact_email }}">{{ contact_email }}</a>
+            <div class="contact-character-wrap">
+              <img
+                class="contact-character"
+                src="{{ url_for('static', filename='contact-character.png') }}"
+                alt="Browser Tools character"
+                width="517"
+                height="473"
+              >
+              <span class="contact-character-mouth" aria-hidden="true"></span>
+            </div>
+          </section>
+        {% else %}
         <header class="content-hero">
           <p class="content-eyebrow">{{ page.eyebrow }}</p>
           <h1>{{ page.heading | replace('\n', '<br>') | safe }}</h1>
           <p class="content-intro">{{ page.intro }}</p>
           {% if page.updated %}<p class="content-updated">{{ page.updated }}</p>{% endif %}
         </header>
-
-        {% if page.contact_page %}
-          <section class="contact-channel" aria-labelledby="contactChannel">
-            <span>PUBLIC CONTACT CHANNEL</span>
-            <h2 id="contactChannel"><a href="mailto:{{ contact_email }}">{{ contact_email }}</a></h2>
-            <p>Operated and maintained by {{ site_operator }}. Please do not email private files or confidential information.</p>
-          </section>
-        {% endif %}
 
         {% if slug == 'about' %}
           <section class="operator-card" aria-labelledby="operatorTitle">
@@ -73,6 +80,7 @@
             </section>
           {% endfor %}
         </div>
+        {% endif %}
       </article>
 
       {% include '_site_footer.html' %}

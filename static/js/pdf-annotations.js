@@ -22,8 +22,12 @@ const documentCommentCount = document.querySelector("#documentCommentCount");
 const documentComments = document.querySelector("#documentComments");
 const modeHint = document.querySelector("#modeHint");
 
-const pdfjs = await import(app.dataset.pdfjs);
-pdfjs.GlobalWorkerOptions.workerSrc = app.dataset.worker;
+let pdfjs = null;
+const pdfjsReady = import(app.dataset.pdfjs).then((module) => {
+  module.GlobalWorkerOptions.workerSrc = app.dataset.worker;
+  pdfjs = module;
+  return module;
+});
 const CMAP_URL = "/static/vendor/cmaps/";
 const STANDARD_FONT_DATA_URL = "/static/vendor/standard_fonts/";
 
@@ -314,9 +318,14 @@ async function loadFile(file) {
     setStatus("Choose a valid PDF file.", true);
     return;
   }
+  const dropLabel = drop.querySelector("strong");
+  drop.disabled = true;
+  drop.setAttribute("aria-busy", "true");
+  dropLabel.textContent = "OPENING PDF...";
   try {
     setStatus("Opening PDF…");
-    sourceBytes = await file.arrayBuffer();
+    const [bytes] = await Promise.all([file.arrayBuffer(), pdfjsReady]);
+    sourceBytes = bytes;
     sourceName = file.name.replace(/\.pdf$/i, "") || "annotated";
     pdfDocument = await pdfjs.getDocument({
       data: sourceBytes.slice(0),
@@ -339,7 +348,11 @@ async function loadFile(file) {
     await renderPage();
   } catch (error) {
     console.error(error);
+    dropLabel.textContent = "ADD ONE PDF";
     setStatus("This PDF could not be opened. It may be encrypted or damaged.", true);
+  } finally {
+    drop.disabled = false;
+    drop.removeAttribute("aria-busy");
   }
 }
 
@@ -572,7 +585,11 @@ pageNumber.addEventListener("change", () => {
 document.querySelector("#downloadPdf").addEventListener("click", downloadAnnotatedPdf);
 document.querySelector("#replacePdf").addEventListener("click", () => picker.click());
 drop.addEventListener("click", () => picker.click());
-picker.addEventListener("change", () => loadFile(picker.files[0]));
+picker.addEventListener("change", () => {
+  const file = picker.files[0];
+  picker.value = "";
+  loadFile(file);
+});
 ["dragenter", "dragover"].forEach((type) => drop.addEventListener(type, (event) => {
   event.preventDefault();
   drop.classList.add("dragging");

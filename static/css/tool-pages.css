@@ -98,3 +98,5 @@
 .transform-reset:hover, .replace-image:hover { background: var(--ink); color: var(--white); }
 .replace-image { width: 100%; border-color: var(--line); }
 @media (min-width: 520px) { .utility-card { padding: 31px 22px 24px; } .tool-grid { grid-template-columns: repeat(3,minmax(0,1fr)); } .asset-card canvas, .asset-card img { height: 112px; } }
+.upload-status { min-height: 1.5em; margin-top: 12px; }
+.drop-zone[aria-busy="true"] { cursor: wait; opacity: .72; }

@@ -9,8 +9,10 @@ let sourceName = 'organized.pdf';
 let pdf = null;
 let pages = [];
 
-const pdfjs = await import(app.dataset.pdfjs);
-pdfjs.GlobalWorkerOptions.workerSrc = app.dataset.worker;
+const pdfjsReady = import(app.dataset.pdfjs).then((pdfjs) => {
+  pdfjs.GlobalWorkerOptions.workerSrc = app.dataset.worker;
+  return pdfjs;
+});
 const CMAP_URL = '/static/vendor/cmaps/';
 const STANDARD_FONT_DATA_URL = '/static/vendor/standard_fonts/';
 const setStatus = (message, error = false) => { status.textContent = message; status.classList.toggle('error', error); };
@@ -18,8 +20,14 @@ const downloadBytes = (bytes, name) => { const url = URL.createObjectURL(new Blo
 
 async function loadFile(file) {
   if (!file || (!file.name.toLowerCase().endsWith('.pdf') && file.type !== 'application/pdf')) return setStatus('Choose a valid PDF file.', true);
+  const dropLabel = drop.querySelector('strong');
+  drop.disabled = true;
+  drop.setAttribute('aria-busy', 'true');
+  dropLabel.textContent = 'OPENING PDF...';
+  setStatus(`Opening ${file.name} locally…`);
   try {
-    sourceBytes = await file.arrayBuffer(); sourceName = file.name.replace(/\.pdf$/i,'');
+    const [bytes, pdfjs] = await Promise.all([file.arrayBuffer(), pdfjsReady]);
+    sourceBytes = bytes; sourceName = file.name.replace(/\.pdf$/i,'');
     pdf = await pdfjs.getDocument({
       data: sourceBytes.slice(0),
       cMapUrl: CMAP_URL,
@@ -27,12 +35,19 @@ async function loadFile(file) {
       standardFontDataUrl: STANDARD_FONT_DATA_URL
     }).promise;
     pages = Array.from({length: pdf.numPages}, (_, index) => ({source:index, rotation:0, selected:false}));
-    workspace.hidden = false; drop.querySelector('strong').textContent = file.name; await render();
-  } catch (error) { console.error(error); setStatus('This PDF could not be opened. It may be encrypted or damaged.', true); }
+    workspace.hidden = false; dropLabel.textContent = file.name; await render();
+  } catch (error) {
+    console.error(error);
+    dropLabel.textContent = 'ADD ONE PDF';
+    setStatus('This PDF could not be opened. It may be encrypted or damaged.', true);
+  } finally {
+    drop.disabled = false;
+    drop.removeAttribute('aria-busy');
+  }
 }
 
 async function render() {
-  grid.replaceChildren(); setStatus(`${pages.length} page${pages.length===1?'':'s'} ready. Drag cards to reorder.`);
+  grid.replaceChildren(); setStatus(`Creating previews… 0 / ${pages.length}`);
   for (let index=0; index<pages.length; index += 1) {
     const item = pages[index]; const li = document.createElement('li'); li.className=`asset-card${item.selected?' selected':''}`; li.draggable=true; li.dataset.index=index;
     const canvas=document.createElement('canvas'); const sourcePage=await pdf.getPage(item.source+1); const viewport=sourcePage.getViewport({scale:.42, rotation:(sourcePage.rotate+item.rotation)%360}); canvas.width=viewport.width; canvas.height=viewport.height; const ctx=canvas.getContext('2d'); ctx.fillStyle='#ffffff'; ctx.fillRect(0,0,canvas.width,canvas.height); await sourcePage.render({canvasContext:ctx,viewport}).promise;
@@ -40,8 +55,9 @@ async function render() {
     const detail=document.createElement('p'); detail.className='asset-meta'; detail.textContent=`POSITION ${index+1} · ROTATE ${item.rotation}°`;
     const actions=document.createElement('div'); actions.className='asset-actions';
     [['←','left'],['↻','rotate'],['×','remove']].forEach(([label,action])=>{const b=document.createElement('button'); b.type='button'; b.textContent=label; b.dataset.action=action; b.disabled=action==='left'&&index===0; actions.append(b);});
-    li.append(canvas,meta,detail,actions); li.addEventListener('click', e=>{if(e.target.closest('button')) return; item.selected=!item.selected; render();}); grid.append(li);
+    li.append(canvas,meta,detail,actions); li.addEventListener('click', e=>{if(e.target.closest('button')) return; item.selected=!item.selected; render();}); grid.append(li); setStatus(`Creating previews… ${index + 1} / ${pages.length}`);
   }
+  setStatus(`${pages.length} page${pages.length===1?'':'s'} ready. Drag cards to reorder.`);
 }
 
 grid.addEventListener('click', e=>{const b=e.target.closest('button'); if(!b)return; const i=Number(b.closest('li').dataset.index); if(b.dataset.action==='left'&&i){[pages[i-1],pages[i]]=[pages[i],pages[i-1]];} if(b.dataset.action==='rotate')pages[i].rotation=(pages[i].rotation+90)%360; if(b.dataset.action==='remove')pages.splice(i,1); render();});
@@ -50,4 +66,4 @@ document.querySelector('#selectAll').addEventListener('click',()=>{pages.forEach
 document.querySelector('#clearAll').addEventListener('click',()=>{pages.forEach(p=>p.selected=false);render();});
 async function exportPages(selectedOnly) { const list=selectedOnly?pages.filter(p=>p.selected):pages; if(!list.length)return setStatus('Select at least one page.',true); window.reportGoogleAdsConversion?.(); try { setStatus('Building your PDF…'); const source=await PDFLib.PDFDocument.load(sourceBytes); const out=await PDFLib.PDFDocument.create(); for(const item of list){const [copy]=await out.copyPages(source,[item.source]); const current=copy.getRotation().angle||0; copy.setRotation(PDFLib.degrees((current+item.rotation)%360)); out.addPage(copy);} downloadBytes(await out.save(),`${sourceName}-${selectedOnly?'extracted':'organized'}.pdf`); setStatus('Your PDF has been downloaded.'); } catch(error){console.error(error);setStatus('The PDF could not be created.',true);} }
 document.querySelector('#saveAll').addEventListener('click',()=>exportPages(false)); document.querySelector('#extract').addEventListener('click',()=>exportPages(true));
-drop.addEventListener('click',()=>picker.click()); picker.addEventListener('change',()=>loadFile(picker.files[0])); ['dragenter','dragover'].forEach(type=>drop.addEventListener(type,e=>{e.preventDefault();drop.classList.add('dragging');})); ['dragleave','drop'].forEach(type=>drop.addEventListener(type,e=>{e.preventDefault();drop.classList.remove('dragging');})); drop.addEventListener('drop',e=>loadFile(e.dataTransfer.files[0]));
+drop.addEventListener('click',()=>picker.click()); picker.addEventListener('change',()=>{const file=picker.files[0];picker.value='';loadFile(file);}); ['dragenter','dragover'].forEach(type=>drop.addEventListener(type,e=>{e.preventDefault();drop.classList.add('dragging');})); ['dragleave','drop'].forEach(type=>drop.addEventListener(type,e=>{e.preventDefault();drop.classList.remove('dragging');})); drop.addEventListener('drop',e=>loadFile(e.dataTransfer.files[0]));

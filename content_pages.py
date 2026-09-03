@@ -192,10 +192,6 @@ PAGES = {
         "heading": "QUESTIONS.\nFEEDBACK. ISSUES.",
         "intro": "Use the contact channel below for tool feedback, accessibility issues, privacy questions, or reports of unexpected behavior.",
         "contact_page": True,
-        "sections": [
-            {"title": "BEFORE REPORTING A TOOL ISSUE", "text": "Include the tool name, browser and device, what you expected, and what happened. Do not attach private PDFs or images, Path Studio project files, confidential screenshots, passwords, QR contents, or payment information."},
-            {"title": "RESPONSE EXPECTATIONS", "text": "Messages may be reviewed for product support and policy questions. A response time is not guaranteed, and urgent or emergency requests cannot be handled through this website."},
-            {"title": "PRIVACY REQUESTS", "text": "Use the subject line PRIVACY REQUEST and describe the request without including unnecessary personal or confidential information."}
-        ]
+        "sections": []
     }
 }

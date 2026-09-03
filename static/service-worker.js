@@ -1,4 +1,4 @@
-const CACHE_NAME = "browser-tools-v3";
+const CACHE_NAME = "browser-tools-v4";
 const CORE_ASSETS = [
   "/manifest.webmanifest",
   "/",
@@ -37,6 +37,18 @@ self.addEventListener("fetch", (event) => {
           return response;
         })
         .catch(() => caches.match(request).then((cached) => cached || caches.match("/")))
+    );
+    return;
+  }
+
+  if (url.pathname.startsWith("/static/js/") || url.pathname.startsWith("/static/css/")) {
+    event.respondWith(
+      fetch(request)
+        .then((response) => {
+          if (response.ok) caches.open(CACHE_NAME).then((cache) => cache.put(request, response.clone()));
+          return response;
+        })
+        .catch(() => caches.match(request))
     );
     return;
   }

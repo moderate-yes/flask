@@ -27,6 +27,41 @@
 .contact-channel h2 { margin: 18px 0 0; overflow-wrap: anywhere; font-family: "Archivo Black", sans-serif; font-size: clamp(22px, 5vw, 38px); line-height: 1; letter-spacing: -.04em; }
 .contact-channel h2 a { color: inherit; }
 .contact-channel p { margin: 13px 0 0; color: var(--muted); font-size: 12px; line-height: 1.55; }
+.contact-only-card { min-height: min(620px, calc(100svh - 150px)); display: grid; place-items: center; }
+.contact-channel-only { width: calc(100% - clamp(36px, 10vw, 90px)); margin: clamp(18px, 5vw, 45px); display: grid; justify-items: center; gap: clamp(28px, 6vw, 48px); text-align: center; }
+.contact-channel-only > a { color: var(--ink); overflow-wrap: anywhere; font-family: "Archivo Black", sans-serif; font-size: clamp(22px, 5vw, 42px); line-height: 1.1; letter-spacing: -.04em; }
+.contact-character-wrap { position: relative; width: min(247px, 72vw); line-height: 0; mix-blend-mode: multiply; }
+.contact-character { display: block; width: 100%; height: auto; }
+.contact-character-mouth { position: absolute; top: 80%; left: 50%; width: 16.2%; height: 12px; transform: translateX(-50%); animation: contact-mouth-bob 5.2s ease-in-out infinite; }
+.contact-character-mouth::before,
+.contact-character-mouth::after { content: ""; position: absolute; top: 0; width: 52%; height: 3px; background: var(--ink); }
+.contact-character-mouth::before { right: 50%; transform-origin: right center; animation: contact-mouth-left 5.2s ease-in-out infinite; }
+.contact-character-mouth::after { left: 50%; transform-origin: left center; animation: contact-mouth-right 5.2s ease-in-out infinite; }
+
+@keyframes contact-mouth-left {
+  0%, 12%, 88%, 100% { transform: rotate(0deg); }
+  25%, 38% { transform: rotate(22deg); }
+  51%, 63% { transform: rotate(-22deg); }
+  75% { transform: rotate(8deg); }
+}
+@keyframes contact-mouth-right {
+  0%, 12%, 88%, 100% { transform: rotate(0deg); }
+  25%, 38% { transform: rotate(-22deg); }
+  51%, 63% { transform: rotate(22deg); }
+  75% { transform: rotate(-8deg); }
+}
+@keyframes contact-mouth-bob {
+  0%, 12%, 88%, 100% { transform: translate(-50%, 0); }
+  25%, 38% { transform: translate(-50%, 2px); }
+  51%, 63% { transform: translate(-50%, -2px); }
+  75% { transform: translate(-48%, 1px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .contact-character-mouth,
+  .contact-character-mouth::before,
+  .contact-character-mouth::after { animation: none; }
+}
 .operator-card { margin: clamp(20px, 5vw, 45px); padding: 25px; border: 1px solid var(--ink); background: #c8c9c4; }
 .operator-card > span { font: 500 8px "DM Mono", monospace; letter-spacing: .1em; }
 .operator-card h2 { margin: 18px 0 0; font-family: "Archivo Black", sans-serif; font-size: clamp(28px, 6vw, 46px); line-height: 1; letter-spacing: -.04em; }

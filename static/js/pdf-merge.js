@@ -161,7 +161,6 @@
     setStatus(message, isError);
   }
 
-  dropZone.addEventListener("click", () => filePicker.click());
   filePicker.addEventListener("change", () => {
     addFiles(filePicker.files);
     filePicker.value = "";
