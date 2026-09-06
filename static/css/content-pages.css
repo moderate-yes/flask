@@ -35,8 +35,8 @@
 .contact-character-mouth { position: absolute; top: 80%; left: 50%; width: 16.2%; height: 12px; transform: translateX(-50%); animation: contact-mouth-bob 5.2s ease-in-out infinite; }
 .contact-character-mouth::before,
 .contact-character-mouth::after { content: ""; position: absolute; top: 0; width: 52%; height: 3px; background: var(--ink); }
-.contact-character-mouth::before { right: 50%; transform-origin: right center; animation: contact-mouth-left 5.2s ease-in-out infinite; }
-.contact-character-mouth::after { left: 50%; transform-origin: left center; animation: contact-mouth-right 5.2s ease-in-out infinite; }
+.contact-character-mouth::before { right: calc(50% - 1px); transform-origin: right center; animation: contact-mouth-left 5.2s ease-in-out infinite; }
+.contact-character-mouth::after { left: calc(50% - 1px); transform-origin: left center; animation: contact-mouth-right 5.2s ease-in-out infinite; }
 
 @keyframes contact-mouth-left {
   0%, 12%, 88%, 100% { transform: rotate(0deg); }
