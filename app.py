@@ -11,6 +11,7 @@ from werkzeug.middleware.proxy_fix import ProxyFix
 from content_pages import PAGES
 from learn_pages import LEARN_PAGES
 from seo_pages import TOOL_SEO
+from site_metadata import SITEMAP_LASTMOD
 
 
 app = Flask(__name__)
@@ -452,7 +453,7 @@ def sitemap_xml():
         *[public_url("learn_article", slug=slug) for slug in LEARN_PAGES],
         *[public_url("content_page", slug=slug) for slug in PAGES],
     ]
-    pages = [{"loc": page, "lastmod": "2026-09-03"} for page in page_urls]
+    pages = [{"loc": page, "lastmod": SITEMAP_LASTMOD} for page in page_urls]
     return Response(render_template("sitemap.xml", pages=pages), mimetype="application/xml")
 
 

@@ -14,6 +14,8 @@ import shutil
 from pathlib import Path
 from urllib.parse import urlsplit
 
+from site_metadata import SITEMAP_LASTMOD
+
 
 ROOT = Path(__file__).resolve().parent
 
@@ -168,7 +170,7 @@ def sitemap(site_url: str) -> str:
         entries.append(
             "  <url>\n"
             f"    <loc>{site_url}{public_path}</loc>\n"
-            "    <lastmod>2026-09-03</lastmod>\n"
+            f"    <lastmod>{SITEMAP_LASTMOD}</lastmod>\n"
             "  </url>"
         )
     return (

@@ -1,11 +1,13 @@
 import json
 import os
 import unittest
+from xml.etree import ElementTree
 
 
 os.environ["SITE_URL"] = "https://browserfiletools.net"
 
 from app import app  # noqa: E402
+from site_metadata import SITEMAP_LASTMOD  # noqa: E402
 
 
 class DomainConfigurationTests(unittest.TestCase):
@@ -80,6 +82,17 @@ class DomainConfigurationTests(unittest.TestCase):
         )
         self.assertIn("<loc>https://browserfiletools.net/</loc>", sitemap)
         self.assertNotIn("flask-v57n.onrender.com", robots + sitemap)
+
+        root = ElementTree.fromstring(sitemap)
+        namespace = {"sm": "http://www.sitemaps.org/schemas/sitemap/0.9"}
+        entries = root.findall("sm:url", namespace)
+        locations = [entry.findtext("sm:loc", namespaces=namespace) for entry in entries]
+        last_modified = [entry.findtext("sm:lastmod", namespaces=namespace) for entry in entries]
+
+        self.assertEqual(len(locations), 25)
+        self.assertEqual(len(locations), len(set(locations)))
+        self.assertTrue(all(location.startswith("https://browserfiletools.net/") for location in locations))
+        self.assertTrue(all(value == SITEMAP_LASTMOD for value in last_modified))
 
 
 if __name__ == "__main__":
