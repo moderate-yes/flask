@@ -13,7 +13,6 @@ TOOLS = [
     ("qr_generator", "qr"),
     ("focus_timer", "timer"),
     ("calculator", "calculator"),
-    ("path_studio", "path"),
 ]
 
 LOCALES = {
@@ -22,7 +21,7 @@ LOCALES = {
         "title": "Private Browser Tools for PDFs, Images, QR Codes & More",
         "description": "Free private browser tools for PDF and images: merge, split, organize, convert, edit, and create QR codes for users in Vietnam, India, Indonesia, Korea, and worldwide.",
         "eyebrow": "PRIVATE BROWSER TOOLKIT", "heading": "PRACTICAL TOOLS.\nLESS DATA SHARING.",
-        "intro": "A focused collection of browser-first utilities. Work with PDFs and images locally, verify files, create QR codes, calculate, focus, and sketch paths without an account.",
+        "intro": "A focused collection of browser-first utilities. Work with PDFs and images locally, verify files, create QR codes, calculate, and focus without an account.",
         "privacy_title": "Your working files stay on your device",
         "privacy_text": "Supported PDF, image, checksum, and QR operations run in your browser. The site does not send that working content to our server or store it in an account.",
         "how_title": "Simple by design", "steps": ["Choose the tool you need.", "Complete the task in your browser.", "Download or save the result locally."],
@@ -39,7 +38,6 @@ LOCALES = {
             "image_transform": ("Image Transform", "Mirror, flip upside down, and rotate an image without uploading it."),
             "hash": ("File Hash Checker", "Calculate a SHA-256, SHA-384, or SHA-512 fingerprint for a local file."),
             "qr": ("QR Code Generator", "Create and download a QR code for text or a URL without submitting its content."),
-            "path": ("Path Studio", "Draw selectable Bezier paths, manage layers, import images, and save projects locally."),
             "calculator": ("Multi Calculator", "Calculate arithmetic, percentages, discounts, sales tax, tips, and split bills with clear formulas."),
         },
     },

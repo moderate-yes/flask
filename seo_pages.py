@@ -197,7 +197,7 @@ TOOL_SEO = {
             ("Does the timer require an account?", "No. It runs in the browser without sign-in."),
             ("Will it work after I close the browser?", "The saved state may remain, but a closed browser cannot reliably play the completion sound."),
         ],
-        "related": [("calculator", "CALCULATOR"), ("path_studio", "PATH STUDIO"), ("index", "MERGE PDF")],
+        "related": [("calculator", "CALCULATOR"), ("qr_generator", "QR GENERATOR"), ("index", "MERGE PDF")],
     },
     "calculator": {
         "name": "Multi Calculator",
@@ -216,27 +216,5 @@ TOOL_SEO = {
             ("Are calculator inputs uploaded?", "No. Calculations run in JavaScript in your browser."),
         ],
         "related": [("focus_timer", "FOCUS TIMER"), ("qr_generator", "QR GENERATOR"), ("file_hash", "FILE HASH")],
-    },
-    "path_studio": {
-        "name": "Path Studio",
-        "title": "Browser Bezier Path and Layer Editor — Path Studio",
-        "description": "Draw selectable Bezier paths, edit anchors and handles, manage image layers, adjust opacity, and save local project files on desktop.",
-        "heading": "DRAW EDITABLE BEZIER PATHS",
-        "summary": "Path Studio is a desktop-only vector workspace for drawing curves, managing paths and image layers, and saving projects locally for later editing.",
-        "steps": ["Open the tool on a screen at least 1080 pixels wide.", "Use PEN to place anchors and Alt-drag to create curve handles.", "Use SELECT to edit anchors, handles, images, or complete paths.", "Save a .pathwork project or export a flattened PNG."],
-        "notes": [
-            ("PATHS AND ENDPOINTS", "Open endpoints can be joined. Start and end markers change color on hover to make path closure and joining easier to identify."),
-            ("LOCAL PROJECT FILES", "SAVE PROJECT downloads a local project containing editable path and image-layer data. Keep that file if you want to continue later."),
-            ("PRACTICAL WORKFLOW", "Use separate paths for shapes you may want to move independently. Save the editable .pathwork project before exporting PNG, because the PNG is flattened and cannot restore anchors, handles, or layer settings."),
-            ("KNOWN LIMITS", "Path Studio is designed for a desktop pointer and a wide workspace. It is not a full SVG editor, and PNG export rasterizes the canvas at the current project dimensions."),
-        ],
-        "faq": [
-            ("Why is Path Studio disabled on mobile?", "Its canvas, layer inspector, and precision controls require a desktop-width workspace."),
-            ("How do I create a curve?", "With PEN active, hold Alt while dragging an anchor to create Bezier handles."),
-            ("Can I change image opacity?", "Yes. Select an image layer and adjust its opacity in Properties."),
-            ("Can I reopen an exported PNG for editing?", "No. Exported PNG files are flattened. Save the .pathwork project if you need to continue editing paths and layers."),
-            ("What should I keep before closing the page?", "Keep the latest .pathwork project and any exported PNG you need. Unsaved canvas state is not stored on the server."),
-        ],
-        "related": [("focus_timer", "FOCUS TIMER"), ("image_toolkit", "IMAGE TOOLKIT"), ("content_page", "FULL GUIDE", {"slug": "guides"})],
     },
 }

@@ -1,6 +1,6 @@
 # Browser Tools
 
-A privacy-first browser toolkit built with Flask. It includes local PDF and image processing, file hashing, QR generation, focus, calculation, and path-editing tools.
+A privacy-first browser toolkit built with Flask. It includes local PDF and image processing, file hashing, QR generation, focus, and calculation tools.
 
 ## Run locally
 
@@ -53,8 +53,6 @@ S3 or CloudFront. Run `python build_static.py` for a local preview, or use
 - SHA-256, SHA-384, and SHA-512 file checksums
 - Local QR code generation and PNG download
 - PDF processing in a browser worker
-- Wide path editor with selectable paths, visible start markers, color-coded endpoint hover, automatic endpoint joining, Alt-drag Bezier handles, image layers, opacity, and layer ordering
-- Downloadable project files that can be reopened to continue editing
 - Multi calculator with arithmetic, percent-of, percentage-change, discount, sales-tax, tip, and split-bill modes
 - Detailed About, tool guides, FAQ, Privacy Policy, Terms, and Contact pages
 - Original long-form Learn guides for PDF diagnostics, annotation compatibility, image preparation, checksum verification, and local-processing privacy
@@ -78,7 +76,6 @@ S3 or CloudFront. Run `python build_static.py` for a local preview, or use
 - File Hash Checker: `http://127.0.0.1:5000/file-hash`
 - QR Code Generator: `http://127.0.0.1:5000/qr-generator`
 - Timer: `http://127.0.0.1:5000/focus-timer`
-- Path Studio: `http://127.0.0.1:5000/path-studio`
 - Multi Calculator: `http://127.0.0.1:5000/calculator`
 - About: `http://127.0.0.1:5000/about`
 - How to Use: `http://127.0.0.1:5000/guides`

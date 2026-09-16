@@ -2,7 +2,7 @@
 
 The site can be exported as plain HTML, CSS, JavaScript, images, and text files.
 Flask is used only while building the static files; it is not required on AWS.
-All PDF, image, QR, hash, timer, calculator, and Path Studio operations continue
+All PDF, image, QR, hash, timer, and calculator operations continue
 to run in the visitor's browser.
 
 ## Requirements

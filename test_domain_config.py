@@ -89,10 +89,34 @@ class DomainConfigurationTests(unittest.TestCase):
         locations = [entry.findtext("sm:loc", namespaces=namespace) for entry in entries]
         last_modified = [entry.findtext("sm:lastmod", namespaces=namespace) for entry in entries]
 
-        self.assertEqual(len(locations), 25)
+        self.assertEqual(len(locations), 24)
         self.assertEqual(len(locations), len(set(locations)))
+        self.assertNotIn("https://browserfiletools.net/path-studio", locations)
         self.assertTrue(all(location.startswith("https://browserfiletools.net/") for location in locations))
         self.assertTrue(all(value == SITEMAP_LASTMOD for value in last_modified))
+
+    def test_path_studio_is_no_longer_public(self):
+        response = self.client.get(
+            "/path-studio",
+            base_url="https://browserfiletools.net",
+        )
+        self.assertEqual(response.status_code, 404)
+
+    def test_focus_timer_and_calculator_have_one_primary_heading(self):
+        pages = {
+            "/focus-timer": "<h1>FOCUS TIMER.</h1>",
+            "/calculator": "<h1>MULTI CALCULATOR.</h1>",
+        }
+        for path, expected_heading in pages.items():
+            with self.subTest(path=path):
+                response = self.client.get(
+                    path,
+                    base_url="https://browserfiletools.net",
+                )
+                html = response.get_data(as_text=True)
+                self.assertEqual(response.status_code, 200)
+                self.assertEqual(html.count("<h1"), 1)
+                self.assertIn(expected_heading, html)
 
 
 if __name__ == "__main__":

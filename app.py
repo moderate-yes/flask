@@ -273,11 +273,6 @@ def focus_timer():
     return render_template("index.html")
 
 
-@app.get("/path-studio")
-def path_studio():
-    return render_template("path_studio.html")
-
-
 @app.get("/calculator")
 def calculator():
     return render_template("calculator.html")
@@ -447,7 +442,6 @@ def sitemap_xml():
         public_url("file_hash"),
         public_url("qr_generator"),
         public_url("focus_timer"),
-        public_url("path_studio"),
         public_url("calculator"),
         public_url("learn_index"),
         *[public_url("learn_article", slug=slug) for slug in LEARN_PAGES],

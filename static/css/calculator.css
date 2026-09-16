@@ -5,7 +5,7 @@
 .calculator-heading > p:first-child { margin: 0 0 15px; font-size: 8px; }
 .calculator-heading h1 { margin: 0; font-family: "Archivo Black",sans-serif; font-size: clamp(37px,10vw,48px); line-height: .92; letter-spacing: -.055em; }
 .calculator-heading > p:last-child { margin: 18px 0 0; color: var(--muted); font-size: 12px; line-height: 1.6; }
-.calculator-tabs { display: grid; grid-template-columns: repeat(2,1fr); margin-top: 0; border: 1px solid var(--ink); }
+.calculator-tabs { display: grid; grid-template-columns: repeat(2,1fr); margin-top: 24px; border: 1px solid var(--ink); }
 .calculator-tabs button { min-height: 44px; border: 0; background: transparent; font: 500 10px "DM Mono",monospace; letter-spacing: .055em; cursor: pointer; }
 .calculator-tabs button:nth-child(even) { border-left: 1px solid var(--ink); }
 .calculator-tabs button:nth-child(n+3) { border-top: 1px solid var(--ink); }
