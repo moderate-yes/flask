@@ -14,6 +14,52 @@ class DomainConfigurationTests(unittest.TestCase):
     def setUp(self):
         self.client = app.test_client()
 
+    def test_public_pages_do_not_display_or_load_visitor_counter(self):
+        from build_static import ROUTES
+
+        for route in ROUTES:
+            with self.subTest(route=route):
+                response = self.client.get(
+                    route, base_url="https://browserfiletools.net"
+                )
+                self.assertEqual(response.status_code, 200)
+                html = response.get_data(as_text=True)
+                self.assertNotIn("data-visit-total", html)
+                self.assertNotIn("data-visit-today", html)
+                self.assertNotIn("visitor-counter.js", html)
+                self.assertNotIn("VISITOR COUNTER", html)
+                self.assertIn('aria-label="Site information"', html)
+
+    def test_practical_guide_and_assets_are_available(self):
+        import hashlib
+        from practical_guide import PRACTICAL_GUIDE
+        from build_static import ROUTES, INDEXED_ROUTES
+
+        route = "/learn/practical-tool-examples"
+        response = self.client.get(route)
+        self.assertEqual(response.status_code, 200)
+        html = response.get_data(as_text=True)
+        self.assertEqual(html.count("<h1"), 1)
+        self.assertIn(route, ROUTES)
+        self.assertIn(route, INDEXED_ROUTES)
+        self.assertIn(route, self.client.get("/learn").get_data(as_text=True))
+        self.assertIn(route, self.client.get("/sitemap.xml").get_data(as_text=True))
+        for section in PRACTICAL_GUIDE["sections"]:
+            assets = list(section.get("downloads", []))
+            if section.get("image"):
+                assets.append(section["image"])
+                self.assertTrue(section["image"]["alt"])
+            for asset in assets:
+                path = "/static/guide-examples/" + asset["file"]
+                self.assertIn(path, html)
+                result = self.client.get(path)
+                self.assertEqual(result.status_code, 200)
+                result.close()
+        sample = self.client.get("/static/guide-examples/abc.txt")
+        self.assertEqual(sample.data, b"abc")
+        self.assertIn(hashlib.sha256(sample.data).hexdigest(), html)
+        sample.close()
+
     def test_legacy_render_domain_redirects_permanently(self):
         response = self.client.get(
             "/pdf-split?source=test",
@@ -89,7 +135,7 @@ class DomainConfigurationTests(unittest.TestCase):
         locations = [entry.findtext("sm:loc", namespaces=namespace) for entry in entries]
         last_modified = [entry.findtext("sm:lastmod", namespaces=namespace) for entry in entries]
 
-        self.assertEqual(len(locations), 24)
+        self.assertEqual(len(locations), 25)
         self.assertEqual(len(locations), len(set(locations)))
         self.assertNotIn("https://browserfiletools.net/path-studio", locations)
         self.assertTrue(all(location.startswith("https://browserfiletools.net/") for location in locations))

@@ -58,6 +58,21 @@
               <div class="guide-copy">
                 <h2>{{ section.title }}</h2>
                 {% for paragraph in section.paragraphs %}<p>{{ paragraph }}</p>{% endfor %}
+                {% if section.get('downloads') %}
+                  <ul class="guide-downloads">
+                    {% for sample in section.downloads %}<li><a href="{{ url_for('static', filename='guide-examples/' ~ sample.file) }}" download>{{ sample.label }}</a></li>{% endfor %}
+                  </ul>
+                {% endif %}
+                {% if section.get('code') %}<pre class="guide-code"><code>{{ section.code }}</code></pre>{% endif %}
+                {% if section.get('image') %}
+                  <figure class="guide-figure">
+                    <a href="{{ url_for('static', filename='guide-examples/' ~ section.image.file) }}" aria-label="View full-size screenshot: {{ section.image.alt }}">
+                      <img src="{{ url_for('static', filename='guide-examples/' ~ section.image.file) }}" alt="{{ section.image.alt }}" loading="lazy" decoding="async">
+                    </a>
+                    <figcaption>{{ section.image.caption }} Select the image to view full size.</figcaption>
+                  </figure>
+                {% endif %}
+                {% if section.get('tool_endpoint') %}<p><a class="guide-tool-link" href="{{ url_for(section.tool_endpoint) }}">{{ section.tool_label }} ↗</a></p>{% endif %}
                 {% if section.get('table') %}
                   <div class="guide-table-wrap">
                     <table>

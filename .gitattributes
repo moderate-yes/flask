@@ -1,0 +1,4 @@
+# Practice files must retain their exact bytes across Windows and Linux.
+static/guide-examples/*.pdf binary
+static/guide-examples/*.png binary
+static/guide-examples/abc.txt -text

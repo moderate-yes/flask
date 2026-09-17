@@ -1,6 +1,9 @@
 """Original problem-solving guides based on Browser Tools workflows."""
 
+from practical_guide import PRACTICAL_GUIDE
+
 LEARN_PAGES = {
+    "practical-tool-examples": PRACTICAL_GUIDE,
     "scanned-pdf-preview-problems": {
         "category": "PDF DIAGNOSTICS",
         "title": "Why a Scanned PDF Preview Looks Blank, Dark, or Blurry",
