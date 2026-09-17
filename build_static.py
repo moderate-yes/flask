@@ -16,6 +16,7 @@ from urllib.parse import urlsplit
 
 from site_metadata import SITEMAP_LASTMOD
 from tool_visibility import path_is_public
+from content_presentation import CONTENT_REDIRECTS
 
 
 ROOT = Path(__file__).resolve().parent
@@ -77,8 +78,8 @@ INDEXED_ROUTES = (
 )
 
 # Keep the original route definitions above for easy restoration.
-ROUTES = {route: destination for route, destination in ROUTES.items() if path_is_public(route)}
-INDEXED_ROUTES = tuple(route for route in INDEXED_ROUTES if path_is_public(route))
+ROUTES = {route: destination for route, destination in ROUTES.items() if path_is_public(route) and route not in CONTENT_REDIRECTS}
+INDEXED_ROUTES = tuple(route for route in INDEXED_ROUTES if path_is_public(route) and route not in CONTENT_REDIRECTS)
 
 URL_ATTRIBUTE = re.compile(
     r'(?P<name>href|src|data-[a-z0-9-]+)=(?P<quote>["\'])(?P<url>/[^"\']*)(?P=quote)',
@@ -150,19 +151,19 @@ def write_text(path: Path, value: str) -> None:
     path.write_text(value, encoding="utf-8", newline="\n")
 
 
-def redirect_page(site_url: str) -> str:
+def redirect_page(site_url: str, destination: str = "/") -> str:
     return f"""<!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
     <meta name="robots" content="noindex">
-    <meta http-equiv="refresh" content="0; url=/">
-    <link rel="canonical" href="{site_url}/">
-    <title>PDF Merge — Browser Tools</title>
-    <script>window.location.replace("/");</script>
+    <meta http-equiv="refresh" content="0; url={destination}">
+    <link rel="canonical" href="{site_url}{destination}">
+    <title>Continue — Browser Tools</title>
+    <script>window.location.replace({json.dumps(destination)});</script>
   </head>
   <body>
-    <p><a href="/">Continue to PDF Merge</a></p>
+    <p><a href="{destination}">Continue to Browser Tools</a></p>
   </body>
 </html>
 """
@@ -274,6 +275,8 @@ def build(site_url: str, output: Path) -> None:
 
     write_text(resolved_output / "pdf-merge" / "index.html", redirect_page(site_url))
     write_text(resolved_output / "discover" / "index.html", redirect_page(site_url))
+    for old_path, destination in CONTENT_REDIRECTS.items():
+        write_text(resolved_output / old_path.lstrip('/') / 'index.html', redirect_page(site_url, destination + '/'))
     write_text(
         resolved_output / "robots.txt",
         f"User-agent: *\nAllow: /\nSitemap: {site_url}/sitemap.xml\n",

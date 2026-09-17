@@ -135,7 +135,7 @@ class DomainConfigurationTests(unittest.TestCase):
         locations = [entry.findtext("sm:loc", namespaces=namespace) for entry in entries]
         last_modified = [entry.findtext("sm:lastmod", namespaces=namespace) for entry in entries]
 
-        self.assertEqual(len(locations), 23)
+        self.assertEqual(len(locations), 21)
         self.assertEqual(len(locations), len(set(locations)))
         self.assertNotIn("https://browserfiletools.net/path-studio", locations)
         self.assertTrue(all(location.startswith("https://browserfiletools.net/") for location in locations))
@@ -183,11 +183,29 @@ class DomainConfigurationTests(unittest.TestCase):
         html = self.client.get('/').get_data(as_text=True)
         footer = html.split('<footer class="site-footer">', 1)[1].split('</footer>', 1)[0]
         self.assertEqual(re.findall(r'href="([^"]+)"', footer),
-                         ['/learn', '/about', '/privacy', '/terms', '/contact'])
+                         ['/learn', '/contact'])
         learn = self.client.get('/learn').get_data(as_text=True)
-        for path in ('/guides', '/faq', '/learn/practical-tool-examples'):
+        for path in ('/faq', '/learn/practical-tool-examples'):
             self.assertIn('href="' + path + '"', learn)
             self.assertEqual(self.client.get(path).status_code, 200)
+
+    def test_contact_centralizes_introduction_and_policy_links(self):
+        html = self.client.get('/contact').get_data(as_text=True)
+        self.assertEqual(html.count('<h1'), 1)
+        self.assertIn('Free · Unlimited use · Privacy-first.', html)
+        self.assertIn('No daily usage quota.', html)
+        self.assertIn('href="/privacy"', html)
+        self.assertIn('href="/terms"', html)
+        for path in ('/privacy', '/terms'):
+            self.assertEqual(self.client.get(path).status_code, 200)
+        for old_path, destination in (('/about', '/contact'), ('/guides', '/learn')):
+            response = self.client.get(old_path)
+            self.assertEqual(response.status_code, 301)
+            self.assertEqual(response.headers['Location'], destination)
+            self.assertNotIn('<loc>https://browserfiletools.net' + old_path + '</loc>', self.client.get('/sitemap.xml').get_data(as_text=True))
+        from content_presentation import streamlined_content
+        from content_pages import PAGES
+        self.assertEqual(len(streamlined_content('faq', PAGES['faq'])['sections']), 4)
 
     def test_paused_tool_documentation_is_retained(self):
         from content_pages import PAGES

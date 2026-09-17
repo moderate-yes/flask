@@ -14,6 +14,7 @@ from learn_pages import LEARN_PAGES
 from seo_pages import TOOL_SEO
 from site_metadata import SITEMAP_LASTMOD
 from tool_visibility import tool_is_public, path_is_public, public_content_page
+from content_presentation import CONTENT_REDIRECTS, streamlined_content
 
 
 app = Flask(__name__)
@@ -373,7 +374,9 @@ def learn_article(slug):
 
 @app.get("/<any(about,guides,faq,privacy,terms,contact):slug>")
 def content_page(slug):
-    page = public_content_page(slug, PAGES.get(slug))
+    if request.path in CONTENT_REDIRECTS:
+        return redirect(CONTENT_REDIRECTS[request.path], code=301)
+    page = streamlined_content(slug, public_content_page(slug, PAGES.get(slug)))
     if page is None:
         abort(404)
     return render_template(
@@ -502,7 +505,7 @@ def sitemap_xml():
         public_url("calculator"),
         public_url("learn_index"),
         *[public_url("learn_article", slug=slug) for slug in LEARN_PAGES],
-        *[public_url("content_page", slug=slug) for slug in PAGES],
+        *[public_url("content_page", slug=slug) for slug in PAGES if '/' + slug not in CONTENT_REDIRECTS],
     ]
     pages = [{"loc": page, "lastmod": SITEMAP_LASTMOD} for page in page_urls if path_is_public(urlsplit(page).path)]
     return Response(render_template("sitemap.xml", pages=pages), mimetype="application/xml")

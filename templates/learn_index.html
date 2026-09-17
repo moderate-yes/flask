@@ -39,9 +39,7 @@
       </header>
 
       <nav class="learn-help" aria-label="Getting started and help">
-        <a href="{{ url_for('content_page', slug='guides') }}"><strong>HOW TO USE</strong><span>Quick instructions for each tool ↗</span></a>
         <a href="{{ url_for('content_page', slug='faq') }}"><strong>FAQ</strong><span>Common questions and limitations ↗</span></a>
-        <a href="{{ url_for('learn_article', slug='practical-tool-examples') }}"><strong>WORKED EXAMPLES</strong><span>Practice files and checked results ↗</span></a>
       </nav>
 
       <section class="learn-grid" aria-label="Learning guides">
@@ -53,14 +51,6 @@
             <footer><span>{{ article.reading_time }}</span><a href="{{ url_for('learn_article', slug=slug) }}">READ GUIDE <b aria-hidden="true">↗</b></a></footer>
           </article>
         {% endfor %}
-      </section>
-
-      <section class="learn-method">
-        <span>EDITORIAL METHOD</span>
-        <div>
-          <h2>BASED ON THE TOOL'S ACTUAL BEHAVIOR.</h2>
-          <p>These guides document the browser workflows, boundaries, and failure modes behind Browser Tools. They avoid promises that a preview, conversion, checksum, or local-processing claim cannot support. Important files should always be preserved and verified independently.</p>
-        </div>
       </section>
 
       {% include '_site_footer.html' %}

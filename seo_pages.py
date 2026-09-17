@@ -161,7 +161,7 @@ TOOL_SEO = {
             ("Is the selected file uploaded?", "No. The browser's cryptographic API reads it locally."),
             ("Why does my hash not match?", "The file may be incomplete, modified, a different version, or compared with the wrong algorithm."),
         ],
-        "related": [("qr_generator", "QR GENERATOR"), ("image_toolkit", "IMAGE TOOLKIT"), ("content_page", "PRIVACY", {"slug": "privacy"})],
+        "related": [("qr_generator", "QR GENERATOR"), ("image_toolkit", "IMAGE TOOLKIT"), ("content_page", "CONTACT", {"slug": "contact"})],
     },
     "qr_generator": {
         "name": "Private QR Code Generator",
