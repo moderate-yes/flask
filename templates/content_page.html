@@ -37,7 +37,6 @@
             <header class="contact-introduction">
               <h1>BROWSER TOOLS.</h1>
               <p class="contact-tagline">Free · Unlimited use · Privacy-first.</p>
-              <p>No daily usage quota. Files are processed in your browser; file size and performance depend on your device.</p>
             </header>
             <a href="mailto:{{ contact_email }}">{{ contact_email }}</a>
             <div class="contact-character-wrap">
@@ -49,13 +48,6 @@
                 height="473"
               >
               <span class="contact-character-mouth" aria-hidden="true"></span>
-            </div>
-            <div class="contact-details">
-              <p>Independently operated by {{ site_operator }}. Contact us for help, feedback, or privacy questions.</p>
-              <nav class="contact-policies" aria-label="Policies">
-                <a href="{{ url_for('content_page', slug='privacy') }}">Privacy Policy</a>
-                <a href="{{ url_for('content_page', slug='terms') }}">Terms of Use</a>
-              </nav>
             </div>
           </section>
         {% else %}

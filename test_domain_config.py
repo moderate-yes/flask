@@ -189,13 +189,14 @@ class DomainConfigurationTests(unittest.TestCase):
             self.assertIn('href="' + path + '"', learn)
             self.assertEqual(self.client.get(path).status_code, 200)
 
-    def test_contact_centralizes_introduction_and_policy_links(self):
+    def test_contact_has_only_requested_introduction(self):
         html = self.client.get('/contact').get_data(as_text=True)
         self.assertEqual(html.count('<h1'), 1)
         self.assertIn('Free · Unlimited use · Privacy-first.', html)
-        self.assertIn('No daily usage quota.', html)
-        self.assertIn('href="/privacy"', html)
-        self.assertIn('href="/terms"', html)
+        self.assertNotIn('No daily usage quota.', html)
+        self.assertNotIn('Independently operated by', html)
+        self.assertNotIn('href="/privacy"', html)
+        self.assertNotIn('href="/terms"', html)
         for path in ('/privacy', '/terms'):
             self.assertEqual(self.client.get(path).status_code, 200)
         for old_path, destination in (('/about', '/contact'), ('/guides', '/learn')):
