@@ -13,6 +13,7 @@ from content_pages import PAGES
 from learn_pages import LEARN_PAGES
 from seo_pages import TOOL_SEO
 from site_metadata import SITEMAP_LASTMOD
+from tool_visibility import tool_is_public, path_is_public, public_content_page
 
 
 app = Flask(__name__)
@@ -156,7 +157,7 @@ def client_ip_hash(visit_date):
 def inject_public_metadata():
     site_url = configured_site_url()
     canonical_url = f"{site_url}{request.path}" if site_url else request.base_url
-    seo_page = TOOL_SEO.get(request.endpoint)
+    seo_page = TOOL_SEO.get(request.endpoint) if tool_is_public(request.endpoint) else None
     tool_structured_data = None
     related_tools = []
     if seo_page:
@@ -166,6 +167,7 @@ def inject_public_metadata():
                 "url": url_for(item[0], **(item[2] if len(item) > 2 else {})),
             }
             for item in seo_page["related"]
+            if tool_is_public(item[0])
         ]
         tool_structured_data = {
             "@context": "https://schema.org",
@@ -211,6 +213,7 @@ def inject_public_metadata():
             ],
         }
     return {
+        "tool_is_public": tool_is_public,
         "canonical_url": canonical_url,
         "seo_page": seo_page,
         "related_tools": related_tools,
@@ -289,11 +292,15 @@ def qr_generator():
 
 @app.get("/focus-timer")
 def focus_timer():
+    if not tool_is_public("focus_timer"):
+        abort(404)
     return render_template("index.html")
 
 
 @app.get("/calculator")
 def calculator():
+    if not tool_is_public("calculator"):
+        abort(404)
     return render_template("calculator.html")
 
 
@@ -366,7 +373,7 @@ def learn_article(slug):
 
 @app.get("/<any(about,guides,faq,privacy,terms,contact):slug>")
 def content_page(slug):
-    page = PAGES.get(slug)
+    page = public_content_page(slug, PAGES.get(slug))
     if page is None:
         abort(404)
     return render_template(
@@ -497,7 +504,7 @@ def sitemap_xml():
         *[public_url("learn_article", slug=slug) for slug in LEARN_PAGES],
         *[public_url("content_page", slug=slug) for slug in PAGES],
     ]
-    pages = [{"loc": page, "lastmod": SITEMAP_LASTMOD} for page in page_urls]
+    pages = [{"loc": page, "lastmod": SITEMAP_LASTMOD} for page in page_urls if path_is_public(urlsplit(page).path)]
     return Response(render_template("sitemap.xml", pages=pages), mimetype="application/xml")
 
 

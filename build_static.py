@@ -15,6 +15,7 @@ from pathlib import Path
 from urllib.parse import urlsplit
 
 from site_metadata import SITEMAP_LASTMOD
+from tool_visibility import path_is_public
 
 
 ROOT = Path(__file__).resolve().parent
@@ -74,6 +75,10 @@ INDEXED_ROUTES = (
     "/terms",
     "/contact",
 )
+
+# Keep the original route definitions above for easy restoration.
+ROUTES = {route: destination for route, destination in ROUTES.items() if path_is_public(route)}
+INDEXED_ROUTES = tuple(route for route in INDEXED_ROUTES if path_is_public(route))
 
 URL_ATTRIBUTE = re.compile(
     r'(?P<name>href|src|data-[a-z0-9-]+)=(?P<quote>["\'])(?P<url>/[^"\']*)(?P=quote)',

@@ -38,6 +38,12 @@
         </div>
       </header>
 
+      <nav class="learn-help" aria-label="Getting started and help">
+        <a href="{{ url_for('content_page', slug='guides') }}"><strong>HOW TO USE</strong><span>Quick instructions for each tool ↗</span></a>
+        <a href="{{ url_for('content_page', slug='faq') }}"><strong>FAQ</strong><span>Common questions and limitations ↗</span></a>
+        <a href="{{ url_for('learn_article', slug='practical-tool-examples') }}"><strong>WORKED EXAMPLES</strong><span>Practice files and checked results ↗</span></a>
+      </nav>
+
       <section class="learn-grid" aria-label="Learning guides">
         {% for slug, article in articles.items() %}
           <article class="learn-card">

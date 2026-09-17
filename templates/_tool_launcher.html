@@ -74,24 +74,27 @@
         <span class="tool-copy"><strong>QR GENERATOR</strong><small>Turn text into a QR code.</small></span>
         <span class="tool-arrow" aria-hidden="true">↗</span>
       </a>
+      {% if tool_is_public('focus_timer') %}
       <a class="tool-card{% if request.endpoint == 'focus_timer' %} current{% endif %}" href="{{ url_for('focus_timer') }}"{% if request.endpoint == 'focus_timer' %} aria-current="page"{% endif %}>
         <span class="tool-number">11</span>
         <span class="tool-copy"><strong>FOCUS TIMER</strong><small>Stay on one task.</small></span>
         <span class="tool-arrow" aria-hidden="true">↗</span>
       </a>
+      {% endif %}
+      {% if tool_is_public('calculator') %}
       <a class="tool-card{% if request.endpoint == 'calculator' %} current{% endif %}" href="{{ url_for('calculator') }}"{% if request.endpoint == 'calculator' %} aria-current="page"{% endif %}>
         <span class="tool-number">12</span>
         <span class="tool-copy"><strong>CALCULATOR</strong><small>Percent, discount, tax, tip.</small></span>
         <span class="tool-arrow" aria-hidden="true">↗</span>
       </a>
+      {% endif %}
     </div>
 
     <nav class="launcher-info" aria-label="Site information">
       <a href="{{ url_for('learn_index') }}">LEARN</a>
       <a href="{{ url_for('content_page', slug='about') }}">ABOUT</a>
-      <a href="{{ url_for('content_page', slug='guides') }}">GUIDES</a>
-      <a href="{{ url_for('content_page', slug='faq') }}">FAQ</a>
       <a href="{{ url_for('content_page', slug='privacy') }}">PRIVACY</a>
+      <a href="{{ url_for('content_page', slug='terms') }}">TERMS</a>
       <a href="{{ url_for('content_page', slug='contact') }}">CONTACT</a>
     </nav>
 

@@ -325,7 +325,7 @@ LEARN_PAGES = {
                 "title": "MEMORY, CRASHES, AND TEMPORARY DATA",
                 "paragraphs": [
                     "Local processing often holds the source and result in memory at the same time. PDF previews may also allocate rendered page images. A large document can therefore consume much more memory than its compressed file size suggests. Mobile browsers may close the tab when memory is scarce without providing a detailed error.",
-                    "Process smaller batches, close unrelated tabs, and keep originals before attempting large work. Closing or refreshing the page normally clears in-memory work, while downloaded files remain on the device. A focus timer or other preference may use local browser storage, which is different from uploading document contents."
+                    "Process smaller batches, close unrelated tabs, and keep originals before attempting large work. Closing or refreshing the page normally clears in-memory work, while downloaded files remain on the device. A saved preference may use local browser storage, which is different from uploading document contents."
                 ]
             },
             {
