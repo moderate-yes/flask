@@ -1,3 +1,4 @@
+import hashlib
 import json
 import os
 import sqlite3
@@ -16,6 +17,9 @@ from site_metadata import SITEMAP_LASTMOD
 
 app = Flask(__name__)
 KOREA_TIME = timezone(timedelta(hours=9))
+TOTAL_VISIT_COOKIE = "bt_visit_total"
+DAY_VISIT_COOKIE = "bt_visit_day"
+VISIT_COOKIE_MAX_AGE = 60 * 60 * 24 * 400  # ~400 days: the longest most browsers honor
 PRIMARY_SITE_URL = "https://browserfiletools.net"
 DEFAULT_LEGACY_HOSTS = {
     "flask-v57n.onrender.com",
@@ -125,12 +129,27 @@ def open_visitor_database():
         "visits INTEGER NOT NULL DEFAULT 0 CHECK (visits >= 0))"
     )
     connection.execute(
+        "CREATE TABLE IF NOT EXISTS daily_ip_visits ("
+        "visit_date TEXT NOT NULL, "
+        "ip_hash TEXT NOT NULL, "
+        "PRIMARY KEY (visit_date, ip_hash))"
+    )
+    connection.execute(
         "INSERT INTO visit_totals (id, visits) VALUES (1, ?) "
         "ON CONFLICT(id) DO UPDATE SET visits = MAX(visit_totals.visits, excluded.visits)",
         (initial_total_visits(),),
     )
+    # Rate-limit bookkeeping only needs to cover today and yesterday.
+    stale_cutoff = (datetime.now(KOREA_TIME).date() - timedelta(days=2)).isoformat()
+    connection.execute("DELETE FROM daily_ip_visits WHERE visit_date < ?", (stale_cutoff,))
     connection.commit()
     return connection
+
+
+def client_ip_hash(visit_date):
+    # A same-day, unsalted hash is enough to deduplicate repeat requests from
+    # one address without keeping a reversible or long-lived record of it.
+    return hashlib.sha256(f"{request.remote_addr}|{visit_date}".encode()).hexdigest()
 
 
 @app.context_processor
@@ -382,9 +401,17 @@ def service_worker():
 @app.route("/api/visits", methods=["GET", "POST"])
 def visitor_counts():
     visit_date = datetime.now(KOREA_TIME).date().isoformat()
-    payload = request.get_json(silent=True) or {} if request.method == "POST" else {}
-    count_total = payload.get("countTotal") is True
-    count_today = payload.get("countToday") is True
+
+    # Whether to increment is decided server-side, never from anything the
+    # client claims in the request body. A cookie this endpoint set on a
+    # prior visit stops a real browser from double-counting itself; an
+    # IP-and-day rate limit stops a script that skips cookies entirely from
+    # inflating the count by repeating the request.
+    wants_total = False
+    wants_today = False
+    if request.method == "POST":
+        wants_total = request.cookies.get(TOTAL_VISIT_COOKIE) != "1"
+        wants_today = request.cookies.get(DAY_VISIT_COOKIE) != visit_date
 
     init_today = initial_today_visits()
     connection = open_visitor_database()
@@ -395,6 +422,19 @@ def visitor_counts():
                 "ON CONFLICT(visit_date) DO UPDATE SET visits = MAX(daily_visits.visits, excluded.visits)",
                 (visit_date, init_today),
             )
+            count_total = count_today = False
+            if wants_total or wants_today:
+                ip_hash = client_ip_hash(visit_date)
+                already_counted = connection.execute(
+                    "SELECT 1 FROM daily_ip_visits WHERE visit_date = ? AND ip_hash = ?",
+                    (visit_date, ip_hash),
+                ).fetchone()
+                if not already_counted:
+                    connection.execute(
+                        "INSERT INTO daily_ip_visits (visit_date, ip_hash) VALUES (?, ?)",
+                        (visit_date, ip_hash),
+                    )
+                    count_total, count_today = wants_total, wants_today
             if count_total:
                 connection.execute("UPDATE visit_totals SET visits = visits + 1 WHERE id = 1")
             if count_today:
@@ -409,6 +449,16 @@ def visitor_counts():
 
     response = jsonify({"total": total, "today": today_row[0] if today_row else init_today, "date": visit_date})
     response.headers["Cache-Control"] = "no-store"
+    if count_total:
+        response.set_cookie(
+            TOTAL_VISIT_COOKIE, "1",
+            max_age=VISIT_COOKIE_MAX_AGE, httponly=True, samesite="Lax", secure=request.is_secure,
+        )
+    if count_today:
+        response.set_cookie(
+            DAY_VISIT_COOKIE, visit_date,
+            max_age=VISIT_COOKIE_MAX_AGE, httponly=True, samesite="Lax", secure=request.is_secure,
+        )
     return response
 
 
