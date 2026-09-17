@@ -183,7 +183,7 @@ class DomainConfigurationTests(unittest.TestCase):
         html = self.client.get('/').get_data(as_text=True)
         footer = html.split('<footer class="site-footer">', 1)[1].split('</footer>', 1)[0]
         self.assertEqual(re.findall(r'href="([^"]+)"', footer),
-                         ['/learn', '/contact'])
+                         ['/learn', '/contact', '/privacy'])
         learn = self.client.get('/learn').get_data(as_text=True)
         for path in ('/faq', '/learn/practical-tool-examples'):
             self.assertIn('href="' + path + '"', learn)
@@ -195,7 +195,7 @@ class DomainConfigurationTests(unittest.TestCase):
         self.assertIn('Free · Unlimited use · Privacy-first.', html)
         self.assertNotIn('No daily usage quota.', html)
         self.assertNotIn('Independently operated by', html)
-        self.assertNotIn('href="/privacy"', html)
+        self.assertIn('href="/privacy"', html)
         self.assertNotIn('href="/terms"', html)
         for path in ('/privacy', '/terms'):
             self.assertEqual(self.client.get(path).status_code, 200)
@@ -207,6 +207,22 @@ class DomainConfigurationTests(unittest.TestCase):
         from content_presentation import streamlined_content
         from content_pages import PAGES
         self.assertEqual(len(streamlined_content('faq', PAGES['faq'])['sections']), 4)
+
+    def test_privacy_disclosures_and_sitewide_footer(self):
+        import re
+        from build_static import ROUTES
+        for route in ROUTES:
+            with self.subTest(route=route):
+                html = self.client.get(route).get_data(as_text=True)
+                footer = html.split('<footer class="site-footer">', 1)[1].split('</footer>', 1)[0]
+                self.assertEqual(re.findall(r'href="([^"]+)"', footer),
+                                 ['/learn', '/contact', '/privacy'])
+        html = self.client.get('/privacy').get_data(as_text=True)
+        self.assertIn('<h1>PRIVACY POLICY</h1>', html)
+        self.assertIn('href="https://adssettings.google.com/"', html)
+        self.assertIn('href="https://www.aboutads.info/choices/"', html)
+        self.assertIn('Google Ads conversion tracking', html)
+        self.assertNotIn('does not yet run its own cookie-consent banner', html)
 
     def test_paused_tool_documentation_is_retained(self):
         from content_pages import PAGES

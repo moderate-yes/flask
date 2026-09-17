@@ -74,6 +74,11 @@
               <div>
                 <h2>{{ section.title }}</h2>
                 <p>{{ section.text }}</p>
+                {% if section.get('links') %}
+                  <ul>
+                    {% for link in section.links %}<li><a class="section-link" href="{{ link.url }}">{{ link.label }}</a></li>{% endfor %}
+                  </ul>
+                {% endif %}
                 {% if section.get('items') %}
                   <ul>
                     {% for item in section.get('items') %}<li>{{ item }}</li>{% endfor %}
