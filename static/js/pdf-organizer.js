@@ -25,6 +25,11 @@ async function loadFile(file) {
   drop.setAttribute('aria-busy', 'true');
   dropLabel.textContent = 'OPENING PDF...';
   setStatus(`Opening ${file.name} locally…`);
+  // Do not export stale page selections if the next file fails to load.
+  sourceBytes = null;
+  pages = [];
+  workspace.hidden = true;
+  grid.replaceChildren();
   try {
     const [bytes, pdfjs] = await Promise.all([file.arrayBuffer(), pdfjsReady]);
     sourceBytes = bytes; sourceName = file.name.replace(/\.pdf$/i,'');

@@ -1,4 +1,4 @@
-const CACHE_NAME = "browser-tools-v6";
+const CACHE_NAME = "browser-tools-v7";
 const CORE_ASSETS = [
   "/manifest.webmanifest",
   "/",

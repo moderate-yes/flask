@@ -54,26 +54,34 @@
         <span class="tool-copy"><strong>IMAGES TO PDF</strong><small>Build one PDF from images.</small></span>
         <span class="tool-arrow" aria-hidden="true">↗</span>
       </a>
+      {% if tool_is_public('image_toolkit') %}
       <a class="tool-card{% if request.endpoint == 'image_toolkit' %} current{% endif %}" href="{{ url_for('image_toolkit') }}"{% if request.endpoint == 'image_toolkit' %} aria-current="page"{% endif %}>
         <span class="tool-number">07</span>
         <span class="tool-copy"><strong>IMAGE TOOLKIT</strong><small>Resize, compress, convert.</small></span>
         <span class="tool-arrow" aria-hidden="true">↗</span>
       </a>
+      {% endif %}
+      {% if tool_is_public('image_transform') %}
       <a class="tool-card{% if request.endpoint == 'image_transform' %} current{% endif %}" href="{{ url_for('image_transform') }}"{% if request.endpoint == 'image_transform' %} aria-current="page"{% endif %}>
         <span class="tool-number">08</span>
         <span class="tool-copy"><strong>IMAGE TRANSFORM</strong><small>Mirror, flip, and rotate.</small></span>
         <span class="tool-arrow" aria-hidden="true">↗</span>
       </a>
+      {% endif %}
+      {% if tool_is_public('file_hash') %}
       <a class="tool-card{% if request.endpoint == 'file_hash' %} current{% endif %}" href="{{ url_for('file_hash') }}"{% if request.endpoint == 'file_hash' %} aria-current="page"{% endif %}>
         <span class="tool-number">09</span>
         <span class="tool-copy"><strong>FILE HASH</strong><small>Check a file fingerprint.</small></span>
         <span class="tool-arrow" aria-hidden="true">↗</span>
       </a>
+      {% endif %}
+      {% if tool_is_public('qr_generator') %}
       <a class="tool-card{% if request.endpoint == 'qr_generator' %} current{% endif %}" href="{{ url_for('qr_generator') }}"{% if request.endpoint == 'qr_generator' %} aria-current="page"{% endif %}>
         <span class="tool-number">10</span>
         <span class="tool-copy"><strong>QR GENERATOR</strong><small>Turn text into a QR code.</small></span>
         <span class="tool-arrow" aria-hidden="true">↗</span>
       </a>
+      {% endif %}
       {% if tool_is_public('focus_timer') %}
       <a class="tool-card{% if request.endpoint == 'focus_timer' %} current{% endif %}" href="{{ url_for('focus_timer') }}"{% if request.endpoint == 'focus_timer' %} aria-current="page"{% endif %}>
         <span class="tool-number">11</span>

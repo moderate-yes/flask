@@ -13,6 +13,15 @@
     </ol>
   </section>
 
+  {% if seo_page.example %}
+  <section class="seo-how" aria-labelledby="sampleTitle">
+    <div class="seo-section-label"><span>TEST</span><h3 id="sampleTitle">{{ seo_page.example[0] }}</h3></div>
+    <p>{{ seo_page.example[1] }}</p>
+    <p><strong>Check the result:</strong> {{ seo_page.example[2] }}</p>
+    <p><strong>Limit:</strong> {{ seo_page.example[3] }}</p>
+    <p><a href="{{ url_for('static', filename='guide-examples/practice-packet.pdf') }}" download>Download the four-page practice PDF</a> · <a href="{{ url_for('learn_article', slug='practical-tool-examples') }}">Full walkthrough and screenshots</a></p>
+  </section>
+  {% endif %}
   <section class="seo-notes" aria-label="Useful information">
     {% for note in seo_page.notes %}
       <div><span>{{ '%02d' | format(loop.index + 1) }}</span><h3>{{ note.0 }}</h3><p>{{ note.1 }}</p></div>

@@ -11,6 +11,8 @@ from werkzeug.middleware.proxy_fix import ProxyFix
 
 from content_pages import PAGES
 from learn_pages import LEARN_PAGES
+from public_guides import public_guides
+from pdf_examples import PDF_EXAMPLES
 from seo_pages import TOOL_SEO
 from site_metadata import SITEMAP_LASTMOD
 from tool_visibility import tool_is_public, path_is_public, public_content_page
@@ -63,6 +65,12 @@ def redirect_legacy_domains():
 
     path_and_query = request.full_path if request.query_string else request.path
     return redirect(f"{configured_site_url()}{path_and_query}", code=301)
+
+
+@app.before_request
+def hide_paused_tools():
+    if not tool_is_public(request.endpoint):
+        abort(404)
 
 
 def public_url(endpoint, **values):
@@ -159,6 +167,8 @@ def inject_public_metadata():
     site_url = configured_site_url()
     canonical_url = f"{site_url}{request.path}" if site_url else request.base_url
     seo_page = TOOL_SEO.get(request.endpoint) if tool_is_public(request.endpoint) else None
+    if seo_page and request.endpoint in PDF_EXAMPLES:
+        seo_page = dict(seo_page, example=PDF_EXAMPLES[request.endpoint])
     tool_structured_data = None
     related_tools = []
     if seo_page:
@@ -311,7 +321,7 @@ def learn_index():
         "@context": "https://schema.org",
         "@type": "CollectionPage",
         "name": "Browser Tools Learning Library",
-        "description": "Original field guides for diagnosing PDF, image, checksum, and browser privacy problems.",
+        "description": "PDF sample workflows, preview diagnostics, annotation compatibility and local processing limits.",
         "url": public_url("learn_index"),
         "mainEntity": {
             "@type": "ItemList",
@@ -322,11 +332,11 @@ def learn_index():
                     "name": article["title"],
                     "url": public_url("learn_article", slug=slug),
                 }
-                for position, (slug, article) in enumerate(LEARN_PAGES.items(), start=1)
+                for position, (slug, article) in enumerate(public_guides().items(), start=1)
             ],
         },
     }
-    return render_template("learn_index.html", articles=LEARN_PAGES, structured_data=structured_data)
+    return render_template("learn_index.html", articles=public_guides(), structured_data=structured_data)
 
 
 @app.get("/discover")
@@ -336,9 +346,11 @@ def retired_discover():
 
 @app.get("/learn/<slug>")
 def learn_article(slug):
-    article = LEARN_PAGES.get(slug)
+    article = public_guides().get(slug)
     if article is None:
         abort(404)
+    # Preserve original examples on disk while hiding workflows for paused tools.
+    article = dict(article, sections=[section for section in article['sections'] if tool_is_public(section.get('tool_endpoint'))])
     structured_data = {
         "@context": "https://schema.org",
         "@graph": [
@@ -368,7 +380,7 @@ def learn_article(slug):
         slug=slug,
         structured_data=structured_data,
         site_operator=os.getenv("SITE_OPERATOR", "khh go").strip(),
-        related_articles=[(key, value) for key, value in LEARN_PAGES.items() if key != slug][:3],
+        related_articles=[(key, value) for key, value in public_guides().items() if key != slug][:3],
     )
 
 
@@ -504,7 +516,7 @@ def sitemap_xml():
         public_url("focus_timer"),
         public_url("calculator"),
         public_url("learn_index"),
-        *[public_url("learn_article", slug=slug) for slug in LEARN_PAGES],
+        *[public_url("learn_article", slug=slug) for slug in public_guides()],
         *[public_url("content_page", slug=slug) for slug in PAGES if '/' + slug not in CONTENT_REDIRECTS],
     ]
     pages = [{"loc": page, "lastmod": SITEMAP_LASTMOD} for page in page_urls if path_is_public(urlsplit(page).path)]

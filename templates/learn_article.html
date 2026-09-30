@@ -72,7 +72,7 @@
                     <figcaption>{{ section.image.caption }} Select the image to view full size.</figcaption>
                   </figure>
                 {% endif %}
-                {% if section.get('tool_endpoint') %}<p><a class="guide-tool-link" href="{{ url_for(section.tool_endpoint) }}">{{ section.tool_label }} ↗</a></p>{% endif %}
+                {% if section.get('tool_endpoint') and tool_is_public(section.tool_endpoint) %}<p><a class="guide-tool-link" href="{{ url_for(section.tool_endpoint) }}">{{ section.tool_label }} ↗</a></p>{% endif %}
                 {% if section.get('table') %}
                   <div class="guide-table-wrap">
                     <table>
@@ -95,7 +95,7 @@
 
         <section class="guide-action">
           <div><span>RELATED TOOL</span><h2>APPLY THE GUIDE.</h2></div>
-          <a href="{{ url_for(article.tool_endpoint) }}">{{ article.tool_label }} <b aria-hidden="true">↗</b></a>
+          {% if tool_is_public(article.tool_endpoint) %}<a href="{{ url_for(article.tool_endpoint) }}">{{ article.tool_label }} <b aria-hidden="true">↗</b></a>{% else %}<p>This tool is temporarily unavailable.</p>{% endif %}
         </section>
 
         <aside class="guide-related" aria-labelledby="relatedGuides">
