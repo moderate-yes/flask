@@ -30,6 +30,12 @@ button, input { font: inherit; }
 button { color: inherit; }
 
 .tools-bar { display: flex; justify-content: space-between; gap: 8px; margin-bottom: 9px; }
+.all-pdf-tools { color: var(--ink); font-size: 11px; font-weight: 700; align-self: center; text-underline-offset: 3px; }
+.sample-controls { margin: 12px 0; }
+.sample-controls button { padding: 10px 14px; border: 1px solid var(--ink); color: var(--ink); background: var(--white); cursor: pointer; font: inherit; font-size: 12px; }
+.sample-controls button:disabled { opacity: .6; cursor: wait; }
+.sample-controls p { font-size: 11px; line-height: 1.6; margin: 7px 0; }
+.sample-controls button:focus-visible, .all-pdf-tools:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
 
 .tools-trigger,
 .install-trigger {

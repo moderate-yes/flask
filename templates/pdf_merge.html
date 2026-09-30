@@ -20,13 +20,28 @@
     <main class="page-shell pdf-shell" id="pdfApp" data-worker-url="{{ url_for('static', filename='js/pdf-worker.js') }}">
       {% include '_tool_launcher.html' %}
 
-      <section class="merge-card" aria-labelledby="mergeTitle">
+      <section class="home-tool-picker" id="pdfTools" aria-labelledby="homeToolsTitle">
+        <header>
+          <h1 id="homeToolsTitle">FREE PDF TOOLS.</h1>
+          <p>Choose a task. Files are processed in your browser.</p>
+        </header>
+        <nav class="home-tool-grid" aria-label="Choose a PDF tool">
+          <a href="#mergeTool"><strong>Merge PDF</strong><span>Combine documents in order.</span></a>
+          <a href="{{ url_for('pdf_split') }}"><strong>Split PDF</strong><span>Separate a document at page boundaries.</span></a>
+          <a href="{{ url_for('pdf_organizer') }}"><strong>Organize pages</strong><span>Reorder, rotate, remove or extract pages.</span></a>
+          <a href="{{ url_for('pdf_annotations') }}"><strong>Highlights &amp; comments</strong><span>Add and review PDF annotations.</span></a>
+          <a href="{{ url_for('pdf_to_images') }}"><strong>PDF to images</strong><span>Export pages as PNG or JPG.</span></a>
+          <a href="{{ url_for('images_to_pdf') }}"><strong>Images to PDF</strong><span>Build a PDF from your pictures.</span></a>
+        </nav>
+      </section>
+
+      <section class="merge-card" id="mergeTool" aria-labelledby="mergeTitle" tabindex="-1">
         <nav class="pdf-mode-switch" aria-label="Choose a PDF action">
           <a class="active" href="{{ url_for('index') }}" aria-current="page">MERGE</a>
           <a href="{{ url_for('pdf_split') }}">SPLIT</a>
         </nav>
         <header class="merge-heading">
-          <h1 id="mergeTitle">KEEP YOUR DATA PRIVATE.</h1>
+          <h2 id="mergeTitle">MERGE PDF FILES.</h2>
         </header>
 
         <label class="drop-zone" id="dropZone" for="filePicker">

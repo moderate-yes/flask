@@ -11,6 +11,29 @@ from site_metadata import SITEMAP_LASTMOD  # noqa: E402
 
 
 class DomainConfigurationTests(unittest.TestCase):
+    def test_home_starts_with_six_tool_choices(self):
+        import re
+        html = app.test_client().get('/').get_data(as_text=True)
+        self.assertEqual(html.count('<h1'), 1)
+        self.assertIn('FREE PDF TOOLS.', html)
+        self.assertIn('<h2 id="mergeTitle">MERGE PDF FILES.</h2>', html)
+        picker = html.split('class="home-tool-grid"', 1)[1].split('</nav>', 1)[0]
+        self.assertEqual(re.findall(r'href="([^"]+)"', picker), ['#mergeTool', '/pdf-split', '/pdf-organizer', '/pdf-annotations', '/pdf-to-images', '/images-to-pdf'])
+        self.assertLess(html.index('class="home-tool-picker"'), html.index('id="mergeTool"'))
+        self.assertLess(html.index('id="mergeTool"'), html.index('class="seo-guide"'))
+
+    def test_pdf_navigation_and_sample_controls(self):
+        routes = ('/', '/pdf-split', '/pdf-organizer', '/pdf-annotations', '/pdf-to-images', '/images-to-pdf')
+        for route in routes:
+            html = app.test_client().get(route).get_data(as_text=True)
+            self.assertIn('js/sample-loader.js', html)
+            self.assertIn('data-pdf-sample="/static/guide-examples/practice-packet.pdf"', html)
+            if route != '/':
+                self.assertIn('href="/#pdfTools"', html)
+        split = app.test_client().get('/pdf-split').get_data(as_text=True)
+        self.assertIn('SPLIT PDF FILES.', split)
+        self.assertNotIn('KEEP YOUR DATA PRIVATE.', split)
+
     def setUp(self):
         self.client = app.test_client()
 
@@ -188,7 +211,7 @@ class DomainConfigurationTests(unittest.TestCase):
         html = self.client.get('/').get_data(as_text=True)
         footer = html.split('<footer class="site-footer">', 1)[1].split('</footer>', 1)[0]
         self.assertEqual(re.findall(r'href="([^"]+)"', footer),
-                         ['/learn', '/contact', '/privacy'])
+                         ['/learn', '/contact', '/privacy', '/terms'])
         learn = self.client.get('/learn').get_data(as_text=True)
         for path in ('/faq', '/learn/practical-tool-examples'):
             self.assertIn('href="' + path + '"', learn)
@@ -201,7 +224,7 @@ class DomainConfigurationTests(unittest.TestCase):
         self.assertNotIn('No daily usage quota.', html)
         self.assertNotIn('Independently operated by', html)
         self.assertIn('href="/privacy"', html)
-        self.assertNotIn('href="/terms"', html)
+        self.assertIn('href="/terms"', html)
         for path in ('/privacy', '/terms'):
             self.assertEqual(self.client.get(path).status_code, 200)
         for old_path, destination in (('/about', '/contact'), ('/guides', '/learn')):
@@ -256,7 +279,7 @@ class DomainConfigurationTests(unittest.TestCase):
                 html = self.client.get(route).get_data(as_text=True)
                 footer = html.split('<footer class="site-footer">', 1)[1].split('</footer>', 1)[0]
                 self.assertEqual(re.findall(r'href="([^"]+)"', footer),
-                                 ['/learn', '/contact', '/privacy'])
+                                 ['/learn', '/contact', '/privacy', '/terms'])
         html = self.client.get('/privacy').get_data(as_text=True)
         self.assertIn('<h1>PRIVACY POLICY</h1>', html)
         self.assertIn('href="https://adssettings.google.com/"', html)

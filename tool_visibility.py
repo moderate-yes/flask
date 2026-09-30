@@ -25,6 +25,8 @@ def public_content_page(slug, original):
     if SECONDARY_TOOLS_ENABLED or original is None:
         return original
     page = deepcopy(original)
+    if slug == 'terms' and not EXTRA_TOOLS_ENABLED:
+        page['updated'] = 'Last updated: October 1, 2026'
     hidden_titles = {
         "FOCUS TIMER", "MULTI CALCULATOR", "CALCULATIONS",
         "HOW DOES THE MULTI CALCULATOR HANDLE TAX AND TIPS?",
@@ -34,6 +36,8 @@ def public_content_page(slug, original):
         section for section in page.get("sections", [])
         if tool_is_public(section.get("endpoint")) and section["title"] not in hidden_titles
     ]
+    if not EXTRA_TOOLS_ENABLED:
+        page['sections'] = [section for section in page['sections'] if section['title'] != 'CHECKSUMS AND QR CODES']
     replacements = {
         "BROWSER-FIRST BY DESIGN": "PDF and image processing, file hashing, and QR generation are performed in the browser.",
         "CURRENT TOOLKIT": "The collection includes PDF merge, split, page organization, annotations, PDF-image conversion, image resizing and transformation, file hashing, and QR generation.",
@@ -46,6 +50,7 @@ def public_content_page(slug, original):
             section["text"] = replacements[section["title"]]
         if not EXTRA_TOOLS_ENABLED:
             pdf_copy = {
+                'YOUR RESPONSIBILITY': 'You are responsible for confirming that you have permission to process selected files, reviewing generated PDF documents and images, and keeping backups of original material.',
                 'CURRENT TOOLKIT': 'The public tools cover PDF merging, splitting, page organization, annotations, PDF-to-image export and images-to-PDF conversion.',
                 'BROWSER-FIRST BY DESIGN': 'PDF processing and image-to-PDF conversion take place in the browser.',
                 'WHAT HAPPENS WHEN I CLOSE A TOOL?': 'Temporary document data is cleared with the page. Download anything you want to keep before closing.',

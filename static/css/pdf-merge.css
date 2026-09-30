@@ -10,7 +10,8 @@
   box-shadow: 7px 7px 0 rgba(17, 18, 16, .13);
 }
 
-.merge-heading h1 {
+.merge-heading h1,
+.merge-heading h2 {
   max-width: 380px;
   margin: 0;
   color: #73746f;
@@ -21,6 +22,18 @@
 }
 
 .split-card .merge-heading h1 { color: #30312e; }
+
+.home-tool-picker { margin-bottom: 22px; }
+.home-tool-picker h1 { margin: 10px 0; font-family: "Archivo Black", sans-serif; font-size: clamp(26px, 7vw, 38px); line-height: 1.1; }
+.home-tool-picker header p { margin: 0 0 16px; font-size: 13px; line-height: 1.6; }
+.home-tool-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; }
+.home-tool-grid a { display: flex; flex-direction: column; gap: 7px; padding: 15px 12px; border: 1px solid var(--ink); background: rgba(205, 206, 201, .96); color: var(--ink); text-decoration: none; }
+.home-tool-grid strong { font-size: 14px; line-height: 1.35; }
+.home-tool-grid span { font-size: 11px; line-height: 1.5; }
+.home-tool-grid a:hover { background: var(--ink); color: var(--white); }
+.home-tool-grid a:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
+#mergeTool { scroll-margin-top: 16px; }
+@media (max-width: 359px) { .home-tool-grid { grid-template-columns: 1fr; } }
 
 .merge-intro {
   max-width: 350px;
