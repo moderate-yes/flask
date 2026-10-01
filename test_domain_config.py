@@ -159,7 +159,7 @@ class DomainConfigurationTests(unittest.TestCase):
         locations = [entry.findtext("sm:loc", namespaces=namespace) for entry in entries]
         last_modified = [entry.findtext("sm:lastmod", namespaces=namespace) for entry in entries]
 
-        self.assertEqual(len(locations), 23)
+        self.assertEqual(len(locations), 24)
         self.assertEqual(len(locations), len(set(locations)))
         self.assertNotIn("https://browserfiletools.net/path-studio", locations)
         self.assertTrue(all(location.startswith("https://browserfiletools.net/") for location in locations))
@@ -205,7 +205,7 @@ class DomainConfigurationTests(unittest.TestCase):
         html = self.client.get('/').get_data(as_text=True)
         footer = html.split('<footer class="site-footer">', 1)[1].split('</footer>', 1)[0]
         self.assertEqual(re.findall(r'href="([^"]+)"', footer),
-                         ['/learn', '/contact', '/privacy', '/terms'])
+                         ['/how-it-works', '/learn', '/contact', '/privacy', '/terms'])
         learn = self.client.get('/learn').get_data(as_text=True)
         for path in ('/faq', '/learn/practical-tool-examples'):
             self.assertIn('href="' + path + '"', learn)
@@ -273,7 +273,7 @@ class DomainConfigurationTests(unittest.TestCase):
                 html = self.client.get(route).get_data(as_text=True)
                 footer = html.split('<footer class="site-footer">', 1)[1].split('</footer>', 1)[0]
                 self.assertEqual(re.findall(r'href="([^"]+)"', footer),
-                                 ['/learn', '/contact', '/privacy', '/terms'])
+                                 ['/how-it-works', '/learn', '/contact', '/privacy', '/terms'])
         html = self.client.get('/privacy').get_data(as_text=True)
         self.assertIn('<h1>PRIVACY POLICY</h1>', html)
         self.assertIn('href="https://adsterra.com/privacy-policy/"', html)
