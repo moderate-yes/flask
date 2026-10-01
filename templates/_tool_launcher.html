@@ -1,6 +1,6 @@
 <div class="tools-bar">
   {% if request.endpoint in ('pdf_split', 'pdf_organizer', 'pdf_annotations', 'pdf_to_images', 'images_to_pdf') %}
-  <a class="all-pdf-tools" href="{{ url_for('index') }}#pdfTools">← ALL PDF TOOLS</a>
+  <a class="all-pdf-tools" href="{{ url_for('index') }}">← PDF MERGE</a>
   {% endif %}
   <button class="install-trigger" type="button" data-install-app hidden>
     <span>INSTALL APP</span><span aria-hidden="true">↓</span>

@@ -1,7 +1,10 @@
 <aside class="ad-banner" aria-label="Advertisement">
+  <div class="ad-banner__support">
+    <p class="ad-banner__promise">No fees. No account.<br>No file uploads. PLEASE ADS.</p>
+  </div>
   <p class="ad-banner__label">ADVERTISEMENT</p>
   <div class="ad-banner__slot">
-    {% if config.get('ADSTERRA_ENABLED', false) and request.cookies.get('bt_ad_choice_v1') == 'allow' %}
+    {% if advertising_allowed %}
     <script>
       window.atOptions = {
         'key': '7b1621a5c77b6e78a09790c1878a8b47',
@@ -26,7 +29,7 @@
     <div class="ad-banner__preview">300 × 250<br>Advertisement preview — not active</div>
     {% endif %}
   </div>
-  {% if config.get('ADSTERRA_ENABLED', false) and request.cookies.get('bt_ad_choice_v1') == 'allow' %}
+  {% if advertising_allowed %}
   <form action="{{ url_for('advertising_choice') }}" method="post">
     <input type="hidden" name="next" value="{{ request.path }}">
     <button name="choice" value="deny" type="submit">Turn off advertising</button>

@@ -28,6 +28,13 @@ class AdsterraBannerTests(unittest.TestCase):
         self.assertIn("'width': 300", html)
         self.assertNotIn('Advertisement preview — not active', html)
 
+    def test_support_message_is_accurate_and_not_a_click_request(self):
+        html = self.client.get('/').get_data(as_text=True)
+        self.assertIn('No fees. No account.', html)
+        self.assertIn('No file uploads. PLEASE ADS.', html)
+        self.assertNotIn('No data saved', html)
+        self.assertIn('The tools work without advertising consent.', html)
+
     def test_all_public_pages_have_one_banner(self):
         from build_static import ROUTES
         for enabled in (False, True):
@@ -45,11 +52,19 @@ class AdsterraBannerTests(unittest.TestCase):
 
     def test_error_and_hidden_pages_do_not_load_unit(self):
         app.config['ADSTERRA_ENABLED'] = True
-        for path in ['/missing-page', '/image-toolkit', '/calculator']:
+        for path in ['/missing-page', '/path-studio']:
             with self.subTest(path=path):
                 html = self.client.get(path).get_data(as_text=True)
                 self.assertNotIn('highrevenueformat.com', html)
                 self.assertNotIn('class="ad-banner"', html)
+
+    def test_tool_banner_precedes_instructions(self):
+        from tool_visibility import SECONDARY_PATHS, EXTRA_PATHS
+        for path in ['/', '/pdf-split', '/pdf-organizer', '/pdf-annotations', '/pdf-to-images', '/images-to-pdf', *SECONDARY_PATHS, *EXTRA_PATHS]:
+            with self.subTest(path=path):
+                html = self.client.get(path).get_data(as_text=True)
+                self.assertEqual(html.count('class="ad-banner"'), 1)
+                self.assertLess(html.index('class="ad-banner"'), html.index('class="seo-guide"'))
 
     def test_consent_and_withdrawal(self):
         app.config['ADSTERRA_ENABLED'] = True

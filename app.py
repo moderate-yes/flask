@@ -10,6 +10,7 @@ from flask import Flask, Response, abort, jsonify, redirect, render_template, re
 from werkzeug.middleware.proxy_fix import ProxyFix
 
 from content_pages import PAGES
+from ad_policy import advertising_allowed
 from learn_pages import LEARN_PAGES
 from public_guides import public_guides
 from pdf_examples import PDF_EXAMPLES
@@ -161,6 +162,15 @@ def client_ip_hash(visit_date):
     # A same-day, unsalted hash is enough to deduplicate repeat requests from
     # one address without keeping a reversible or long-lived record of it.
     return hashlib.sha256(f"{request.remote_addr}|{visit_date}".encode()).hexdigest()
+
+
+@app.context_processor
+def inject_advertising_policy():
+    return {"advertising_allowed": advertising_allowed(
+        app.config.get('ADSTERRA_ENABLED', False),
+        request.cookies.get('bt_ad_choice_v1'),
+        request.environ,
+    )}
 
 
 @app.context_processor

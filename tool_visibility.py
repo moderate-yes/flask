@@ -3,10 +3,10 @@ from copy import deepcopy
 
 # Set True to restore both tools, their links, descriptions and sitemap entries.
 # Rebuild/redeploy after changing this switch (also refresh the service-worker cache).
-SECONDARY_TOOLS_ENABLED = False
+SECONDARY_TOOLS_ENABLED = True
 SECONDARY_ENDPOINTS = frozenset({"focus_timer", "calculator"})
 SECONDARY_PATHS = frozenset({"/focus-timer", "/calculator"})
-EXTRA_TOOLS_ENABLED = False
+EXTRA_TOOLS_ENABLED = True
 EXTRA_ENDPOINTS = frozenset({"image_toolkit", "image_transform", "file_hash", "qr_generator"})
 EXTRA_PATHS = frozenset({"/image-toolkit", "/image-transform", "/file-hash", "/qr-generator"})
 PAUSED_GUIDES = frozenset({'/learn/resize-image-for-online-forms', '/learn/verify-sha256-checksum'})

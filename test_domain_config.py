@@ -11,15 +11,12 @@ from site_metadata import SITEMAP_LASTMOD  # noqa: E402
 
 
 class DomainConfigurationTests(unittest.TestCase):
-    def test_home_starts_with_six_tool_choices(self):
+    def test_home_starts_with_merge(self):
         import re
         html = app.test_client().get('/').get_data(as_text=True)
         self.assertEqual(html.count('<h1'), 1)
-        self.assertIn('FREE PDF TOOLS.', html)
-        self.assertIn('<h2 id="mergeTitle">MERGE PDF FILES.</h2>', html)
-        picker = html.split('class="home-tool-grid"', 1)[1].split('</nav>', 1)[0]
-        self.assertEqual(re.findall(r'href="([^"]+)"', picker), ['#mergeTool', '/pdf-split', '/pdf-organizer', '/pdf-annotations', '/pdf-to-images', '/images-to-pdf'])
-        self.assertLess(html.index('class="home-tool-picker"'), html.index('id="mergeTool"'))
+        self.assertNotIn('class="home-tool-picker"', html)
+        self.assertIn('<h1 id="mergeTitle">MERGE PDF FILES.</h1>', html)
         self.assertLess(html.index('id="mergeTool"'), html.index('class="seo-guide"'))
 
     def test_pdf_navigation_and_sample_controls(self):
@@ -29,7 +26,7 @@ class DomainConfigurationTests(unittest.TestCase):
             self.assertIn('js/sample-loader.js', html)
             self.assertIn('data-pdf-sample="/static/guide-examples/practice-packet.pdf"', html)
             if route != '/':
-                self.assertIn('href="/#pdfTools"', html)
+                self.assertIn('← PDF MERGE', html)
         split = app.test_client().get('/pdf-split').get_data(as_text=True)
         self.assertIn('SPLIT PDF FILES.', split)
         self.assertNotIn('KEEP YOUR DATA PRIVATE.', split)
@@ -85,7 +82,7 @@ class DomainConfigurationTests(unittest.TestCase):
                 result.close()
         sample = self.client.get("/static/guide-examples/abc.txt")
         self.assertEqual(sample.data, b"abc")
-        self.assertNotIn(hashlib.sha256(sample.data).hexdigest(), html)
+        self.assertIn(hashlib.sha256(sample.data).hexdigest(), html)
         sample.close()
 
     def test_legacy_render_domain_redirects_permanently(self):
@@ -163,7 +160,7 @@ class DomainConfigurationTests(unittest.TestCase):
         locations = [entry.findtext("sm:loc", namespaces=namespace) for entry in entries]
         last_modified = [entry.findtext("sm:lastmod", namespaces=namespace) for entry in entries]
 
-        self.assertEqual(len(locations), 15)
+        self.assertEqual(len(locations), 23)
         self.assertEqual(len(locations), len(set(locations)))
         self.assertNotIn("https://browserfiletools.net/path-studio", locations)
         self.assertTrue(all(location.startswith("https://browserfiletools.net/") for location in locations))
@@ -191,20 +188,18 @@ class DomainConfigurationTests(unittest.TestCase):
                 self.assertEqual(html.count("<h1"), 1)
                 self.assertIn(expected_heading, html)
 
-    def test_paused_tools_are_not_public(self):
+    def test_secondary_tools_are_restored(self):
         from build_static import ROUTES, INDEXED_ROUTES
         for path in ("/focus-timer", "/calculator"):
-            self.assertEqual(self.client.get(path).status_code, 404)
-            self.assertNotIn(path, ROUTES)
-            self.assertNotIn(path, INDEXED_ROUTES)
-            self.assertNotIn(path, self.client.get("/sitemap.xml").get_data(as_text=True))
+            self.assertEqual(self.client.get(path).status_code, 200)
+            self.assertIn(path, ROUTES)
+            self.assertIn(path, INDEXED_ROUTES)
+            self.assertIn(path, self.client.get("/sitemap.xml").get_data(as_text=True))
         for path in ROUTES:
             with self.subTest(path=path):
                 html = self.client.get(path).get_data(as_text=True).lower()
-                self.assertNotIn("/focus-timer", html)
-                self.assertNotIn("/calculator", html)
-                self.assertNotIn("focus timer", html)
-                self.assertNotIn("calculator", html)
+                self.assertIn("/focus-timer", html)
+                self.assertIn("/calculator", html)
 
     def test_simplified_navigation_and_retained_help_pages(self):
         import re
@@ -236,40 +231,40 @@ class DomainConfigurationTests(unittest.TestCase):
         from content_pages import PAGES
         self.assertEqual(len(streamlined_content('faq', PAGES['faq'])['sections']), 4)
 
-    def test_extra_tools_are_paused_but_restorable(self):
+    def test_extra_tools_are_restored(self):
         from unittest.mock import patch
         from tool_visibility import EXTRA_PATHS
         from build_static import ROUTES
         sitemap = self.client.get('/sitemap.xml').get_data(as_text=True)
         for path in EXTRA_PATHS:
-            self.assertEqual(self.client.get(path).status_code, 404)
-            self.assertNotIn(path, ROUTES)
-            self.assertNotIn('https://browserfiletools.net' + path + '</loc>', sitemap)
-            with patch('tool_visibility.EXTRA_TOOLS_ENABLED', True):
-                self.assertEqual(self.client.get(path).status_code, 200)
+            self.assertEqual(self.client.get(path).status_code, 200)
+            self.assertIn(path, ROUTES)
+            self.assertIn('https://browserfiletools.net' + path + '</loc>', sitemap)
+            with patch('tool_visibility.EXTRA_TOOLS_ENABLED', False):
+                self.assertEqual(self.client.get(path).status_code, 404)
         for route in ROUTES:
             html = self.client.get(route).get_data(as_text=True)
             for path in EXTRA_PATHS:
-                self.assertNotIn('href="' + path + '"', html)
+                self.assertIn('href="' + path + '"', html)
 
     def test_pdf_focused_guides_and_examples(self):
         from public_guides import public_guides
         from learn_pages import LEARN_PAGES
         from tool_visibility import PAUSED_GUIDES
         from build_static import ROUTES
-        self.assertEqual(len(public_guides()), 4)
+        self.assertEqual(len(public_guides()), 6)
         for route in PAUSED_GUIDES:
             self.assertIn(route.rsplit('/', 1)[1], LEARN_PAGES)
-            self.assertEqual(self.client.get(route).status_code, 404)
-            self.assertNotIn(route, ROUTES)
-            self.assertNotIn(route, self.client.get('/sitemap.xml').get_data(as_text=True))
+            self.assertEqual(self.client.get(route).status_code, 200)
+            self.assertIn(route, ROUTES)
+            self.assertIn(route, self.client.get('/sitemap.xml').get_data(as_text=True))
         for route in ('/', '/pdf-split', '/pdf-organizer', '/pdf-annotations', '/pdf-to-images', '/images-to-pdf'):
             html = self.client.get(route).get_data(as_text=True)
             self.assertIn('Check the result:', html)
             self.assertIn('Download the four-page practice PDF', html)
         guide = self.client.get('/learn/practical-tool-examples').get_data(as_text=True)
         for stale in ('resize-practice.png', 'abc.txt', 'Try Image Toolkit', 'Try File Hash'):
-            self.assertNotIn(stale, guide)
+            self.assertIn(stale, guide)
 
     def test_privacy_disclosures_and_sitewide_footer(self):
         import re
