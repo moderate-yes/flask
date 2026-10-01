@@ -22,6 +22,7 @@ from content_presentation import CONTENT_REDIRECTS
 ROOT = Path(__file__).resolve().parent
 
 ROUTES = {
+    "/how-it-works": "how-it-works/index.html",
     "/": "index.html",
     "/pdf-split": "pdf-split/index.html",
     "/pdf-organizer": "pdf-organizer/index.html",
@@ -50,6 +51,7 @@ ROUTES = {
 }
 
 INDEXED_ROUTES = (
+    "/how-it-works",
     "/",
     "/pdf-split",
     "/pdf-organizer",

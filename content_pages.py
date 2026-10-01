@@ -1,4 +1,42 @@
 PAGES = {
+    "how-it-works": {
+        "title": "How Local File Processing Works",
+        "description": "See how Browser Tools processes PDFs on your device, what still uses the internet, and how to check file processing yourself.",
+        "eyebrow": "HOW IT WORKS / ON YOUR DEVICE",
+        "heading": "YOUR FILES.\nYOUR DEVICE.",
+        "intro": "Your browser does the file processing. You do not need to send your documents to our servers to merge PDFs. Free to use. No account. Ads help keep these tools free.",
+        "sections": [
+            {
+                "title": "SELECT → PROCESS → SAVE",
+                "text": "For PDF Merge, selecting a file gives this page access to the file you choose; it is not an upload. The browser reads its bytes, sends them to a worker running on your device, and builds a new PDF. The download is created from that result in browser memory, not returned by a document-processing server.",
+                "items": ["Select: choose your PDFs from your device.", "Process: your device supplies the processor time and memory.", "Save: download the merged PDF before closing or refreshing the page."]
+            },
+            {
+                "title": "TRY IT WITH SAMPLE FILES",
+                "text": "Open PDF Merge and choose TRY A SAMPLE. This adds two copies of a four-page practice PDF. Merge just these two files to produce an eight-page PDF, then open the download to check the result. Use the sample before trying your own documents.",
+                "endpoint": "index",
+                "link_label": "Try PDF Merge"
+            },
+            {
+                "title": "LOCAL FILES DOES NOT MEAN NO INTERNET",
+                "text": "Your browser still downloads the website, processing libraries and other assets. Ads, when allowed, make separate network requests and may use cookies and device information. Hosting also receives ordinary page requests. Local file processing is a statement about how the tools handle file contents, not a claim that browsing is anonymous or that the website stores no data.",
+                "links": [{"label": "Read the privacy details", "url": "/privacy"}]
+            },
+            {
+                "title": "CHECK IT YOURSELF",
+                "text": "On a desktop browser, open Developer Tools and its Network panel before using PDF Merge. Clear the request list, select sample PDFs and merge them. The merge result should be generated locally rather than arriving as a server response containing the processed PDF. Asset and advertising requests can still appear. For an additional check, load the tool and sample first, then disconnect the network and try merging; libraries that have not loaded yet can prevent this test from completing. This is not a promise that every page works offline.",
+            },
+            {
+                "title": "YOUR DEVICE SETS THE LIMITS",
+                "text": "Large PDFs can use substantial memory, especially on phones or when other tabs are open. A slow operation does not mean a file is uploading. Try fewer or smaller files, close unused tabs, or use a desktop browser. Encrypted, damaged or unusually complex PDFs may not process correctly. Keep your originals and inspect the downloaded result; do not rely on this tool to preserve digital signatures.",
+                "links": [{"label": "Worked examples and troubleshooting", "url": "/learn/practical-tool-examples"}]
+            },
+            {
+                "title": "DOWNLOAD BEFORE YOU LEAVE",
+                "text": "Reloading or closing the page can discard the current file selection and generated result. Save the output you want to keep. Downloaded files remain on your device until you remove them; preferences and advertising choices are separate from document processing."
+            }
+        ]
+    },
     "about": {
         "title": "About Browser Tools",
         "description": "Learn why Browser Tools builds practical, browser-first utilities with privacy in mind.",

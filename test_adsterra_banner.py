@@ -30,8 +30,9 @@ class AdsterraBannerTests(unittest.TestCase):
 
     def test_support_message_is_accurate_and_not_a_click_request(self):
         html = self.client.get('/').get_data(as_text=True)
-        self.assertIn('No fees. No account.', html)
-        self.assertIn('No file uploads. PLEASE ADS.', html)
+        self.assertIn('Free to use. No account.', html)
+        self.assertIn('Files stay on your device.', html)
+        self.assertIn('Ads help keep these tools free.', html)
         self.assertNotIn('No data saved', html)
         self.assertIn('The tools work without advertising consent.', html)
 
@@ -83,6 +84,21 @@ class AdsterraBannerTests(unittest.TestCase):
         self.assertEqual(self.client.post('/advertising-choice', data={'choice': 'allow'}, headers={'Origin': 'https://evil.example'}).status_code, 403)
         response = self.client.post('/advertising-choice', data={'choice': 'deny', 'next': '//evil.example'})
         self.assertEqual(response.location, '/')
+
+    def test_first_visit_requires_choice_but_policy_pages_remain_accessible(self):
+        app.config['ADSTERRA_ENABLED'] = True
+        for path in ['/', '/pdf-split', '/calculator']:
+            html = self.client.get(path).get_data(as_text=True)
+            self.assertIn('data-required="true" open', html)
+            self.assertNotIn('highrevenueformat.com', html)
+            self.assertNotIn('← PDF MERGE', html)
+        for path in ['/privacy', '/terms', '/contact']:
+            self.assertIn('data-required="false"', self.client.get(path).get_data(as_text=True))
+        for choice in ['deny', 'allow']:
+            self.client.post('/advertising-choice', data={'choice': choice})
+            html = self.client.get('/').get_data(as_text=True)
+            self.assertIn('data-required="false"', html)
+            self.assertEqual('highrevenueformat.com' in html, choice == 'allow')
 
 
 if __name__ == '__main__':

@@ -1,6 +1,6 @@
 <aside class="ad-banner" aria-label="Advertisement">
   <div class="ad-banner__support">
-    <p class="ad-banner__promise">No fees. No account.<br>No file uploads. PLEASE ADS.</p>
+    <p class="ad-banner__promise">Free to use. No account.<br>Files stay on your device.<br>Ads help keep these tools free.</p>
   </div>
   <p class="ad-banner__label">ADVERTISEMENT</p>
   <div class="ad-banner__slot">
@@ -16,15 +16,7 @@
     </script>
     <script src="https://www.highrevenueformat.com/7b1621a5c77b6e78a09790c1878a8b47/invoke.js"></script>
     {% elif config.get('ADSTERRA_ENABLED', false) %}
-    <form class="ad-banner__consent" action="{{ url_for('advertising_choice') }}" method="post">
-      <input type="hidden" name="next" value="{{ request.path }}">
-      <p>Allow Adsterra and its advertising partners to use cookies and process your IP address and device information to deliver and measure ads?</p>
-      <a href="{{ url_for('content_page', slug='privacy') }}">Privacy details</a>
-      <p>The tools work without advertising consent.</p>
-      <button name="choice" value="allow" type="submit">Allow advertising</button>
-      <button name="choice" value="deny" type="submit">No thanks</button>
-      {% if request.cookies.get('bt_ad_choice_v1') == 'deny' %}<p>Advertising is off.</p>{% endif %}
-    </form>
+    <p>Advertising is off. You can change your choice in Advertising preferences below.</p>
     {% else %}
     <div class="ad-banner__preview">300 × 250<br>Advertisement preview — not active</div>
     {% endif %}

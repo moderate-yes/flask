@@ -3,10 +3,17 @@
 {% endif %}
 <footer class="site-footer">
   <nav aria-label="Site information">
+    <a href="{{ url_for('content_page', slug='how-it-works') }}">HOW IT WORKS</a>
     <a href="{{ url_for('learn_index') }}">LEARN</a>
     <a href="{{ url_for('content_page', slug='contact') }}">CONTACT</a>
     <a href="{{ url_for('content_page', slug='privacy') }}">PRIVACY</a>
     <a href="{{ url_for('content_page', slug='terms') }}">TERMS</a>
   </nav>
   <p>BROWSER TOOLS · BROWSER-FIRST UTILITIES</p>
+  {% if config.get('ADSTERRA_ENABLED', false) and code is not defined %}
+  <button type="button" data-ad-preferences>Advertising preferences</button>
+  {% endif %}
 </footer>
+{% if config.get('ADSTERRA_ENABLED', false) and code is not defined %}
+{% include '_advertising_choice.html' %}
+{% endif %}

@@ -25,8 +25,7 @@ class DomainConfigurationTests(unittest.TestCase):
             html = app.test_client().get(route).get_data(as_text=True)
             self.assertIn('js/sample-loader.js', html)
             self.assertIn('data-pdf-sample="/static/guide-examples/practice-packet.pdf"', html)
-            if route != '/':
-                self.assertIn('← PDF MERGE', html)
+            self.assertNotIn('← PDF MERGE', html)
         split = app.test_client().get('/pdf-split').get_data(as_text=True)
         self.assertIn('SPLIT PDF FILES.', split)
         self.assertNotIn('KEEP YOUR DATA PRIVATE.', split)

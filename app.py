@@ -412,7 +412,7 @@ def learn_article(slug):
     )
 
 
-@app.get("/<any(about,guides,faq,privacy,terms,contact):slug>")
+@app.get('/<any(about,guides,faq,privacy,terms,contact,"how-it-works"):slug>')
 def content_page(slug):
     if request.path in CONTENT_REDIRECTS:
         return redirect(CONTENT_REDIRECTS[request.path], code=301)
