@@ -282,9 +282,9 @@ class DomainConfigurationTests(unittest.TestCase):
                                  ['/learn', '/contact', '/privacy', '/terms'])
         html = self.client.get('/privacy').get_data(as_text=True)
         self.assertIn('<h1>PRIVACY POLICY</h1>', html)
-        self.assertIn('href="https://adssettings.google.com/"', html)
-        self.assertIn('href="https://www.aboutads.info/choices/"', html)
-        self.assertIn('Google Ads conversion tracking', html)
+        self.assertIn('href="https://adsterra.com/privacy-policy/"', html)
+        self.assertIn('href="https://adsterra.com/cookies/"', html)
+        self.assertIn('bt_ad_choice_v1', html)
         self.assertNotIn('does not yet run its own cookie-consent banner', html)
 
     def test_paused_tool_documentation_is_retained(self):

@@ -1,3 +1,6 @@
+{% if code is not defined %}
+  {% include '_adsterra_banner.html' %}
+{% endif %}
 <footer class="site-footer">
   <nav aria-label="Site information">
     <a href="{{ url_for('learn_index') }}">LEARN</a>

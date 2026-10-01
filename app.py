@@ -20,6 +20,7 @@ from content_presentation import CONTENT_REDIRECTS, streamlined_content
 
 
 app = Flask(__name__)
+app.config["ADSTERRA_ENABLED"] = True
 KOREA_TIME = timezone(timedelta(hours=9))
 TOTAL_VISIT_COOKIE = "bt_visit_total"
 DAY_VISIT_COOKIE = "bt_visit_day"
@@ -235,6 +236,23 @@ def inject_public_metadata():
         # navigation, policy, or error screens.
         "adsense_enabled": request.endpoint == "learn_article",
     }
+
+
+@app.post('/advertising-choice')
+def advertising_choice():
+    origin = request.headers.get('Origin')
+    if origin and origin.rstrip('/') != request.host_url.rstrip('/'):
+        abort(403)
+    choice = request.form.get('choice')
+    if choice not in ('allow', 'deny'):
+        abort(400)
+    target = request.form.get('next', '/')
+    if not target.startswith('/') or target.startswith('//') or '\\' in target or not path_is_public(target):
+        target = '/'
+    response = redirect(target, code=303)
+    response.set_cookie('bt_ad_choice_v1', choice, httponly=True,
+                        secure=request.is_secure, samesite='Lax')
+    return response
 
 
 @app.after_request
