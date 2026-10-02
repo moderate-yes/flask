@@ -16,9 +16,6 @@
   </div>
 </dialog>
 
-{% if request.endpoint in ('index', 'pdf_split', 'pdf_organizer', 'pdf_annotations', 'pdf_to_images', 'images_to_pdf') %}
-<script src="{{ url_for('static', filename='js/sample-loader.js') }}" data-sample-tool="{{ request.endpoint }}" data-pdf-sample="{{ url_for('static', filename='guide-examples/practice-packet.pdf') }}" data-image-sample="{{ url_for('static', filename='guide-examples/resize-practice.png') }}" defer></script>
-{% endif %}
 
 <dialog class="tool-launcher" id="toolLauncher" aria-labelledby="launcherTitle">
   <div class="launcher-panel">

@@ -16,7 +16,12 @@
     </script>
     <script src="https://www.highrevenueformat.com/7b1621a5c77b6e78a09790c1878a8b47/invoke.js"></script>
     {% elif config.get('ADSTERRA_ENABLED', false) %}
-    <p>Advertising is off. You can change your choice in Advertising preferences below.</p>
+    <p>Advertising cookies are off.</p>
+    <form action="{{ url_for('advertising_choice') }}" method="post">
+      <input type="hidden" name="next" value="{{ request.path }}">
+      <button class="ad-banner__accept" name="choice" value="allow" type="submit">Accept advertising cookies</button>
+    </form>
+    <p class="ad-banner__consent">Allow Adsterra and its partners to use cookies, your IP address and device information to deliver and measure ads. <a href="{{ url_for('content_page', slug='privacy') }}">Privacy details</a></p>
     {% else %}
     <div class="ad-banner__preview">300 × 250<br>Advertisement preview — not active</div>
     {% endif %}

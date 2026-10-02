@@ -23,8 +23,8 @@ class DomainConfigurationTests(unittest.TestCase):
         routes = ('/', '/pdf-split', '/pdf-organizer', '/pdf-annotations', '/pdf-to-images', '/images-to-pdf')
         for route in routes:
             html = app.test_client().get(route).get_data(as_text=True)
-            self.assertIn('js/sample-loader.js', html)
-            self.assertIn('data-pdf-sample="/static/guide-examples/practice-packet.pdf"', html)
+            self.assertNotIn('js/sample-loader.js', html)
+            self.assertNotIn('data-pdf-sample=', html)
             self.assertNotIn('← PDF MERGE', html)
         split = app.test_client().get('/pdf-split').get_data(as_text=True)
         self.assertIn('SPLIT PDF FILES.', split)

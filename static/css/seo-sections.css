@@ -9,7 +9,7 @@
 .seo-guide-header > span,
 .seo-section-label span,
 .seo-related > span { color: var(--muted); font: 7px "DM Mono", monospace; letter-spacing: .09em; }
-.seo-guide-header h2 { margin: 12px 0 0; font-family: "Archivo Black", "Inter", sans-serif; font-size: clamp(25px, 7.4vw, 34px); line-height: .96; letter-spacing: -.055em; }
+.seo-guide-header h2 { margin: 12px 0 0; font-family: "Inter", sans-serif; font-weight: 900; font-size: clamp(25px, 7.4vw, 34px); line-height: .96; letter-spacing: -.055em; }
 .seo-guide-header p { margin: 14px 0 0; color: var(--muted); font-size: 10px; line-height: 1.65; }
 
 .seo-how,

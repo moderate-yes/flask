@@ -85,6 +85,42 @@ class AdsterraBannerTests(unittest.TestCase):
         response = self.client.post('/advertising-choice', data={'choice': 'deny', 'next': '//evil.example'})
         self.assertEqual(response.location, '/')
 
+    def test_no_duplicate_advertising_control_when_allowed(self):
+        app.config['ADSTERRA_ENABLED'] = True
+        self.client.set_cookie('bt_ad_choice_v1', 'allow')
+        html = self.client.get('/').get_data(as_text=True)
+        self.assertNotIn('data-ad-preferences', html)
+        self.assertIn('Turn off advertising', html)
+        self.client.set_cookie('bt_ad_choice_v1', 'deny')
+        html = self.client.get('/').get_data(as_text=True)
+        self.assertNotIn('data-ad-preferences', html)
+        banner = html.split('<aside class="ad-banner"', 1)[1].split('</aside>', 1)[0]
+        self.assertIn('value="allow" type="submit">Accept advertising cookies', banner)
+        self.assertNotIn('highrevenueformat.com', html)
+        self.client.post('/advertising-choice', data={'choice': 'allow', 'next': '/'})
+        self.assertIn('highrevenueformat.com', self.client.get('/').get_data(as_text=True))
+        self.assertNotIn('Turn off advertising', html)
+
+    def test_choice_lifetimes_and_permission_only_renewal(self):
+        for choice, seconds in [('allow', 34560000), ('deny', 86400)]:
+            response = self.client.post('/advertising-choice', data={'choice': choice})
+            cookie = response.headers['Set-Cookie']
+            self.assertIn(f'Max-Age={seconds}', cookie)
+            self.assertIn('HttpOnly', cookie)
+            self.assertIn('SameSite=Lax', cookie)
+            response = self.client.get('/')
+            cookies = response.headers.getlist('Set-Cookie')
+            advertising_cookies = [item for item in cookies if item.startswith('bt_ad_choice_v1=')]
+            if choice == 'allow':
+                self.assertEqual(len(advertising_cookies), 1)
+                self.assertIn('Max-Age=34560000', advertising_cookies[0])
+            else:
+                self.assertEqual(advertising_cookies, [])
+        self.client.delete_cookie('bt_ad_choice_v1')
+        html = self.client.get('/').get_data(as_text=True)
+        self.assertIn('data-required="true" open', html)
+        self.assertNotIn('highrevenueformat.com', html)
+
     def test_first_visit_requires_choice_but_policy_pages_remain_accessible(self):
         app.config['ADSTERRA_ENABLED'] = True
         for path in ['/', '/pdf-split', '/calculator']:

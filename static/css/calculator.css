@@ -3,7 +3,7 @@
 .calculator-card { padding: 26px 18px 22px; }
 .calculator-heading > p:first-child, .formula-note, .calculator-local, .calculator-tabs, .calculator-panel label > span, .calculator-result > div, .calculator-actions, .calculator-guide > header > span { font-family: "DM Mono",monospace; letter-spacing: .075em; }
 .calculator-heading > p:first-child { margin: 0 0 15px; font-size: 8px; }
-.calculator-heading h1 { margin: 0; font-family: "Archivo Black",sans-serif; font-size: clamp(37px,10vw,48px); line-height: .92; letter-spacing: -.055em; }
+.calculator-heading h1 { margin: 0; font-family: "Inter", sans-serif; font-weight: 900; font-size: clamp(37px,10vw,48px); line-height: .92; letter-spacing: -.055em; }
 .calculator-heading > p:last-child { margin: 18px 0 0; color: var(--muted); font-size: 12px; line-height: 1.6; }
 .calculator-tabs { display: grid; grid-template-columns: repeat(2,1fr); margin-top: 24px; border: 1px solid var(--ink); }
 .calculator-tabs button { min-height: 44px; border: 0; background: transparent; font: 500 10px "DM Mono",monospace; letter-spacing: .055em; cursor: pointer; }
@@ -37,10 +37,10 @@
 .calculator-guide { margin-top: 14px; padding: 24px 18px; }
 .calculator-guide > header { padding-bottom: 20px; border-bottom: 1px solid var(--ink); }
 .calculator-guide > header > span { font-size: 7px; }
-.calculator-guide h2 { margin: 12px 0 0; font-family: "Archivo Black",sans-serif; font-size: 31px; line-height: .94; letter-spacing: -.05em; }
+.calculator-guide h2 { margin: 12px 0 0; font-family: "Inter", sans-serif; font-weight: 900; font-size: 31px; line-height: .94; letter-spacing: -.05em; }
 .calculator-guide > section { display: grid; grid-template-columns: 28px minmax(0,1fr); gap: 9px; padding: 20px 0; border-bottom: 1px solid rgba(17,18,16,.3); }
 .calculator-guide > section > b { font: 500 7px "DM Mono",monospace; }
-.calculator-guide h3 { margin: 0; font-family: "Archivo Black",sans-serif; font-size: 18px; letter-spacing: -.035em; }
+.calculator-guide h3 { margin: 0; font-family: "Inter", sans-serif; font-weight: 900; font-size: 18px; letter-spacing: -.035em; }
 .calculator-guide section p, .calculator-guide aside p { margin: 10px 0 0; color: var(--muted); font-size: 11px; line-height: 1.7; }
 .calculator-guide aside { margin-top: 20px; border: 1px solid var(--ink); padding: 15px; background: #c6c7c1; }
 .calculator-guide aside strong { font: 500 8px "DM Mono",monospace; letter-spacing: .08em; }

@@ -20,7 +20,7 @@
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":{{ page.title | tojson }},"description":{{ page.description | tojson }},"url":{{ canonical_url | tojson }},"isPartOf":{"@type":"WebSite","name":"Browser Tools","url":{{ site_home_url | tojson }}}{% if slug == 'about' %},"about":{"@type":"Person","name":{{ site_operator | tojson }}}{% endif %}}</script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/content-pages.css') }}">
   </head>

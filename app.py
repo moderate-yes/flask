@@ -261,7 +261,20 @@ def advertising_choice():
         target = '/'
     response = redirect(target, code=303)
     response.set_cookie('bt_ad_choice_v1', choice, httponly=True,
-                        secure=request.is_secure, samesite='Lax')
+                        secure=request.is_secure, samesite='Lax',
+                        max_age=(400 * 24 * 60 * 60 if choice == 'allow' else 24 * 60 * 60))
+    return response
+
+
+@app.after_request
+def refresh_advertising_permission(response):
+    # Renew permission on page visits, but never extend a refusal's 24 hours.
+    # Browsers may still expire or remove cookies earlier than this duration.
+    if (request.method == 'GET' and response.status_code == 200
+            and response.mimetype == 'text/html'
+            and request.cookies.get('bt_ad_choice_v1') == 'allow'):
+        response.set_cookie('bt_ad_choice_v1', 'allow', max_age=400 * 24 * 60 * 60,
+                            httponly=True, secure=request.is_secure, samesite='Lax')
     return response
 
 

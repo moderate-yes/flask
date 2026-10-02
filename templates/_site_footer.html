@@ -10,9 +10,6 @@
     <a href="{{ url_for('content_page', slug='terms') }}">TERMS</a>
   </nav>
   <p>BROWSER TOOLS · BROWSER-FIRST UTILITIES</p>
-  {% if config.get('ADSTERRA_ENABLED', false) and code is not defined %}
-  <button type="button" data-ad-preferences>Advertising preferences</button>
-  {% endif %}
 </footer>
 {% if config.get('ADSTERRA_ENABLED', false) and code is not defined %}
 {% include '_advertising_choice.html' %}

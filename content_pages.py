@@ -13,7 +13,8 @@ PAGES = {
             },
             {
                 "title": "TRY IT WITH SAMPLE FILES",
-                "text": "Open PDF Merge and choose TRY A SAMPLE. This adds two copies of a four-page practice PDF. Merge just these two files to produce an eight-page PDF, then open the download to check the result. Use the sample before trying your own documents.",
+                "text": "Download the four-page practice PDF from Worked Examples and select it in PDF Merge along with a second copy saved under a different filename. Merge just these two files to produce an eight-page PDF, then open the download to check the result. Use practice files before trying your own documents.",
+                "links": [{"label": "Get practice files in Worked Examples", "url": "/learn/practical-tool-examples"}],
                 "endpoint": "index",
                 "link_label": "Try PDF Merge"
             },
