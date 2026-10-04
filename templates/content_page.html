@@ -68,6 +68,19 @@
         {% endif %}
 
         <div class="content-sections">
+          {% if slug == 'how-it-works' %}
+          <section class="content-section" aria-labelledby="usageRecordTitle">
+            <span class="section-number">USAGE</span>
+            <div>
+              <h2 id="usageRecordTitle">MEASURED SITE USAGE</h2>
+              <ul>
+                <li>Completed file-processing jobs: — Not yet measured</li>
+                <li>Cumulative visitors: — Not yet measured</li>
+              </ul>
+              <p>Reliable cumulative tracking has not started. Historical estimates are excluded. A dash means unavailable, not zero. Verified counts require persistent storage before publication.</p>
+            </div>
+          </section>
+          {% endif %}
           {% for section in page.sections %}
             <section class="content-section">
               <span class="section-number">{{ '%02d' | format(loop.index) }}</span>

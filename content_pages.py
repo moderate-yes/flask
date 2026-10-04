@@ -1,40 +1,46 @@
 PAGES = {
     "how-it-works": {
         "title": "How Local File Processing Works",
-        "description": "See how Browser Tools processes PDFs on your device, what still uses the internet, and how to check file processing yourself.",
+        "description": "How a website reads selected files into your device memory, processes PDFs with JavaScript and Web Workers, and creates local downloads without a file-processing server.",
         "eyebrow": "HOW IT WORKS / ON YOUR DEVICE",
-        "heading": "YOUR FILES.\nYOUR DEVICE.",
-        "intro": "Your browser does the file processing. You do not need to send your documents to our servers to merge PDFs. Free to use. No account. Ads help keep these tools free.",
+        "heading": "A WEBSITE.\nYOUR DEVICE'S MEMORY.",
+        "intro": "A browser can run programs, not just display pages. This website delivers the processing code; your device supplies the CPU and memory that work on your selected files. Here is what happens when you merge a PDF.",
         "sections": [
             {
-                "title": "SELECT → PROCESS → SAVE",
-                "text": "For PDF Merge, selecting a file gives this page access to the file you choose; it is not an upload. The browser reads its bytes, sends them to a worker running on your device, and builds a new PDF. The download is created from that result in browser memory, not returned by a document-processing server.",
-                "items": ["Select: choose your PDFs from your device.", "Process: your device supplies the processor time and memory.", "Save: download the merged PDF before closing or refreshing the page."]
+                "title": "THE SERVER SENDS CODE, NOT A FINISHED DOCUMENT",
+                "text": "Opening the page downloads HTML, CSS and JavaScript, including the PDF processing libraries. Like an installed application, that code can perform calculations on your device. The browser provides the execution environment, so you do not need to install a separate PDF program.",
+                "items": ["Server → browser: page and processing code.", "Selected file → browser memory: document bytes.", "Browser processing → download: a newly generated file."]
             },
             {
-                "title": "TRY IT WITH SAMPLE FILES",
-                "text": "Download the four-page practice PDF from Worked Examples and select it in PDF Merge along with a second copy saved under a different filename. Merge just these two files to produce an eight-page PDF, then open the download to check the result. Use practice files before trying your own documents.",
-                "links": [{"label": "Get practice files in Worked Examples", "url": "/learn/practical-tool-examples"}],
+                "title": "SELECTING A FILE IS NOT UPLOADING IT",
+                "text": "The file picker gives this page access to the files you select, not unrestricted access to your computer. In PDF Merge, file.arrayBuffer() reads each selected PDF into browser-managed memory as bytes. Reading those bytes does not itself send a network request containing your document. Uploading would require a separate network operation; the merge flow instead passes the bytes to a local worker."
+            },
+            {
+                "title": "YOUR CPU AND RAM DO THE WORK",
+                "text": "PDF Merge transfers the input buffers to a Web Worker on the same device. The worker uses pdf-lib to copy pages into a new PDF. PDF Split also uses a worker and packages its results with JSZip; PDF.js draws its previews. A worker moves computation away from the page's main interface thread. It is not a remote server, and it still consumes your device's memory and processor time."
+            },
+            {
+                "title": "A DOWNLOAD CAN COME FROM MEMORY",
+                "text": "When processing succeeds, the browser wraps the result bytes in a Blob and creates a temporary object URL. A download link points to this local result, rather than a processed document returned by our server. Save the result before leaving the page. Temporary references are released as the tool cleans up or the page closes, but this is not a guarantee of immediate secure erasure from your operating system."
+            },
+            {
+                "title": "JAVASCRIPT, WORKERS AND WEBASSEMBLY ARE DIFFERENT",
+                "text": "Our PDF merge and split pipeline uses JavaScript libraries and Web Workers. WebAssembly is another way to execute programs in a browser; it is not required for local file processing. A worker describes where a task executes, while WebAssembly describes an executable format. We do not describe these PDF tools as a WebAssembly engine or a local LLM service."
+            },
+            {
+                "title": "WHY FILE PROCESSING DOES NOT NEED A DATABASE",
+                "text": "This workflow reads a document, transforms it and lets you save the result. It does not need to retain that document in a database. Site usage statistics are a different task: reliable cumulative counts need persistent storage even when document processing stays local. A processing counter cannot prove a file was saved or inspected, and browser-based visitor estimates cannot identify unique people perfectly."
+            },
+            {
+                "title": "LOCAL DOES NOT MEAN UNLIMITED OR DISCONNECTED",
+                "text": "Large documents and rendered previews may require more memory than the original file size. Phones or busy browsers can run out of memory. Encrypted or damaged PDFs may fail, and signatures or complex forms need careful result checks. Page assets and permitted advertising still use the network. Local document processing does not mean that every request is offline or that no browsing information is collected.",
+                "links": [{"label": "Privacy details", "url": "/privacy"}, {"label": "Worked examples and troubleshooting", "url": "/learn/practical-tool-examples"}]
+            },
+            {
+                "title": "SEE THE FLOW YOURSELF",
+                "text": "Open your browser's Developer Tools and the Network panel, then select practice PDFs and merge them. File processing occurs locally; the resulting PDF is not returned from a processing API. Requests for libraries, page assets or permitted ads may still appear. Check the result in a PDF viewer and keep your originals.",
                 "endpoint": "index",
-                "link_label": "Try PDF Merge"
-            },
-            {
-                "title": "LOCAL FILES DOES NOT MEAN NO INTERNET",
-                "text": "Your browser still downloads the website, processing libraries and other assets. Ads, when allowed, make separate network requests and may use cookies and device information. Hosting also receives ordinary page requests. Local file processing is a statement about how the tools handle file contents, not a claim that browsing is anonymous or that the website stores no data.",
-                "links": [{"label": "Read the privacy details", "url": "/privacy"}]
-            },
-            {
-                "title": "CHECK IT YOURSELF",
-                "text": "On a desktop browser, open Developer Tools and its Network panel before using PDF Merge. Clear the request list, select sample PDFs and merge them. The merge result should be generated locally rather than arriving as a server response containing the processed PDF. Asset and advertising requests can still appear. For an additional check, load the tool and sample first, then disconnect the network and try merging; libraries that have not loaded yet can prevent this test from completing. This is not a promise that every page works offline.",
-            },
-            {
-                "title": "YOUR DEVICE SETS THE LIMITS",
-                "text": "Large PDFs can use substantial memory, especially on phones or when other tabs are open. A slow operation does not mean a file is uploading. Try fewer or smaller files, close unused tabs, or use a desktop browser. Encrypted, damaged or unusually complex PDFs may not process correctly. Keep your originals and inspect the downloaded result; do not rely on this tool to preserve digital signatures.",
-                "links": [{"label": "Worked examples and troubleshooting", "url": "/learn/practical-tool-examples"}]
-            },
-            {
-                "title": "DOWNLOAD BEFORE YOU LEAVE",
-                "text": "Reloading or closing the page can discard the current file selection and generated result. Save the output you want to keep. Downloaded files remain on your device until you remove them; preferences and advertising choices are separate from document processing."
+                "link_label": "Open PDF Merge"
             }
         ]
     },
