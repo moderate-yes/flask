@@ -154,6 +154,9 @@ button { color: inherit; }
 .visitor-counter-stats strong { color: var(--ink); font-size: 12px; font-weight: 500; font-variant-numeric: tabular-nums; letter-spacing: .03em; }
 .site-footer nav { display: flex; flex-wrap: wrap; justify-content: center; gap: 9px 15px; }
 .site-footer a { color: inherit; font-family: "DM Mono", monospace; font-size: 7px; letter-spacing: .08em; text-decoration: none; }
+.site-footer .footer-how-link { position: relative; color: #b42318; font-weight: 500; text-decoration: underline; text-underline-offset: 3px; }
+.footer-how-tooltip { display: none; position: absolute; bottom: calc(100% + 8px); left: 0; width: 180px; padding: 8px; background: #20211e; color: #fff; font: 12px/1.4 "Inter", sans-serif; letter-spacing: 0; z-index: 10; text-align: left; }
+.footer-how-link:hover .footer-how-tooltip, .footer-how-link:focus .footer-how-tooltip { display: block; }
 .site-footer a:hover { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
 .site-footer p { margin: 11px 0 0; font-family: "DM Mono", monospace; font-size: 6px; letter-spacing: .1em; text-align: center; }
 

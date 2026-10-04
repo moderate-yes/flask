@@ -1,4 +1,21 @@
 .content-shell { max-width: 840px; }
+.content-shell.how-shell { max-width: 460px; }
+.how-hero { padding: 24px 18px 10px; }
+.how-hero h1 { margin: 14px 0; font: 900 clamp(25px, 7vw, 34px)/1.06 "Inter", sans-serif; letter-spacing: -.045em; }
+.how-hero > p:last-child { font-size: 14px; line-height: 1.65; }
+.how-workflow { margin: 8px 12px 0; }
+.how-workflow img { display: block; width: 100%; height: auto; }
+.how-workflow figcaption { padding-top: 8px; font-size: 11px; line-height: 1.5; color: var(--muted); }
+.how-shell .ad-banner { margin: 22px auto; }
+.how-body { padding: 0 18px 22px; font-size: 14px; line-height: 1.6; }
+.how-steps { padding-left: 22px; }
+.how-steps li { padding: 10px 0; }
+.how-steps p { margin: 4px 0 0; }
+.how-technical { border-top: 1px solid var(--line); padding: 14px 0; }
+.how-technical summary { cursor: pointer; font-weight: 700; }
+.how-technical h2 { font-size: 15px; margin: 20px 0 6px; }
+.how-technical p { margin: 6px 0 12px; }
+.how-note, .how-usage { font-size: 12px; }
 .content-topbar { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; }
 .content-topbar .tools-bar { margin: 0; }
 .content-home { min-height: 34px; display: inline-flex; align-items: center; border: 1px solid var(--ink); padding: 0 12px; background: rgba(205, 206, 201, .78); color: var(--ink); font: 500 9px "DM Mono", monospace; letter-spacing: .09em; text-decoration: none; }

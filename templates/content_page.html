@@ -25,14 +25,16 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/content-pages.css') }}">
   </head>
   <body>
-    <main class="page-shell content-shell">
+    <main class="page-shell content-shell{% if slug == 'how-it-works' %} how-shell{% endif %}">
       <div class="content-topbar">
         <a class="content-home" href="{{ url_for('index') }}">BROWSER TOOLS</a>
         {% include '_tool_launcher.html' %}
       </div>
 
       <article class="content-card{% if page.contact_page %} contact-only-card{% endif %}">
-        {% if page.contact_page %}
+        {% if slug == 'how-it-works' %}
+          {% include '_how_it_works_visual.html' %}
+        {% elif page.contact_page %}
           <section class="contact-channel contact-channel-only">
             <header class="contact-introduction">
               <h1>BROWSER TOOLS.</h1>

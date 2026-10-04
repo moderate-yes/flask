@@ -1,0 +1,29 @@
+<header class="how-hero">
+  <p class="content-eyebrow">HOW IT WORKS</p>
+  <h1>WE SEND THE TOOLS.<br>YOU KEEP THE FILES.</h1>
+  <p>Your browser does the work on your device. Our PDF tools do not upload or store your documents on our processing server.</p>
+</header>
+<figure class="how-workflow">
+  <a href="{{ url_for('static', filename='local-processing-workflow.png') }}" target="_blank" rel="noopener" aria-label="Open the local processing diagram at full size (new tab)">
+    <img src="{{ url_for('static', filename='local-processing-workflow.png') }}" width="1536" height="1024" alt="Our server sends processing code to your device. File selection, processing in CPU and RAM, and saving results all happen inside your device.">
+  </a>
+  <figcaption>Code comes to you. Your PDFs stay on your device. Tap to enlarge.</figcaption>
+</figure>
+{% include '_adsterra_banner.html' %}
+<div class="how-body">
+  <ol class="how-steps">
+    <li><strong>Choose your files.</strong><p>Your browser reads only the files you select.</p></li>
+    <li><strong>Process on your device.</strong><p>Your CPU and memory merge or split the PDFs.</p></li>
+    <li><strong>Save your result.</strong><p>The browser creates the download locally. We do not need to receive or store the PDF.</p></li>
+  </ol>
+  <details class="how-technical">
+    <summary>Explore the technology</summary>
+    <section><h2>ArrayBuffer: file bytes in memory</h2><p>file.arrayBuffer() reads a selected file into browser-managed memory. Reading a file is not an upload.</p></section>
+    <section><h2>Web Worker: work off the interface thread</h2><p>PDF Merge transfers these buffers to a worker on the same device. pdf-lib builds the PDF; Split uses JSZip to package its results. PDF.js draws previews.</p></section>
+    <section><h2>Blob: download a local result</h2><p>A Blob wraps the result bytes. A temporary object URL lets the browser save them without downloading a processed PDF from our server.</p></section>
+    <section><h2>Not the same as WebAssembly</h2><p>These PDF workflows use JavaScript and Web Workers. WebAssembly is another execution format, not a requirement for local processing.</p></section>
+    <section><h2>Your device sets the limits</h2><p>Large files and previews may use more RAM than the source file size. Processing can fail on limited-memory devices or unsupported PDFs. Keep originals and check the output. Closing the page is not a guarantee of secure memory erasure.</p></section>
+  </details>
+  <p class="how-note">Local file processing does not mean zero internet traffic. Page assets and optional ads still use the network. <a href="{{ url_for('content_page', slug='privacy') }}">Privacy details</a></p>
+  <details class="how-technical how-usage"><summary>Usage statistics — not yet measured</summary><p>Completed jobs: — Not yet measured<br>Cumulative visitors: — Not yet measured</p><p>Tracking has not started. Historical estimates are excluded; a dash does not mean zero.</p></details>
+</div>
