@@ -20,5 +20,6 @@ class AdvertisingShutdownTests(unittest.TestCase):
                     self.assertEqual(response.status_code, 200)
                     html = response.get_data(as_text=True)
                     self.assertNotIn('src="https://www.highrevenueformat.com/', html)
+                    self.assertNotIn('class="ad-banner"', html)
                     self.assertNotIn('id="advertisingChoice"', html)
                     self.assertNotIn('type="submit">Accept advertising cookies', html)

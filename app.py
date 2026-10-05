@@ -21,8 +21,8 @@ from content_presentation import CONTENT_REDIRECTS, streamlined_content
 
 
 app = Flask(__name__)
-# Re-enabled at the owner's request for a retest; redirect reports remain unresolved.
-app.config["ADSTERRA_ENABLED"] = True
+# Advertising is paused until the owner chooses to resume monetization.
+app.config["ADSTERRA_ENABLED"] = False
 KOREA_TIME = timezone(timedelta(hours=9))
 TOTAL_VISIT_COOKIE = "bt_visit_total"
 DAY_VISIT_COOKIE = "bt_visit_day"

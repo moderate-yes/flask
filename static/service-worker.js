@@ -1,4 +1,4 @@
-const CACHE_NAME = "browser-tools-v9-ad-retest";
+const CACHE_NAME = "browser-tools-v10-ad-free-seo";
 const CORE_ASSETS = [
   "/manifest.webmanifest",
   "/",

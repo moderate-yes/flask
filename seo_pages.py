@@ -3,8 +3,8 @@
 TOOL_SEO = {
     "index": {
         "name": "Private PDF Merger",
-        "title": "Merge PDF Files Locally and Privately — Browser Tools",
-        "description": "Merge PDF Online Free – No Upload. Merge and reorder PDF files directly in your browser while files stay on your device.",
+        "title": "Merge PDF Free — No Sign-Up, No File Uploads",
+        "description": "Combine PDF files for free without signing up or uploading documents. Arrange files in your chosen order, merge in your browser, and download the result.",
         "heading": "HOW TO MERGE PDF FILES",
         "summary": "Combine two or more PDF documents in the order you choose. Processing happens in browser memory, so the source files are not uploaded to an application server.",
         "steps": ["Add at least two PDF files.", "Use the arrow controls to arrange the documents.", "Remove any file you do not want in the result.", "Select MERGE and save the downloaded PDF."],
@@ -21,8 +21,8 @@ TOOL_SEO = {
     },
     "pdf_split": {
         "name": "Private PDF Splitter",
-        "title": "Split PDF Pages Locally and Download a ZIP — Browser Tools",
-        "description": "Split PDF Pages Online Free. Preview pages, choose exact cut points, and split a document locally in your browser.",
+        "title": "Split PDF Free — Separate Pages, No Sign-Up or Uploads",
+        "description": "Split a PDF into separate pages or sections for free. Preview pages, choose cut points, and download a ZIP. No account or file uploads required.",
         "heading": "HOW TO SPLIT A PDF",
         "summary": "See each page before choosing boundaries. A cut marker separates the pages on its left and right into different output documents.",
         "steps": ["Add one PDF file.", "Review the page thumbnails in reading order.", "Select the cut lines where a new document should begin.", "Choose SPLIT & DOWNLOAD ZIP and inspect the results."],

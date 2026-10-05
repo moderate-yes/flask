@@ -5,6 +5,7 @@ from app import app
 class AdsterraBannerTests(unittest.TestCase):
     def setUp(self):
         self.original = app.config['ADSTERRA_ENABLED']
+        app.config['ADSTERRA_ENABLED'] = True
         self.client = app.test_client()
 
     def tearDown(self):
@@ -13,11 +14,9 @@ class AdsterraBannerTests(unittest.TestCase):
     def test_default_preview_does_not_request_vendor(self):
         app.config['ADSTERRA_ENABLED'] = False
         html = self.client.get('/').get_data(as_text=True)
-        self.assertEqual(html.count('class="ad-banner"'), 1)
-        self.assertIn('Advertisement preview — not active', html)
+        self.assertEqual(html.count('class="ad-banner"'), 0)
+        self.assertNotIn('Advertisement preview — not active', html)
         self.assertNotIn('highrevenueformat.com', html)
-        self.assertLess(html.index('id="mergeButton"'), html.index('class="ad-banner"'))
-        self.assertLess(html.index('class="ad-banner"'), html.index('class="site-footer"'))
 
     def test_enabled_markup_has_exact_single_unit(self):
         app.config['ADSTERRA_ENABLED'] = True
@@ -46,10 +45,11 @@ class AdsterraBannerTests(unittest.TestCase):
                     response = self.client.get(path)
                     self.assertEqual(response.status_code, 200)
                     html = response.get_data(as_text=True)
-                    self.assertEqual(html.count('class="ad-banner"'), 1)
+                    self.assertEqual(html.count('class="ad-banner"'), int(enabled))
                     self.assertEqual(html.count('css/ad-banner.css'), 1)
                     self.assertEqual(html.count('src="https://www.highrevenueformat.com/'), int(enabled))
-                    self.assertLess(html.index('class="ad-banner"'), html.index('class="site-footer"'))
+                    if enabled:
+                        self.assertLess(html.index('class="ad-banner"'), html.index('class="site-footer"'))
 
     def test_error_and_hidden_pages_do_not_load_unit(self):
         app.config['ADSTERRA_ENABLED'] = True

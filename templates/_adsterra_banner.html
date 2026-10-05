@@ -1,3 +1,4 @@
+{% if config.get('ADSTERRA_ENABLED', false) %}
 <aside class="ad-banner" aria-label="Advertisement">
   <div class="ad-banner__support">
     <p class="ad-banner__promise">Free to use. No account.<br>Files stay on your device.<br>Ads help keep these tools free.</p>
@@ -33,3 +34,4 @@
   </form>
   {% endif %}
 </aside>
+{% endif %}
