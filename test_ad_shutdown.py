@@ -4,8 +4,12 @@ from build_static import ROUTES
 
 
 class AdvertisingShutdownTests(unittest.TestCase):
-    def test_default_shutdown_blocks_scripts_and_consent_for_all_choices(self):
-        self.assertFalse(app.config['ADSTERRA_ENABLED'])
+    def setUp(self):
+        previous = app.config['ADSTERRA_ENABLED']
+        self.addCleanup(app.config.__setitem__, 'ADSTERRA_ENABLED', previous)
+        app.config['ADSTERRA_ENABLED'] = False
+
+    def test_shutdown_blocks_scripts_and_consent_for_all_choices(self):
         for choice in (None, 'allow', 'deny'):
             client = app.test_client()
             if choice:

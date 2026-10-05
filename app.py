@@ -21,9 +21,8 @@ from content_presentation import CONTENT_REDIRECTS, streamlined_content
 
 
 app = Flask(__name__)
-# Emergency shutdown: reported unsolicited third-party advertising redirects.
-# Keep disabled until a replacement integration has been independently tested.
-app.config["ADSTERRA_ENABLED"] = False
+# Re-enabled at the owner's request for a retest; redirect reports remain unresolved.
+app.config["ADSTERRA_ENABLED"] = True
 KOREA_TIME = timezone(timedelta(hours=9))
 TOTAL_VISIT_COOKIE = "bt_visit_total"
 DAY_VISIT_COOKIE = "bt_visit_day"
