@@ -21,8 +21,8 @@ TOOL_SEO = {
     },
     "pdf_split": {
         "name": "Private PDF Splitter",
-        "title": "Split PDF Free — Separate Pages, No Sign-Up or Uploads",
-        "description": "Split a PDF into separate pages or sections for free. Preview pages, choose cut points, and download a ZIP. No account or file uploads required.",
+        "title": "Free Unlimited PDF Splitter — No Sign-Up, No Uploads",
+        "description": "Split PDFs for free with no daily usage limits. Preview pages, choose cut points, and download separate PDFs in a ZIP. No account or file uploads required.",
         "heading": "HOW TO SPLIT A PDF",
         "summary": "See each page before choosing boundaries. A cut marker separates the pages on its left and right into different output documents.",
         "steps": ["Add one PDF file.", "Review the page thumbnails in reading order.", "Select the cut lines where a new document should begin.", "Choose SPLIT & DOWNLOAD ZIP and inspect the results."],
@@ -31,6 +31,7 @@ TOOL_SEO = {
             ("PRIVATE BY DESIGN", "Previewing, splitting, and packaging happen locally. The source document is not stored by this site."),
         ],
         "faq": [
+            ("Is PDF splitting free and unlimited?", "Yes. There is no daily usage quota. Unlimited refers to the number of uses, not file size: available device memory and browser performance limit the documents you can process."),
             ("Can I split a PDF into every page?", "Yes. Use SELECT ALL to place a cut between every page."),
             ("What does the ZIP contain?", "It contains the PDF sections created by your selected cut points."),
             ("Can encrypted PDFs be split?", "Password-protected or restricted documents may not open. Use a permitted, unlocked copy."),
