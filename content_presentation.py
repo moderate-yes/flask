@@ -7,7 +7,7 @@ CONTENT_REDIRECTS = {"/about": "/contact", "/guides": "/learn"}
 def streamlined_content(slug, page):
     if slug == 'privacy' and page is not None:
         result = deepcopy(page)
-        result['updated'] = 'Last updated: October 2, 2026'
+        result['updated'] = 'Last updated: October 7, 2026'
         replaced = {'ADVERTISING AND COOKIES', 'YOUR ADVERTISING CHOICES', 'REGIONAL CONSENT', 'ADVERTISING MEASUREMENT'}
         result['sections'] = [s for s in result['sections'] if s['title'] not in replaced]
         result['sections'].insert(5, {
@@ -26,6 +26,10 @@ def streamlined_content(slug, page):
                     'Select Turn off advertising below a loaded banner to stop further ad loading by reloading the page. When advertising is off, select Accept advertising cookies in the advertising area to allow it again.'
                 )
                 section['text'] = section['text'].replace('Yes, allow advertising or No, continue without ads', 'Accept advertising cookies or Reject advertising cookies')
+        result['sections'].insert(4, {
+            'title': 'USAGE STATISTICS',
+            'text': 'When usage tracking is enabled, we count visit sessions and successful tool operations reported by the browser. A first-party cookie, bt_usage_session, prevents page navigation and refreshes from adding another visit within 30 minutes of activity. Returning sessions are included; these are not unique-person counts. Our server sends only random event IDs, event type and tool name to a private Google Sheet through Apps Script. Google adds a receipt timestamp; daily and cumulative totals are retained. These statistics do not contain file names, file contents, QR text, checksums, or IP addresses. Standard hosting logs remain separate. The numbers are operational usage counts, not audited audience measurements.',
+        })
         return result
     if slug != "faq" or page is None:
         return page

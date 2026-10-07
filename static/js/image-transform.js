@@ -149,6 +149,7 @@
       link.click();
       setTimeout(() => URL.revokeObjectURL(url), 1000);
       setStatus(`${size.width} × ${size.height} ${extension.toUpperCase()} downloaded.`);
+      window.reportToolCompletion?.('image-transform');
     }, format.value, 0.92);
   });
 

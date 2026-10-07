@@ -1,0 +1,9 @@
+{% if usage_stats_enabled and code is not defined %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/usage-stats.css') }}">
+<div class="usage-stats" data-usage-stats aria-label="Site usage statistics">
+  <div><strong data-usage-visits>—</strong><span>Visit sessions</span></div>
+  <div><strong data-usage-jobs>—</strong><span>Completed jobs</span></div>
+  <p data-usage-since>Usage statistics are temporarily unavailable.</p>
+</div>
+<script src="{{ url_for('static', filename='js/usage-stats.js') }}" defer></script>
+{% endif %}

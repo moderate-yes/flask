@@ -141,6 +141,7 @@
           link.remove();
           setTimeout(() => URL.revokeObjectURL(url), 1000);
           finishProcessing("Your merged PDF is ready. No files were uploaded.");
+          window.reportToolCompletion?.('pdf-merge');
         }
         if (message.type === "error") finishProcessing(message.message, true);
       };

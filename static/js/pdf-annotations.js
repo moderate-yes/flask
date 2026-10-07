@@ -568,6 +568,7 @@ async function downloadAnnotatedPdf() {
     setTimeout(() => URL.revokeObjectURL(url), 1000);
     window.reportGoogleAdsConversion?.();
     setStatus("Annotated PDF downloaded. Keep the original file as a backup.");
+    window.reportToolCompletion?.('pdf-annotations');
   } catch (error) {
     console.error(error);
     setStatus("The annotated PDF could not be created.", true);

@@ -1,4 +1,4 @@
-const CACHE_NAME = "browser-tools-v11-unlimited-split";
+const CACHE_NAME = "browser-tools-v12-usage-stats";
 const CORE_ASSETS = [
   "/manifest.webmanifest",
   "/",

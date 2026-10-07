@@ -422,6 +422,7 @@ function downloadZip(bytes, baseName) {
   link.remove();
   setTimeout(() => URL.revokeObjectURL(url), 1000);
   finish("Your split PDFs are ready. No files were uploaded.");
+  window.reportToolCompletion?.('pdf-split');
 }
 
 function finish(message, isError = false) {

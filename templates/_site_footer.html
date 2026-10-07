@@ -2,6 +2,7 @@
   {% include '_adsterra_banner.html' %}
 {% endif %}
 <footer class="site-footer">
+  {% include '_usage_stats.html' %}
   <nav aria-label="Site information">
     <a class="footer-how-link" href="{{ url_for('content_page', slug='how-it-works') }}" aria-describedby="footerPrivacyHint">HOW IT WORKS<span class="footer-how-tooltip" role="tooltip" id="footerPrivacyHint">How your files stay private</span></a>
     <a href="{{ url_for('learn_index') }}">LEARN</a>

@@ -18,9 +18,11 @@ from seo_pages import TOOL_SEO
 from site_metadata import SITEMAP_LASTMOD
 from tool_visibility import tool_is_public, path_is_public, public_content_page
 from content_presentation import CONTENT_REDIRECTS, streamlined_content
+from usage_stats import usage, ready as usage_stats_ready
 
 
 app = Flask(__name__)
+app.register_blueprint(usage)
 # Advertising is paused until the owner chooses to resume monetization.
 app.config["ADSTERRA_ENABLED"] = False
 KOREA_TIME = timezone(timedelta(hours=9))
@@ -236,6 +238,7 @@ def inject_public_metadata():
             ],
         }
     return {
+        "usage_stats_enabled": usage_stats_ready(),
         "tool_is_public": tool_is_public,
         "canonical_url": canonical_url,
         "seo_page": seo_page,

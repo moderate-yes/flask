@@ -1,0 +1,5 @@
+.usage-stats { display: flex; flex-wrap: wrap; gap: 16px 28px; margin: 0 0 20px; padding: 18px 0; border-top: 1px solid currentColor; border-bottom: 1px solid currentColor; }
+.usage-stats > div { display: flex; flex-direction: column; gap: 4px; }
+.usage-stats strong { font-family: Inter, sans-serif; font-size: 26px; line-height: 1.2; }
+.usage-stats span { font-family: 'DM Mono', monospace; font-size: 11px; }
+.usage-stats p { flex-basis: 100%; margin: 0; font-size: 11px; line-height: 1.5; }
