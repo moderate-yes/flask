@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
   <head>
-    {% include '_adsense_head.html' %}
+    {% if adsense_enabled %}{% include '_adsense_head.html' %}{% endif %}
     {% include '_brand_head.html' %}
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -23,8 +23,8 @@
       <section class="calculator-card" aria-label="Multi calculator">
         <header class="calculator-heading">
           <p>CALCULATE / LOCAL UTILITY</p>
-          <h1>MULTI CALCULATOR.</h1>
-          <p>Calculate arithmetic, percentages, discounts, tax, tips, and split bills with visible formulas.</p>
+          <h1>{{ seo_page.h1 }}</h1>
+          <p>{{ seo_page.intro }}</p>
         </header>
 
         <div class="calculator-tabs" role="tablist" aria-label="Calculation type">

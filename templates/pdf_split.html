@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
   <head>
-    {% include '_adsense_head.html' %}
+    {% if adsense_enabled %}{% include '_adsense_head.html' %}{% endif %}
     {% include '_brand_head.html' %}
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -29,8 +29,8 @@
           <a class="active" href="{{ url_for('pdf_split') }}" aria-current="page">SPLIT</a>
         </nav>
         <header class="merge-heading">
-          <h1 id="splitTitle">FREE PDF SPLITTER.</h1>
-          <p class="merge-intro">Split PDFs for free, with no daily usage limits. No account or file uploads required.</p>
+          <h1 id="splitTitle">{{ seo_page.h1 }}</h1>
+          <p class="merge-intro">{{ seo_page.intro }}</p>
         </header>
 
         <button class="drop-zone" id="splitDropZone" type="button">

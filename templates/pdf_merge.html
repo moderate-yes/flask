@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
   <head>
-    {% include '_adsense_head.html' %}
+    {% if adsense_enabled %}{% include '_adsense_head.html' %}{% endif %}
     {% include '_brand_head.html' %}
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -26,7 +26,8 @@
           <a href="{{ url_for('pdf_split') }}">SPLIT</a>
         </nav>
         <header class="merge-heading">
-          <h1 id="mergeTitle">MERGE PDF FILES.</h1>
+          <h1 id="mergeTitle">{{ seo_page.h1 }}</h1>
+          <p class="merge-intro">{{ seo_page.intro }}</p>
         </header>
 
         <label class="drop-zone" id="dropZone" for="filePicker">

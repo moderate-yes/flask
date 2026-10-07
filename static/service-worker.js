@@ -1,4 +1,4 @@
-const CACHE_NAME = "browser-tools-v13-tool-guide-cleanup";
+const CACHE_NAME = "browser-tools-v14-tool-search-copy";
 const CORE_ASSETS = [
   "/manifest.webmanifest",
   "/",

@@ -32,7 +32,7 @@ class ToolGuideCleanupTests(unittest.TestCase):
 
     def test_statistics_use_compact_numbers(self):
         css = Path(__file__).with_name('static').joinpath('css/usage-stats.css').read_text()
-        self.assertIn('font-size: 16px', css)
+        self.assertIn('font-size: 8px', css)
         self.assertNotIn('font-size: 26px', css)
 
 
