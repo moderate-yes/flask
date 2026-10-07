@@ -162,7 +162,7 @@ TOOL_SEO = {
             ("Is the selected file uploaded?", "No. The browser's cryptographic API reads it locally."),
             ("Why does my hash not match?", "The file may be incomplete, modified, a different version, or compared with the wrong algorithm."),
         ],
-        "related": [("qr_generator", "QR GENERATOR"), ("image_toolkit", "IMAGE TOOLKIT"), ("content_page", "CONTACT", {"slug": "contact"})],
+        "related": [],
     },
     "qr_generator": {
         "name": "Private QR Code Generator",
@@ -180,7 +180,7 @@ TOOL_SEO = {
             ("Can I enter Korean or other Unicode text?", "Yes. The generator supports Unicode text, including Korean characters."),
             ("Should I put confidential data in a QR code?", "No. Anyone who can scan a displayed QR code may read its contents."),
         ],
-        "related": [("file_hash", "FILE HASH"), ("image_toolkit", "IMAGE TOOLKIT"), ("calculator", "CALCULATOR")],
+        "related": [],
     },
     "focus_timer": {
         "name": "Focus Timer",
@@ -198,7 +198,7 @@ TOOL_SEO = {
             ("Does the timer require an account?", "No. It runs in the browser without sign-in."),
             ("Will it work after I close the browser?", "The saved state may remain, but a closed browser cannot reliably play the completion sound."),
         ],
-        "related": [("calculator", "CALCULATOR"), ("qr_generator", "QR GENERATOR"), ("index", "MERGE PDF")],
+        "related": [],
     },
     "calculator": {
         "name": "Multi Calculator",
@@ -216,6 +216,6 @@ TOOL_SEO = {
             ("Is tax applied before the discount?", "No. This tool applies the discount first and tax to the discounted subtotal."),
             ("Are calculator inputs uploaded?", "No. Calculations run in JavaScript in your browser."),
         ],
-        "related": [("focus_timer", "FOCUS TIMER"), ("qr_generator", "QR GENERATOR"), ("file_hash", "FILE HASH")],
+        "related": [],
     },
 }

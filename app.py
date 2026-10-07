@@ -13,7 +13,6 @@ from content_pages import PAGES
 from ad_policy import advertising_allowed
 from learn_pages import LEARN_PAGES
 from public_guides import public_guides
-from pdf_examples import PDF_EXAMPLES
 from seo_pages import TOOL_SEO
 from site_metadata import SITEMAP_LASTMOD
 from tool_visibility import tool_is_public, path_is_public, public_content_page
@@ -181,8 +180,6 @@ def inject_public_metadata():
     site_url = configured_site_url()
     canonical_url = f"{site_url}{request.path}" if site_url else request.base_url
     seo_page = TOOL_SEO.get(request.endpoint) if tool_is_public(request.endpoint) else None
-    if seo_page and request.endpoint in PDF_EXAMPLES:
-        seo_page = dict(seo_page, example=PDF_EXAMPLES[request.endpoint])
     tool_structured_data = None
     related_tools = []
     if seo_page:
