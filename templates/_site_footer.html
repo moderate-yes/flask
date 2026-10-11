@@ -12,6 +12,8 @@
   </nav>
   <p>BROWSER TOOLS · BROWSER-FIRST UTILITIES</p>
 </footer>
+<script src="{{ url_for('static', filename='js/page-analytics-config.js') }}" defer></script>
+<script src="{{ url_for('static', filename='js/page-analytics.js') }}" defer></script>
 {% if config.get('ADSTERRA_ENABLED', false) and code is not defined %}
 {% include '_advertising_choice.html' %}
 {% endif %}
