@@ -103,6 +103,21 @@ INDEXED_ROUTES = (
     "/contact",
 )
 
+LOCALIZED_TOOL_ROUTES = {
+    "/": "/ko/",
+    "/pdf-split": "/ko/pdf-split",
+    "/pdf-organizer": "/ko/pdf-organizer",
+    "/pdf-annotations": "/ko/pdf-annotations",
+    "/pdf-to-images": "/ko/pdf-to-images",
+    "/images-to-pdf": "/ko/images-to-pdf",
+    "/image-toolkit": "/ko/image-toolkit",
+    "/image-transform": "/ko/image-transform",
+    "/file-hash": "/ko/file-hash",
+    "/qr-generator": "/ko/qr-generator",
+    "/focus-timer": "/ko/focus-timer",
+    "/calculator": "/ko/calculator",
+}
+
 # Keep the original route definitions above for easy restoration.
 ROUTES = {route: destination for route, destination in ROUTES.items() if path_is_public(route) and route not in CONTENT_REDIRECTS}
 INDEXED_ROUTES = tuple(route for route in INDEXED_ROUTES if path_is_public(route) and route not in CONTENT_REDIRECTS)
@@ -199,15 +214,28 @@ def sitemap(site_url: str) -> str:
     entries = []
     for route in INDEXED_ROUTES:
         public_path = "/" if route == "/" else f"{route.rstrip('/')}/"
+        english_route = next((english for english, korean in LOCALIZED_TOOL_ROUTES.items() if route == korean), route)
+        korean_route = LOCALIZED_TOOL_ROUTES.get(english_route)
+        alternates = ""
+        if korean_route:
+            english_path = "/" if english_route == "/" else f"{english_route.rstrip('/')}/"
+            korean_path = f"{korean_route.rstrip('/')}/"
+            alternates = (
+                f'    <xhtml:link rel="alternate" hreflang="en" href="{site_url}{english_path}" />\n'
+                f'    <xhtml:link rel="alternate" hreflang="ko" href="{site_url}{korean_path}" />\n'
+                f'    <xhtml:link rel="alternate" hreflang="x-default" href="{site_url}{english_path}" />\n'
+            )
         entries.append(
             "  <url>\n"
             f"    <loc>{site_url}{public_path}</loc>\n"
+            f"{alternates}"
             f"    <lastmod>{SITEMAP_LASTMOD}</lastmod>\n"
             "  </url>"
         )
     return (
         '<?xml version="1.0" encoding="UTF-8"?>\n'
-        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" '
+        'xmlns:xhtml="http://www.w3.org/1999/xhtml">\n'
         + "\n".join(entries)
         + "\n</urlset>\n"
     )

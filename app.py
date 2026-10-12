@@ -111,7 +111,10 @@ def visitor_country():
 
 def is_search_crawler():
     agent = request.user_agent.string.lower()
-    return any(name in agent for name in ("googlebot", "bingbot", "yandexbot", "baiduspider", "duckduckbot"))
+    return any(name in agent for name in (
+        "googlebot", "google-inspectiontool", "googleother", "adsbot-google",
+        "mediapartners-google", "bingbot", "yandexbot", "baiduspider", "duckduckbot",
+    ))
 
 
 @app.before_request
@@ -141,7 +144,14 @@ def choose_initial_tool_language():
     if request.method not in ("GET", "HEAD") or not endpoint or request.endpoint == "ko_tool" or is_search_crawler():
         return None
     saved = request.cookies.get(LOCALE_COOKIE)
-    wants_korean = saved == "ko" or (saved not in ("en", "ko") and visitor_country() == "KR")
+    # Respect an explicit language choice across the tool collection. For a
+    # first visit, geo-assisted selection is limited to the homepage so deep
+    # English URLs remain directly accessible and crawlable from Korea.
+    wants_korean = saved == "ko" or (
+        endpoint == "index"
+        and saved not in ("en", "ko")
+        and visitor_country() == "KR"
+    )
     if not wants_korean:
         return None
     target = tool_path(endpoint, "ko")
@@ -266,6 +276,7 @@ def inject_public_metadata():
     tool_structured_data = None
     related_tools = []
     if seo_page:
+        content_language = "ko-KR" if page_locale == "ko" else "en"
         related_tools = [
             {
                 "label": korean_related_label(item[1]) if page_locale == "ko" else item[1],
@@ -285,6 +296,7 @@ def inject_public_metadata():
                     "applicationCategory": "UtilitiesApplication",
                     "operatingSystem": "Any",
                     "browserRequirements": "JavaScript-enabled web browser",
+                    "inLanguage": content_language,
                     "isAccessibleForFree": True,
                     "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"},
                 },
@@ -292,6 +304,7 @@ def inject_public_metadata():
                     "@type": "HowTo",
                     "name": seo_page["heading"].title(),
                     "description": seo_page["summary"],
+                    "inLanguage": content_language,
                     "step": [
                         {"@type": "HowToStep", "position": position, "text": step}
                         for position, step in enumerate(seo_page["steps"], start=1)
@@ -299,6 +312,7 @@ def inject_public_metadata():
                 },
                 {
                     "@type": "FAQPage",
+                    "inLanguage": content_language,
                     "mainEntity": [
                         {
                             "@type": "Question",
@@ -740,7 +754,27 @@ def sitemap_xml():
         *[public_url("learn_article", slug=slug) for slug in public_guides()],
         *[public_url("content_page", slug=slug) for slug in PAGES if '/' + slug not in CONTENT_REDIRECTS],
     ]
-    pages = [{"loc": page, "lastmod": SITEMAP_LASTMOD} for page in page_urls if path_is_public(urlsplit(page).path)]
+    endpoint_by_path = {
+        path: endpoint
+        for endpoint in ENGLISH_TOOL_PATHS
+        for path in (ENGLISH_TOOL_PATHS[endpoint], KOREAN_TOOL_PATHS[endpoint])
+    }
+    pages = []
+    for page in page_urls:
+        path = urlsplit(page).path
+        if not path_is_public(path):
+            continue
+        endpoint = endpoint_by_path.get(path)
+        alternates = []
+        if endpoint:
+            english = f"{configured_site_url()}{ENGLISH_TOOL_PATHS[endpoint]}"
+            korean = f"{configured_site_url()}{KOREAN_TOOL_PATHS[endpoint]}"
+            alternates = [
+                {"hreflang": "en", "href": english},
+                {"hreflang": "ko", "href": korean},
+                {"hreflang": "x-default", "href": english},
+            ]
+        pages.append({"loc": page, "lastmod": SITEMAP_LASTMOD, "alternates": alternates})
     return Response(render_template("sitemap.xml", pages=pages), mimetype="application/xml")
 
 

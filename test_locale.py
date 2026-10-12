@@ -8,10 +8,15 @@ class LocalePagesTest(unittest.TestCase):
         app.config.update(TESTING=True)
         self.client = app.test_client()
 
-    def test_korean_visitor_starts_on_korean_tool_page(self):
-        response = self.client.get("/pdf-split", headers={"CF-IPCountry": "KR"})
+    def test_korean_visitor_starts_on_korean_homepage(self):
+        response = self.client.get("/", headers={"CF-IPCountry": "KR"})
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(response.headers["Location"], "/ko/pdf-split")
+        self.assertEqual(response.headers["Location"], "/ko/")
+
+    def test_deep_english_url_remains_accessible_from_korea(self):
+        response = self.client.get("/pdf-split", headers={"CF-IPCountry": "KR"})
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('<html lang="en">', response.get_data(as_text=True))
 
     def test_non_korean_visitor_stays_on_english_page(self):
         response = self.client.get("/pdf-split", headers={"CF-IPCountry": "US"})
@@ -44,6 +49,7 @@ class LocalePagesTest(unittest.TestCase):
         self.assertIn('href="/ko/pdf-organizer"', html)
         self.assertIn('src="/static/js/locale.js"', html)
         self.assertIn('value="ko" class="active"', html)
+        self.assertIn('"inLanguage": "ko-KR"', html)
 
     def test_information_pages_remain_english(self):
         html = self.client.get("/learn").get_data(as_text=True)
@@ -55,6 +61,8 @@ class LocalePagesTest(unittest.TestCase):
         xml = self.client.get("/sitemap.xml").get_data(as_text=True)
         self.assertIn("https://browserfiletools.net/ko/</loc>", xml)
         self.assertIn("https://browserfiletools.net/ko/pdf-split</loc>", xml)
+        self.assertIn('hreflang="ko" href="https://browserfiletools.net/ko/pdf-split"', xml)
+        self.assertIn('hreflang="en" href="https://browserfiletools.net/pdf-split"', xml)
 
 
 if __name__ == "__main__":
