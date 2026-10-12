@@ -35,6 +35,18 @@ ROUTES = {
     "/qr-generator": "qr-generator/index.html",
     "/focus-timer": "focus-timer/index.html",
     "/calculator": "calculator/index.html",
+    "/ko/": "ko/index.html",
+    "/ko/pdf-split": "ko/pdf-split/index.html",
+    "/ko/pdf-organizer": "ko/pdf-organizer/index.html",
+    "/ko/pdf-annotations": "ko/pdf-annotations/index.html",
+    "/ko/pdf-to-images": "ko/pdf-to-images/index.html",
+    "/ko/images-to-pdf": "ko/images-to-pdf/index.html",
+    "/ko/image-toolkit": "ko/image-toolkit/index.html",
+    "/ko/image-transform": "ko/image-transform/index.html",
+    "/ko/file-hash": "ko/file-hash/index.html",
+    "/ko/qr-generator": "ko/qr-generator/index.html",
+    "/ko/focus-timer": "ko/focus-timer/index.html",
+    "/ko/calculator": "ko/calculator/index.html",
     "/learn": "learn/index.html",
     "/learn/practical-tool-examples": "learn/practical-tool-examples/index.html",
     "/learn/scanned-pdf-preview-problems": "learn/scanned-pdf-preview-problems/index.html",
@@ -64,6 +76,18 @@ INDEXED_ROUTES = (
     "/qr-generator",
     "/focus-timer",
     "/calculator",
+    "/ko/",
+    "/ko/pdf-split",
+    "/ko/pdf-organizer",
+    "/ko/pdf-annotations",
+    "/ko/pdf-to-images",
+    "/ko/images-to-pdf",
+    "/ko/image-toolkit",
+    "/ko/image-transform",
+    "/ko/file-hash",
+    "/ko/qr-generator",
+    "/ko/focus-timer",
+    "/ko/calculator",
     "/learn",
     "/learn/practical-tool-examples",
     "/learn/scanned-pdf-preview-problems",
@@ -121,7 +145,7 @@ def static_path(path: str) -> str:
         else:
             base, _, fragment = base.partition("#")
 
-    if base in ROUTES and base != "/":
+    if base in ROUTES and base != "/" and not base.endswith("/"):
         base = f"{base}/"
 
     result = base
@@ -174,7 +198,7 @@ def redirect_page(site_url: str, destination: str = "/") -> str:
 def sitemap(site_url: str) -> str:
     entries = []
     for route in INDEXED_ROUTES:
-        public_path = "/" if route == "/" else f"{route}/"
+        public_path = "/" if route == "/" else f"{route.rstrip('/')}/"
         entries.append(
             "  <url>\n"
             f"    <loc>{site_url}{public_path}</loc>\n"

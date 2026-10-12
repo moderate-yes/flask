@@ -18,6 +18,7 @@ from site_metadata import SITEMAP_LASTMOD
 from tool_visibility import tool_is_public, path_is_public, public_content_page
 from content_presentation import CONTENT_REDIRECTS, streamlined_content
 from usage_stats import usage, ready as usage_stats_ready
+from locale_data import korean_related_label, korean_tool_seo
 
 
 app = Flask(__name__)
@@ -32,6 +33,29 @@ PRIMARY_SITE_URL = "https://browserfiletools.net"
 DEFAULT_LEGACY_HOSTS = {
     "flask-v57n.onrender.com",
     "www.browserfiletools.net",
+}
+LOCALE_COOKIE = "bt_locale"
+TOOL_PAGE_CONFIG = {
+    "": ("index", "pdf_merge.html"),
+    "pdf-split": ("pdf_split", "pdf_split.html"),
+    "pdf-organizer": ("pdf_organizer", "pdf_organizer.html"),
+    "pdf-annotations": ("pdf_annotations", "pdf_annotations.html"),
+    "pdf-to-images": ("pdf_to_images", "pdf_to_images.html"),
+    "images-to-pdf": ("images_to_pdf", "images_to_pdf.html"),
+    "image-toolkit": ("image_toolkit", "image_toolkit.html"),
+    "image-transform": ("image_transform", "image_transform.html"),
+    "file-hash": ("file_hash", "file_hash.html"),
+    "qr-generator": ("qr_generator", "qr_generator.html"),
+    "focus-timer": ("focus_timer", "index.html"),
+    "calculator": ("calculator", "calculator.html"),
+}
+ENGLISH_TOOL_PATHS = {
+    endpoint: ("/" if not slug else f"/{slug}")
+    for slug, (endpoint, _template) in TOOL_PAGE_CONFIG.items()
+}
+KOREAN_TOOL_PATHS = {
+    endpoint: ("/ko/" if not slug else f"/ko/{slug}")
+    for slug, (endpoint, _template) in TOOL_PAGE_CONFIG.items()
 }
 
 if os.getenv("TRUST_PROXY_HEADERS") == "1":
@@ -56,6 +80,40 @@ def legacy_hosts():
     }
 
 
+def current_tool_endpoint():
+    if request.endpoint == "ko_tool":
+        config = TOOL_PAGE_CONFIG.get((request.view_args or {}).get("tool_path", ""))
+        return config[0] if config else None
+    return request.endpoint if request.endpoint in ENGLISH_TOOL_PATHS else None
+
+
+def tool_path(endpoint, locale="en"):
+    paths = KOREAN_TOOL_PATHS if locale == "ko" else ENGLISH_TOOL_PATHS
+    return paths.get(endpoint, "/ko/" if locale == "ko" else "/")
+
+
+def visitor_country():
+    for header in (
+        "CF-IPCountry",
+        "CloudFront-Viewer-Country",
+        "X-Vercel-IP-Country",
+        "X-Country-Code",
+    ):
+        value = request.headers.get(header, "").strip().upper()
+        if value:
+            return value
+    # The production domain is proxied by Cloudflare. This fallback keeps the
+    # intended first visit behavior when running through a proxy that strips
+    # its country header, without collecting precise location information.
+    best = request.accept_languages.best_match(["ko", "en"])
+    return "KR" if best == "ko" else ""
+
+
+def is_search_crawler():
+    agent = request.user_agent.string.lower()
+    return any(name in agent for name in ("googlebot", "bingbot", "yandexbot", "baiduspider", "duckduckbot"))
+
+
 @app.before_request
 def redirect_legacy_domains():
     """Keep every public legacy hostname on one permanent canonical origin."""
@@ -73,8 +131,23 @@ def redirect_legacy_domains():
 
 @app.before_request
 def hide_paused_tools():
-    if not tool_is_public(request.endpoint):
+    if not tool_is_public(current_tool_endpoint() or request.endpoint):
         abort(404)
+
+
+@app.before_request
+def choose_initial_tool_language():
+    endpoint = current_tool_endpoint()
+    if request.method not in ("GET", "HEAD") or not endpoint or request.endpoint == "ko_tool" or is_search_crawler():
+        return None
+    saved = request.cookies.get(LOCALE_COOKIE)
+    wants_korean = saved == "ko" or (saved not in ("en", "ko") and visitor_country() == "KR")
+    if not wants_korean:
+        return None
+    target = tool_path(endpoint, "ko")
+    if request.query_string:
+        target = f"{target}?{request.query_string.decode('latin-1')}"
+    return redirect(target, code=302)
 
 
 def public_url(endpoint, **values):
@@ -179,14 +252,24 @@ def inject_advertising_policy():
 def inject_public_metadata():
     site_url = configured_site_url()
     canonical_url = f"{site_url}{request.path}" if site_url else request.base_url
-    seo_page = TOOL_SEO.get(request.endpoint) if tool_is_public(request.endpoint) else None
+    source_endpoint = current_tool_endpoint()
+    page_locale = "ko" if request.endpoint == "ko_tool" else "en"
+    seo_page = TOOL_SEO.get(source_endpoint) if source_endpoint and tool_is_public(source_endpoint) else None
+    if seo_page and page_locale == "ko":
+        seo_page = korean_tool_seo(source_endpoint, seo_page)
+    english_url = f"{site_url}{tool_path(source_endpoint, 'en')}" if source_endpoint else None
+    korean_url = f"{site_url}{tool_path(source_endpoint, 'ko')}" if source_endpoint else None
+
+    def localized_tool_url(endpoint):
+        return tool_path(endpoint, page_locale)
+
     tool_structured_data = None
     related_tools = []
     if seo_page:
         related_tools = [
             {
-                "label": item[1],
-                "url": url_for(item[0], **(item[2] if len(item) > 2 else {})),
+                "label": korean_related_label(item[1]) if page_locale == "ko" else item[1],
+                "url": localized_tool_url(item[0]),
             }
             for item in seo_page["related"]
             if tool_is_public(item[0])
@@ -228,7 +311,7 @@ def inject_public_metadata():
                 {
                     "@type": "BreadcrumbList",
                     "itemListElement": [
-                        {"@type": "ListItem", "position": 1, "name": "Browser Tools", "item": public_url("index")},
+                        {"@type": "ListItem", "position": 1, "name": "Browser Tools", "item": f"{site_url}{tool_path('index', page_locale)}"},
                         {"@type": "ListItem", "position": 2, "name": seo_page["name"], "item": canonical_url},
                     ],
                 },
@@ -237,16 +320,59 @@ def inject_public_metadata():
     return {
         "usage_stats_enabled": usage_stats_ready(),
         "tool_is_public": tool_is_public,
+        "tool_url": localized_tool_url,
+        "active_tool_endpoint": source_endpoint,
+        "page_locale": page_locale,
+        "is_tool_page": bool(source_endpoint),
+        "english_url": english_url,
+        "korean_url": korean_url,
         "canonical_url": canonical_url,
         "seo_page": seo_page,
         "related_tools": related_tools,
         "tool_structured_data": tool_structured_data,
         "og_image_url": public_url("static", filename="og-browser-tools.jpg"),
-        "site_home_url": public_url("index"),
+        "site_home_url": f"{site_url}{tool_path('index', page_locale)}" if source_endpoint else public_url("index"),
         # Ads belong beside substantial editorial content, not inside utility,
         # navigation, policy, or error screens.
         "adsense_enabled": request.endpoint == "learn_article",
     }
+
+
+@app.post("/language")
+def language_choice():
+    origin = request.headers.get("Origin")
+    if origin and origin.rstrip("/") != request.host_url.rstrip("/"):
+        abort(403)
+    locale = request.form.get("locale")
+    if locale not in ("en", "ko"):
+        abort(400)
+    source_path = request.form.get("path", "/")
+    if not source_path.startswith("/") or source_path.startswith("//") or "\\" in source_path:
+        source_path = "/"
+    source_endpoint = next(
+        (
+            endpoint
+            for endpoint in ENGLISH_TOOL_PATHS
+            if source_path in (ENGLISH_TOOL_PATHS[endpoint], KOREAN_TOOL_PATHS[endpoint])
+        ),
+        None,
+    )
+    if source_endpoint:
+        target = tool_path(source_endpoint, locale)
+    elif locale == "ko":
+        target = tool_path("index", "ko")
+    else:
+        target = source_path if path_is_public(source_path) else "/"
+    response = redirect(target, code=303)
+    response.set_cookie(
+        LOCALE_COOKIE,
+        locale,
+        max_age=400 * 24 * 60 * 60,
+        httponly=True,
+        secure=request.is_secure,
+        samesite="Lax",
+    )
+    return response
 
 
 @app.post('/advertising-choice')
@@ -276,6 +402,42 @@ def refresh_advertising_permission(response):
             and request.cookies.get('bt_ad_choice_v1') == 'allow'):
         response.set_cookie('bt_ad_choice_v1', 'allow', max_age=400 * 24 * 60 * 60,
                             httponly=True, secure=request.is_secure, samesite='Lax')
+    return response
+
+
+@app.after_request
+def localize_tool_response(response):
+    if response.status_code != 200 or response.mimetype != "text/html":
+        return response
+
+    source_endpoint = current_tool_endpoint()
+    page_locale = "ko" if request.endpoint == "ko_tool" else "en"
+    html = response.get_data(as_text=True)
+
+    # The language selector stays deliberately understated so the product
+    # still reads as an English-first independent tool site.
+    language_switch = render_template(
+        "_language_switch.html",
+        page_locale=page_locale,
+        language_path=request.path,
+    )
+    footer_marker = "<p>BROWSER TOOLS · BROWSER-FIRST UTILITIES</p>"
+    if '<footer class="site-footer">' in html and footer_marker in html:
+        html = html.replace(footer_marker, f"{language_switch}\n  {footer_marker}", 1)
+
+    if page_locale == "ko" and source_endpoint:
+        html = html.replace('<html lang="en">', '<html lang="ko">', 1)
+        for endpoint, english_path in ENGLISH_TOOL_PATHS.items():
+            korean_path = KOREAN_TOOL_PATHS[endpoint]
+            html = html.replace(f'href="{english_path}"', f'href="{korean_path}"')
+        locale_script = f'<script src="{url_for("static", filename="js/locale.js")}" defer></script>'
+        html = html.replace("</body>", f"{locale_script}\n</body>", 1)
+
+    response.set_data(html)
+    if source_endpoint:
+        response.vary.add("Cookie")
+        response.vary.add("CF-IPCountry")
+        response.vary.add("Accept-Language")
     return response
 
 
@@ -355,6 +517,18 @@ def calculator():
     if not tool_is_public("calculator"):
         abort(404)
     return render_template("calculator.html")
+
+
+@app.get("/ko/", defaults={"tool_path": ""})
+@app.get("/ko/<path:tool_path>")
+def ko_tool(tool_path):
+    config = TOOL_PAGE_CONFIG.get(tool_path)
+    if config is None:
+        abort(404)
+    source_endpoint, template_name = config
+    if not tool_is_public(source_endpoint):
+        abort(404)
+    return render_template(template_name)
 
 
 @app.get("/learn")
@@ -557,6 +731,11 @@ def sitemap_xml():
         public_url("qr_generator"),
         public_url("focus_timer"),
         public_url("calculator"),
+        *[
+            f"{configured_site_url()}{KOREAN_TOOL_PATHS[endpoint]}"
+            for endpoint in ENGLISH_TOOL_PATHS
+            if tool_is_public(endpoint)
+        ],
         public_url("learn_index"),
         *[public_url("learn_article", slug=slug) for slug in public_guides()],
         *[public_url("content_page", slug=slug) for slug in PAGES if '/' + slug not in CONTENT_REDIRECTS],

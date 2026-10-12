@@ -4,6 +4,10 @@
 <meta property="og:title" content="{{ seo_page.title }}">
 <meta property="og:description" content="{{ seo_page.description }}">
 <meta property="og:url" content="{{ canonical_url }}">
+<meta property="og:locale" content="{{ 'ko_KR' if page_locale == 'ko' else 'en_US' }}">
+<link rel="alternate" hreflang="en" href="{{ english_url }}">
+<link rel="alternate" hreflang="ko" href="{{ korean_url }}">
+<link rel="alternate" hreflang="x-default" href="{{ english_url }}">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="{{ seo_page.title }}">
 <meta name="twitter:description" content="{{ seo_page.description }}">

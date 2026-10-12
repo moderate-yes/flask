@@ -2,26 +2,26 @@
 {% include '_adsterra_banner.html' %}
 <article class="seo-guide" aria-labelledby="seoGuideTitle">
   <header class="seo-guide-header">
-    <span>GUIDE / {{ seo_page.name | upper }}</span>
+    <span>{{ '사용 안내' if page_locale == 'ko' else 'GUIDE' }} / {{ seo_page.name | upper }}</span>
     <h2 id="seoGuideTitle">{{ seo_page.heading }}</h2>
     <p>{{ seo_page.summary }}</p>
   </header>
 
   <section class="seo-how" aria-labelledby="seoHowTitle">
-    <div class="seo-section-label"><span>01</span><h3 id="seoHowTitle">HOW TO USE IT</h3></div>
+    <div class="seo-section-label"><span>01</span><h3 id="seoHowTitle">{{ '사용 방법' if page_locale == 'ko' else 'HOW TO USE IT' }}</h3></div>
     <ol>
       {% for step in seo_page.steps %}<li><b>{{ '%02d' | format(loop.index) }}</b><span>{{ step }}</span></li>{% endfor %}
     </ol>
   </section>
 
-  <section class="seo-notes" aria-label="Useful information">
+  <section class="seo-notes" aria-label="{{ '유용한 정보' if page_locale == 'ko' else 'Useful information' }}">
     {% for note in seo_page.notes %}
       <div><span>{{ '%02d' | format(loop.index + 1) }}</span><h3>{{ note.0 }}</h3><p>{{ note.1 }}</p></div>
     {% endfor %}
   </section>
 
   <section class="seo-faq" aria-labelledby="seoFaqTitle">
-    <div class="seo-section-label"><span>04</span><h3 id="seoFaqTitle">FREQUENTLY ASKED QUESTIONS</h3></div>
+    <div class="seo-section-label"><span>04</span><h3 id="seoFaqTitle">{{ '자주 묻는 질문' if page_locale == 'ko' else 'FREQUENTLY ASKED QUESTIONS' }}</h3></div>
     <div class="seo-faq-list">
       {% for question, answer in seo_page.faq %}
         <details><summary>{{ question }}</summary><p>{{ answer }}</p></details>
@@ -30,8 +30,8 @@
   </section>
 
   {% if related_tools %}
-  <nav class="seo-related" aria-label="Related browser tools">
-    <span>RELATED TOOLS</span>
+  <nav class="seo-related" aria-label="{{ '관련 브라우저 도구' if page_locale == 'ko' else 'Related browser tools' }}">
+    <span>{{ '관련 도구' if page_locale == 'ko' else 'RELATED TOOLS' }}</span>
     <div>{% for tool in related_tools %}<a href="{{ tool.url }}">{{ tool.label }} <b aria-hidden="true">↗</b></a>{% endfor %}</div>
   </nav>
   {% endif %}

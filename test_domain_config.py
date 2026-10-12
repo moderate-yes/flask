@@ -159,7 +159,7 @@ class DomainConfigurationTests(unittest.TestCase):
         locations = [entry.findtext("sm:loc", namespaces=namespace) for entry in entries]
         last_modified = [entry.findtext("sm:lastmod", namespaces=namespace) for entry in entries]
 
-        self.assertEqual(len(locations), 24)
+        self.assertEqual(len(locations), 36)
         self.assertEqual(len(locations), len(set(locations)))
         self.assertNotIn("https://browserfiletools.net/path-studio", locations)
         self.assertTrue(all(location.startswith("https://browserfiletools.net/") for location in locations))
@@ -244,7 +244,8 @@ class DomainConfigurationTests(unittest.TestCase):
         for route in ROUTES:
             html = self.client.get(route).get_data(as_text=True)
             for path in EXTRA_PATHS:
-                self.assertIn('href="' + path + '"', html)
+                expected_path = '/ko' + path if route.startswith('/ko/') else path
+                self.assertIn('href="' + expected_path + '"', html)
 
     def test_pdf_focused_guides_and_examples(self):
         from public_guides import public_guides
