@@ -63,6 +63,13 @@ class LocalePagesTest(unittest.TestCase):
         self.assertNotIn('src="/static/js/locale.js"', html)
         self.assertIn("LEARN", html)
 
+    def test_pages_include_naver_site_verification(self):
+        tag = '<meta name="naver-site-verification" content="fb3623fa57879e66d9b876cafdf79677bef2e77a">'
+        english_html = self.client.get("/pdf-split", headers={"CF-IPCountry": "US"}).get_data(as_text=True)
+        korean_html = self.client.get("/ko/pdf-split").get_data(as_text=True)
+        self.assertIn(tag, english_html)
+        self.assertIn(tag, korean_html)
+
     def test_sitemap_contains_korean_tool_pages(self):
         xml = self.client.get("/sitemap.xml").get_data(as_text=True)
         self.assertIn("https://browserfiletools.net/ko/</loc>", xml)
