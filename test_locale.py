@@ -13,7 +13,13 @@ class LocalePagesTest(unittest.TestCase):
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response.headers["Location"], "/ko/")
 
-    def test_deep_english_url_remains_accessible_from_korea(self):
+    def test_korean_visitor_uses_korean_tool_page_by_default(self):
+        response = self.client.get("/pdf-split", headers={"CF-IPCountry": "KR"})
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.headers["Location"], "/ko/pdf-split")
+
+    def test_explicit_english_choice_is_respected_in_korea(self):
+        self.client.set_cookie("bt_locale", "en")
         response = self.client.get("/pdf-split", headers={"CF-IPCountry": "KR"})
         self.assertEqual(response.status_code, 200)
         self.assertIn('<html lang="en">', response.get_data(as_text=True))

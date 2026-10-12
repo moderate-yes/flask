@@ -144,12 +144,11 @@ def choose_initial_tool_language():
     if request.method not in ("GET", "HEAD") or not endpoint or request.endpoint == "ko_tool" or is_search_crawler():
         return None
     saved = request.cookies.get(LOCALE_COOKIE)
-    # Respect an explicit language choice across the tool collection. For a
-    # first visit, geo-assisted selection is limited to the homepage so deep
-    # English URLs remain directly accessible and crawlable from Korea.
+    # Respect an explicit language choice across the tool collection. On a
+    # first visit, show the localized version of every tool to visitors in
+    # Korea. Search crawlers are exempt above so both locales stay crawlable.
     wants_korean = saved == "ko" or (
-        endpoint == "index"
-        and saved not in ("en", "ko")
+        saved not in ("en", "ko")
         and visitor_country() == "KR"
     )
     if not wants_korean:
