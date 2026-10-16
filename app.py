@@ -35,6 +35,20 @@ DEFAULT_LEGACY_HOSTS = {
     "www.browserfiletools.net",
 }
 LOCALE_COOKIE = "bt_locale"
+FEATURED_TOOL_ENDPOINTS = (
+    "pdf_split",
+    "pdf_organizer",
+    "pdf_to_images",
+    "images_to_pdf",
+)
+FEATURED_TOOL_SURFACES = {
+    "index",
+    "pdf_split",
+    "pdf_organizer",
+    "pdf_annotations",
+    "pdf_to_images",
+    "images_to_pdf",
+}
 TOOL_PAGE_CONFIG = {
     "": ("index", "pdf_merge.html"),
     "pdf-split": ("pdf_split", "pdf_split.html"),
@@ -114,6 +128,7 @@ def is_search_crawler():
     return any(name in agent for name in (
         "googlebot", "google-inspectiontool", "googleother", "adsbot-google",
         "mediapartners-google", "bingbot", "yandexbot", "baiduspider", "duckduckbot",
+        "yeti", "naverbot",
     ))
 
 
@@ -274,6 +289,7 @@ def inject_public_metadata():
 
     tool_structured_data = None
     related_tools = []
+    featured_tools = []
     if seo_page:
         content_language = "ko-KR" if page_locale == "ko" else "en"
         related_tools = [
@@ -330,6 +346,18 @@ def inject_public_metadata():
                 },
             ],
         }
+        if source_endpoint in FEATURED_TOOL_SURFACES:
+            for endpoint in FEATURED_TOOL_ENDPOINTS:
+                if endpoint == source_endpoint or not tool_is_public(endpoint):
+                    continue
+                copy = TOOL_SEO[endpoint]
+                if page_locale == "ko":
+                    copy = korean_tool_seo(endpoint, copy)
+                featured_tools.append({
+                    "label": copy["name"],
+                    "description": copy["description"],
+                    "url": localized_tool_url(endpoint),
+                })
     return {
         "usage_stats_enabled": usage_stats_ready(),
         "tool_is_public": tool_is_public,
@@ -342,6 +370,7 @@ def inject_public_metadata():
         "canonical_url": canonical_url,
         "seo_page": seo_page,
         "related_tools": related_tools,
+        "featured_tools": featured_tools,
         "tool_structured_data": tool_structured_data,
         "og_image_url": public_url("static", filename="og-browser-tools.jpg"),
         "site_home_url": f"{site_url}{tool_path('index', page_locale)}" if source_endpoint else public_url("index"),
@@ -725,7 +754,13 @@ def ads_txt():
 
 @app.get("/robots.txt")
 def robots_txt():
-    body = f"User-agent: *\nAllow: /\nSitemap: {public_url('sitemap_xml')}\n"
+    body = (
+        "User-agent: Yeti\n"
+        "Allow: /\n\n"
+        "User-agent: *\n"
+        "Allow: /\n"
+        f"Sitemap: {public_url('sitemap_xml')}\n"
+    )
     return Response(body, mimetype="text/plain")
 
 

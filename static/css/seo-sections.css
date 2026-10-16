@@ -5,6 +5,24 @@
   color: var(--ink);
 }
 
+.seo-featured {
+  margin-top: 16px;
+  border: 1px solid var(--ink);
+  background: rgba(215, 216, 211, .9);
+  color: var(--ink);
+}
+.seo-featured header { padding: 20px 18px 17px; border-bottom: 1px solid var(--ink); }
+.seo-featured header span { color: var(--muted); font: 7px "DM Mono", monospace; letter-spacing: .09em; }
+.seo-featured header h2 { margin: 9px 0 0; font-family: "Inter", sans-serif; font-size: clamp(20px, 5vw, 28px); line-height: 1; letter-spacing: -.04em; }
+.seo-featured > div { display: grid; grid-template-columns: 1fr; }
+.seo-featured a { min-height: 96px; padding: 17px 42px 17px 18px; position: relative; display: flex; flex-direction: column; justify-content: center; border-bottom: 1px solid var(--line); color: inherit; text-decoration: none; }
+.seo-featured a:last-child { border-bottom: 0; }
+.seo-featured a strong { font-size: 12px; line-height: 1.3; }
+.seo-featured a small { margin-top: 7px; color: var(--muted); font-size: 8px; line-height: 1.55; }
+.seo-featured a b { position: absolute; top: 17px; right: 18px; font-family: "DM Mono", monospace; font-size: 11px; }
+.seo-featured a:hover, .seo-featured a:focus-visible { background: var(--ink); color: var(--white); }
+.seo-featured a:hover small, .seo-featured a:focus-visible small { color: #d7d8d3; }
+
 .seo-guide-header { padding: 24px 18px 22px; border-bottom: 1px solid var(--ink); }
 .seo-guide-header > span,
 .seo-section-label span,
@@ -42,6 +60,11 @@
 .seo-related a:hover { border-color: var(--ink); background: var(--ink); color: var(--white); }
 
 @media (min-width: 520px) {
+  .seo-featured header { padding: 22px; }
+  .seo-featured > div { grid-template-columns: repeat(2, 1fr); }
+  .seo-featured a { border-right: 1px solid var(--line); }
+  .seo-featured a:nth-child(2n) { border-right: 0; }
+  .seo-featured a:nth-child(n+3) { border-bottom: 0; }
   .seo-guide-header { padding: 27px 22px 24px; }
   .seo-how, .seo-faq { padding: 21px 22px; }
   .seo-notes { grid-template-columns: 1fr 1fr; }

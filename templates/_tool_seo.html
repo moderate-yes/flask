@@ -1,5 +1,22 @@
 {% if seo_page %}
 {% include '_adsterra_banner.html' %}
+{% if featured_tools %}
+<nav class="seo-featured" aria-labelledby="featuredToolsTitle">
+  <header>
+    <span>{{ '인기 브라우저 도구' if page_locale == 'ko' else 'POPULAR BROWSER TOOLS' }}</span>
+    <h2 id="featuredToolsTitle">{{ '자주 찾는 PDF 작업' if page_locale == 'ko' else 'START ANOTHER PDF TASK' }}</h2>
+  </header>
+  <div>
+    {% for tool in featured_tools %}
+    <a href="{{ tool.url }}">
+      <strong>{{ tool.label }}</strong>
+      <small>{{ tool.description }}</small>
+      <b aria-hidden="true">↗</b>
+    </a>
+    {% endfor %}
+  </div>
+</nav>
+{% endif %}
 <article class="seo-guide" aria-labelledby="seoGuideTitle">
   <header class="seo-guide-header">
     <span>{{ '사용 안내' if page_locale == 'ko' else 'GUIDE' }} / {{ seo_page.name | upper }}</span>

@@ -36,6 +36,14 @@ class LocalePagesTest(unittest.TestCase):
         )
         self.assertEqual(response.status_code, 200)
 
+    def test_naver_crawler_is_not_geo_redirected(self):
+        response = self.client.get(
+            "/pdf-split",
+            headers={"CF-IPCountry": "KR", "User-Agent": "Mozilla/5.0 (compatible; Yeti/1.1; +http://naver.me/spd)"},
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('<html lang="en">', response.get_data(as_text=True))
+
     def test_language_choice_is_remembered(self):
         response = self.client.post(
             "/language",
@@ -57,6 +65,19 @@ class LocalePagesTest(unittest.TestCase):
         self.assertIn('value="ko" class="active"', html)
         self.assertIn('"inLanguage": "ko-KR"', html)
 
+    def test_korean_pages_feature_popular_pdf_tasks(self):
+        html = self.client.get("/ko/").get_data(as_text=True)
+        self.assertIn("자주 찾는 PDF 작업", html)
+        for path in ("/ko/pdf-split", "/ko/pdf-organizer", "/ko/pdf-to-images", "/ko/images-to-pdf"):
+            self.assertIn(f'href="{path}"', html)
+        self.assertIn("개인정보 보호 PDF 분할기", html)
+        split_html = self.client.get("/ko/pdf-split").get_data(as_text=True)
+        self.assertIn("PDF 분할 무료 — 원하는 위치에서 페이지 나누기", split_html)
+
+    def test_unrelated_tools_do_not_show_pdf_task_promotions(self):
+        html = self.client.get("/ko/calculator").get_data(as_text=True)
+        self.assertNotIn('class="seo-featured"', html)
+
     def test_information_pages_remain_english(self):
         html = self.client.get("/learn").get_data(as_text=True)
         self.assertIn('<html lang="en">', html)
@@ -76,6 +97,11 @@ class LocalePagesTest(unittest.TestCase):
         self.assertIn("https://browserfiletools.net/ko/pdf-split</loc>", xml)
         self.assertIn('hreflang="ko" href="https://browserfiletools.net/ko/pdf-split"', xml)
         self.assertIn('hreflang="en" href="https://browserfiletools.net/pdf-split"', xml)
+        self.assertIn("<lastmod>2026-10-17</lastmod>", xml)
+
+    def test_robots_explicitly_allows_naver_yeti(self):
+        robots = self.client.get("/robots.txt").get_data(as_text=True)
+        self.assertIn("User-agent: Yeti\nAllow: /", robots)
 
 
 if __name__ == "__main__":
