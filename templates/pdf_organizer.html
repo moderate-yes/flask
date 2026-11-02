@@ -8,15 +8,47 @@
     <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static',filename='css/style.css') }}"><link rel="stylesheet" href="{{ url_for('static',filename='css/pdf-merge.css') }}"><link rel="stylesheet" href="{{ url_for('static',filename='css/tool-pages.css') }}">
-  </head>
+  <link rel="stylesheet" href="{{ url_for('static',filename='css/pdf-split.css') }}"></head>
   <body><main class="page-shell pdf-shell" id="organizerApp" data-pdfjs="{{ url_for('static',filename='vendor/pdf.min.mjs') }}" data-worker="{{ url_for('static',filename='vendor/pdf.worker.min.mjs') }}">
     {% include '_tool_launcher.html' %}
-    <section class="utility-card"><header class="utility-heading"><h1>{{ seo_page.h1 }}</h1><p>{{ seo_page.intro }}</p></header>
+    <section class="utility-card">{% include '_pdf_mode_switch.html' %}<header class="utility-heading"><h1>{{ seo_page.h1 }}</h1><p>{{ seo_page.intro }}</p></header>
       <button class="drop-zone utility-drop" id="dropZone" type="button"><span class="add-mark">+</span><strong>ADD ONE PDF</strong><span>Choose a file or drop it here</span></button><input class="visually-hidden" id="filePicker" type="file" accept="application/pdf,.pdf">
-      <p class="tool-status upload-status" id="status" role="status" aria-live="polite">PDF tools are ready.</p>
-      <section class="utility-workspace" id="workspace" hidden><div class="button-row"><button class="tool-action secondary" id="selectAll" type="button">SELECT ALL</button><button class="tool-action secondary" id="clearAll" type="button">CLEAR SELECTION</button></div><ol class="tool-grid" id="pageGrid"></ol><div class="button-row" style="margin-top:14px"><button class="tool-action" id="saveAll" type="button">SAVE PDF</button><button class="tool-action" id="extract" type="button">EXTRACT SELECTED</button></div></section>
-      <p class="local-tool-note">PDF pages are processed in this browser. The selected file is not sent to our server.</p>
+      <section class="utility-workspace" id="workspace" hidden>
+        <div class="preview-heading"><div><h2>{{ "페이지 선택" if page_locale == "ko" else "SELECT PAGES" }}</h2><p>{{ "페이지를 누르면 크게 볼 수 있습니다. 왼쪽 위 체크박스를 눌러 저장할 페이지를 선택하세요." if page_locale == "ko" else "Tap a page to enlarge it. Tick the top-left checkbox to select pages to keep." }}</p></div></div>
+        <div class="preview-actions"><button id="selectAll" type="button">SELECT ALL</button><button id="clearAll" type="button">CLEAR SELECTION</button></div>
+        <ol class="tool-grid" id="pageGrid"></ol>
+      </section>
+      <p class="merge-status" id="status" role="status" aria-live="polite">{{ "시작하려면 PDF 파일 한 개를 추가하세요." if page_locale == "ko" else "Add one PDF file to begin." }}</p>
+      <button class="merge-button" id="extract" type="button" disabled>{{ "선택한 페이지 다운로드" if page_locale == "ko" else "SELECT & DOWNLOAD PDF" }}</button>
+      {% include '_file_result.html' %}
+      <p class="local-processing-note">PDF processing runs in your browser.</p>
     </section>
     {% include '_tool_seo.html' %}{% include '_site_footer.html' %}
-  </main><script src="{{ url_for('static',filename='js/tool-launcher.js') }}" defer></script><script src="{{ url_for('static',filename='vendor/pdf-lib.min.js') }}"></script><script type="module" src="{{ url_for('static',filename='js/pdf-organizer.js') }}"></script></body>
+  </main>    <div class="pdf-preview-modal" id="pdfPreviewModal" hidden>
+      <button class="pdf-preview-backdrop" type="button" data-preview-close aria-label="Close enlarged preview"></button>
+      <section class="pdf-preview-dialog" role="dialog" aria-modal="true" aria-labelledby="pdfPreviewTitle">
+        <header class="pdf-preview-toolbar">
+          <div>
+            <span>ENLARGED PREVIEW</span>
+            <strong id="pdfPreviewTitle">PAGE 1</strong>
+          </div>
+          <button class="pdf-preview-close" id="pdfPreviewClose" type="button" aria-label="Close enlarged preview">CLOSE ×</button>
+        </header>
+        <div class="pdf-preview-stage" id="pdfPreviewStage" tabindex="0">
+          <canvas id="pdfPreviewCanvas"></canvas>
+          <p class="pdf-preview-loading" id="pdfPreviewLoading">LOADING PAGE...</p>
+        </div>
+        <footer class="pdf-preview-controls">
+          <button id="pdfPreviewPrevious" type="button">← PREVIOUS</button>
+          <div class="pdf-preview-zoom" aria-label="Preview zoom controls">
+            <button id="pdfPreviewZoomOut" type="button" aria-label="Zoom out">−</button>
+            <span id="pdfPreviewZoomValue">100%</span>
+            <button id="pdfPreviewZoomIn" type="button" aria-label="Zoom in">+</button>
+          </div>
+          <button id="pdfPreviewNext" type="button">NEXT →</button>
+        </footer>
+      </section>
+    </div>
+
+<script src="{{ url_for('static',filename='js/tool-launcher.js') }}" defer></script><script src="{{ url_for('static',filename='vendor/pdf-lib.min.js') }}"></script><script src="{{ url_for('static',filename='js/file-result.js') }}"></script><script type="module" src="{{ url_for('static',filename='js/pdf-organizer.js') }}"></script></body>
 </html>

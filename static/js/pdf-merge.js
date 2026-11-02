@@ -9,6 +9,7 @@
   const mergeButton = document.querySelector("#mergeButton");
   const mergeStatus = document.querySelector("#mergeStatus");
   const workerUrl = app.dataset.workerUrl;
+  const result = window.createFileResult(document.querySelector('#downloadResult'));
 
   let files = [];
   let processing = false;
@@ -109,6 +110,7 @@
 
   async function mergeFiles() {
     if (processing || files.length < 2) return;
+    result.clear();
     window.reportGoogleAdsConversion?.();
     processing = true;
     mergeButton.classList.add("processing");
@@ -131,16 +133,9 @@
         }
         if (message.type === "done") {
           const blob = new Blob([message.bytes], { type: "application/pdf" });
-          const url = URL.createObjectURL(blob);
-          const link = document.createElement("a");
           const stamp = new Date().toISOString().slice(0, 10);
-          link.href = url;
-          link.download = `merged-${stamp}.pdf`;
-          document.body.append(link);
-          link.click();
-          link.remove();
-          setTimeout(() => URL.revokeObjectURL(url), 1000);
-          finishProcessing("Your merged PDF is ready. No files were uploaded.");
+          result.show(blob, `merged-${stamp}.pdf`);
+          finishProcessing("Your merged PDF is ready. Use the save or download buttons below. No files were uploaded.");
           window.reportToolCompletion?.('pdf-merge');
         }
         if (message.type === "error") finishProcessing(message.message, true);

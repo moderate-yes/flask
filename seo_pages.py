@@ -44,13 +44,13 @@ TOOL_SEO = {
     },
     "pdf_organizer": {
         "name": "PDF Page Organizer",
-        "h1": "FREE PDF ORGANIZER.",
+        "h1": "FREE PDF SELECTION.",
         "intro": "Reorder, rotate, delete or extract PDF pages for free, with no daily usage limits. No account or file uploads required.",
         "title": "Free PDF Organizer — Reorder, Rotate & Extract Pages",
         "description": "Reorder, rotate, delete or extract PDF pages for free, with no daily usage limits. No account or file uploads required.",
         "heading": "ORGANIZE PDF PAGES",
         "summary": "Edit the page sequence of one PDF before creating a new document. Page cards can be dragged, rotated, removed, or selected for extraction.",
-        "steps": ["Add one PDF and wait for the thumbnails.", "Drag page cards into the required order.", "Rotate or remove pages as needed.", "Save all visible pages, or select pages and use EXTRACT SELECTED."],
+        "steps": ["Add one PDF and wait for the thumbnails.", "Drag page cards into the required order.", "Rotate or remove pages as needed.", "Tick the top-left checkboxes and select SELECT & DOWNLOAD PDF."],
         "notes": [
             ("SAVE OR EXTRACT", "SAVE PDF keeps every visible page in the displayed order. EXTRACT SELECTED creates a separate PDF containing only the pages you selected."),
             ("NON-DESTRUCTIVE WORKFLOW", "The original file is not overwritten. The organizer creates a new download so you can compare it with the source."),

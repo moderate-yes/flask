@@ -20,11 +20,8 @@
     <main class="page-shell pdf-shell" id="pdfApp" data-worker-url="{{ url_for('static', filename='js/pdf-worker.js') }}">
       {% include '_tool_launcher.html' %}
 
-      <section class="merge-card" id="mergeTool" aria-labelledby="mergeTitle" tabindex="-1">
-        <nav class="pdf-mode-switch" aria-label="Choose a PDF action">
-          <a class="active" href="{{ url_for('index') }}" aria-current="page">MERGE</a>
-          <a href="{{ url_for('pdf_split') }}">SPLIT</a>
-        </nav>
+<section class="merge-card" id="mergeTool" aria-labelledby="mergeTitle" tabindex="-1">
+        {% include '_pdf_mode_switch.html' %}
         <header class="merge-heading">
           <h1 id="mergeTitle">{{ seo_page.h1 }}</h1>
           <p class="merge-intro">{{ seo_page.intro }}</p>
@@ -47,12 +44,14 @@
 
         <p class="merge-status" id="mergeStatus" role="status" aria-live="polite">Add at least two PDF files to begin.</p>
         <button class="merge-button" id="mergeButton" type="button" disabled>MERGE</button>
+        {% include '_file_result.html' %}
         <p class="local-processing-note">PDF processing runs in your browser.</p>
       </section>
       {% include '_tool_seo.html' %}
       {% include '_site_footer.html' %}
     </main>
     <script src="{{ url_for('static', filename='js/tool-launcher.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='js/file-result.js') }}" defer></script>
     <script src="{{ url_for('static', filename='js/pdf-merge.js') }}" defer></script>
   </body>
 </html>

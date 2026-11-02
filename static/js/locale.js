@@ -5,7 +5,7 @@
     "INSTALL APP": "앱 설치", "MENU": "메뉴", "ADD TO HOME SCREEN": "홈 화면에 추가",
     "INSTALL BROWSER TOOLS.": "BROWSER TOOLS 설치", "GOT IT ×": "확인 ×", "SELECT A TOOL": "도구 선택",
     "INDEPENDENT TOOLS · ONE TAP AWAY": "독립형 도구 · 한 번에 실행",
-    "PDF MERGE": "PDF 합치기", "PDF SPLIT": "PDF 나누기", "PDF ORGANIZER": "PDF 정리",
+    "PDF SELECTION": "PDF \uc120\ud0dd\ud558\uae30", "Choose pages for your final PDF.": "\uc120\ud0dd\ud55c \ud398\uc774\uc9c0\ub85c PDF \ub9cc\ub4e4\uae30.", "PDF MERGE": "PDF 합치기", "PDF SPLIT": "PDF 나누기", "PDF ORGANIZER": "PDF 정리",
     "PDF ANNOTATIONS": "PDF 주석", "PDF TO IMAGES": "PDF를 이미지로", "IMAGES TO PDF": "이미지를 PDF로",
     "IMAGE TOOLKIT": "이미지 도구", "IMAGE TRANSFORM": "이미지 변환", "FILE HASH": "파일 해시",
     "QR GENERATOR": "QR 코드 생성", "FOCUS TIMER": "집중 타이머", "CALCULATOR": "계산기",

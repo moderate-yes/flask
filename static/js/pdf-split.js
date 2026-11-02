@@ -18,6 +18,7 @@ const clearCutsButton = document.querySelector("#clearCuts");
 const status = document.querySelector("#splitStatus");
 const singlePageNotice = document.querySelector("#singlePageNotice");
 const splitButton = document.querySelector("#splitButton");
+const result = window.createFileResult(document.querySelector('#downloadResult'));
 const previewModal = document.querySelector("#pdfPreviewModal");
 const previewClose = document.querySelector("#pdfPreviewClose");
 const previewStage = document.querySelector("#pdfPreviewStage");
@@ -377,6 +378,7 @@ async function inspectFile(file) {
 
 async function splitPdf() {
   if (!selectedFile || processing || !totalPages || cuts.size === 0) return;
+  result.clear();
   window.reportGoogleAdsConversion?.();
   processing = true;
   splitButton.disabled = true;
@@ -413,15 +415,8 @@ async function splitPdf() {
 
 function downloadZip(bytes, baseName) {
   const blob = new Blob([bytes], { type: "application/zip" });
-  const url = URL.createObjectURL(blob);
-  const link = document.createElement("a");
-  link.href = url;
-  link.download = `${baseName}-split.zip`;
-  document.body.append(link);
-  link.click();
-  link.remove();
-  setTimeout(() => URL.revokeObjectURL(url), 1000);
-  finish("Your split PDFs are ready. No files were uploaded.");
+  result.show(blob, `${baseName}-split.zip`);
+  finish("Your split ZIP is ready. Use the save or download buttons below. No files were uploaded.");
   window.reportToolCompletion?.('pdf-split');
 }
 

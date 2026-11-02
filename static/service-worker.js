@@ -1,4 +1,4 @@
-const CACHE_NAME = "browser-tools-v15-growth-links";
+const CACHE_NAME = "browser-tools-v16-pdf-selection";
 const CORE_ASSETS = [
   "/manifest.webmanifest",
   "/",

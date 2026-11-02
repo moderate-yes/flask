@@ -1,4 +1,13 @@
 .pdf-shell { height: auto; }
+.file-result[hidden] { display: none; }
+.file-result { margin-top: 16px; padding: 14px; border: 1px solid var(--ink); }
+.file-result-name { display: block; font-size: 13px; overflow-wrap: anywhere; }
+.file-result p { margin: 10px 0 0; font-size: 12px; line-height: 1.6; }
+.file-result-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.file-result-actions button, .file-result-actions a { padding: 10px 12px; border: 1px solid var(--ink); font: 500 11px 'DM Mono', monospace; color: var(--ink); background: transparent; text-decoration: none; cursor: pointer; }
+.file-result-actions [hidden] { display: none; }
+.file-result-actions button:disabled { opacity: .5; cursor: wait; }
+.file-result-actions a:focus-visible, .file-result-actions button:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
 
 .merge-card {
   flex: 1;
@@ -151,3 +160,6 @@
 @media (prefers-reduced-motion: reduce) {
   .merge-button.processing { animation: none; }
 }
+
+.pdf-mode-switch.pdf-suite-tabs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.pdf-suite-tabs a { text-align: center; }

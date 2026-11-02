@@ -100,3 +100,13 @@
 @media (min-width: 520px) { .utility-card { padding: 31px 22px 24px; } .tool-grid { grid-template-columns: repeat(3,minmax(0,1fr)); } .asset-card canvas, .asset-card img { height: 112px; } }
 .upload-status { min-height: 1.5em; margin-top: 12px; }
 .drop-zone[aria-busy="true"] { cursor: wait; opacity: .72; }
+
+
+#organizerApp .asset-card { position: relative; padding-top: 36px; }
+#organizerApp .asset-card.selected { padding-top: 35px; }
+#organizerApp .asset-card > input[type="checkbox"] { position: absolute; top: 8px; left: 8px; width: 22px; height: 22px; margin: 0; accent-color: var(--ink); cursor: pointer; }
+.page-thumbnail { position: relative; cursor: zoom-in; }
+.page-preview-trigger { position: absolute; top: 6px; right: 6px; width: 36px; height: 36px; display: grid; place-items: center; border: 1px solid #fff9; border-radius: 50%; background: #23262285; color: white; cursor: zoom-in; opacity: 0; transition: opacity .15s; }
+.page-thumbnail:hover .page-preview-trigger, .page-thumbnail:focus-visible .page-preview-trigger, .page-thumbnail:focus-within .page-preview-trigger { opacity: 1; }
+.page-thumbnail:focus-visible { outline: 2px solid var(--ink); }
+@media (hover: none) { .page-preview-trigger { opacity: 1; } }

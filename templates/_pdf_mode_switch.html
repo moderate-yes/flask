@@ -1,0 +1,5 @@
+<nav class="pdf-mode-switch pdf-suite-tabs" aria-label="PDF actions">
+{% for endpoint, korean, english in [('index', '\ud569\uce58\uae30', 'MERGE'), ('pdf_split', '\ub098\ub204\uae30', 'SPLIT'), ('pdf_organizer', '\uc120\ud0dd\ud558\uae30', 'SELECTION')] %}
+<a href="{{ tool_url(endpoint) }}"{% if active_tool_endpoint == endpoint %} class="active" aria-current="page"{% endif %}>{{ korean if page_locale == 'ko' else english }}</a>
+{% endfor %}
+</nav>

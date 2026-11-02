@@ -24,10 +24,7 @@
       {% include '_tool_launcher.html' %}
 
       <section class="merge-card split-card" aria-labelledby="splitTitle">
-        <nav class="pdf-mode-switch" aria-label="Choose a PDF action">
-          <a href="{{ url_for('index') }}">MERGE</a>
-          <a class="active" href="{{ url_for('pdf_split') }}" aria-current="page">SPLIT</a>
-        </nav>
+        {% include '_pdf_mode_switch.html' %}
         <header class="merge-heading">
           <h1 id="splitTitle">{{ seo_page.h1 }}</h1>
           <p class="merge-intro">{{ seo_page.intro }}</p>
@@ -70,6 +67,7 @@
 
         <p class="merge-status" id="splitStatus" role="status" aria-live="polite">Add one PDF file to begin.</p>
         <button class="merge-button" id="splitButton" type="button" disabled>SPLIT &amp; DOWNLOAD ZIP</button>
+        {% include '_file_result.html' %}
         <p class="local-processing-note">PDF processing runs in your browser.</p>
       </section>
       {% include '_tool_seo.html' %}
@@ -104,6 +102,7 @@
 
     <script src="{{ url_for('static', filename='js/tool-launcher.js') }}" defer></script>
     <script src="{{ url_for('static', filename='vendor/pdf3.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/file-result.js') }}"></script>
     <script type="module" src="{{ url_for('static', filename='js/pdf-split.js') }}?v=20260822_1"></script>
   </body>
 </html>
