@@ -31,23 +31,22 @@ async function load(selection) {
   if (busy || !selection.length) return;
   busy = true;
   download.disabled = true;
-  get('workspace').hidden = true;
   get('loadStatus').textContent = '';
-  files = [];
   const candidates = Array.from(selection);
   try {
     if (candidates.some(file => !/^image\/(jpeg|png|webp)$/.test(file.type) &&
       !/\.(jpe?g|png|webp)$/i.test(file.name))) throw new Error('Unsupported format');
-    await openImage(candidates[0], image => {
-      ratio = image.naturalWidth / image.naturalHeight;
-      width.value = image.naturalWidth;
-      height.value = image.naturalHeight;
-      dimension = 'width';
-    });
-    if (previewUrl) URL.revokeObjectURL(previewUrl);
-    previewUrl = URL.createObjectURL(candidates[0]);
-    preview.src = previewUrl;
-    files = candidates;
+    if (!files.length) {
+      await openImage(candidates[0], image => {
+        ratio = image.naturalWidth / image.naturalHeight;
+        width.value = image.naturalWidth;
+        height.value = image.naturalHeight;
+        dimension = 'width';
+      });
+      previewUrl = URL.createObjectURL(candidates[0]);
+      preview.src = previewUrl;
+    }
+    files.push(...candidates);
     get('workspace').hidden = false;
     get('status').textContent = files.length > 1
       ? (ko ? `${files.length}장 선택됨. 미리보기는 첫 이미지입니다. 비율을 유지하면 마지막으로 수정한 가로 또는 세로 크기가 각 이미지에 적용됩니다.` : `${files.length} images selected. The preview shows the first image. With aspect ratio locked, the last edited dimension is applied to each image.`)
@@ -145,6 +144,17 @@ download.addEventListener('click', async () => {
   } finally {
     busy = download.disabled = false;
   }
+});
+
+get('clearImages').addEventListener('click', () => {
+  if (busy) return;
+  files = [];
+  if (previewUrl) URL.revokeObjectURL(previewUrl);
+  previewUrl = null;
+  preview.removeAttribute('src');
+  get('workspace').hidden = true;
+  get('loadStatus').textContent = '';
+  download.disabled = true;
 });
 
 drop.addEventListener('click', () => { if (!busy) picker.click(); });
