@@ -41,62 +41,63 @@
         <span class="tool-arrow" aria-hidden="true">↗</span>
       </a>
       <a class="tool-card{% if active_tool_endpoint == 'pdf_compress' %} current{% endif %}" href="{{ tool_url('pdf_compress') }}"{% if active_tool_endpoint == 'pdf_compress' %} aria-current="page"{% endif %}>
-        <span class="tool-copy"><strong>{{ 'PDF 용량 줄이기' if page_locale == 'ko' else 'COMPRESS PDF' }}</strong></span>
+        <span class="tool-number">04</span>
+        <span class="tool-copy"><strong>{{ 'PDF 용량 줄이기' if page_locale == 'ko' else 'PDF COMPRESS' }}</strong><small>{{ '브라우저에서 PDF 용량을 줄이세요.' if page_locale == 'ko' else 'Reduce PDF file size locally.' }}</small></span>
         <span class="tool-arrow" aria-hidden="true">↗</span>
       </a>
       <a class="tool-card{% if active_tool_endpoint == 'pdf_annotations' %} current{% endif %}" href="{{ tool_url('pdf_annotations') }}"{% if active_tool_endpoint == 'pdf_annotations' %} aria-current="page"{% endif %}>
-        <span class="tool-number">04</span>
+        <span class="tool-number">05</span>
         <span class="tool-copy"><strong>PDF ANNOTATIONS</strong><small>Highlight, comment, review.</small></span>
         <span class="tool-arrow" aria-hidden="true">↗</span>
       </a>
       <a class="tool-card{% if active_tool_endpoint == 'pdf_to_images' %} current{% endif %}" href="{{ tool_url('pdf_to_images') }}"{% if active_tool_endpoint == 'pdf_to_images' %} aria-current="page"{% endif %}>
-        <span class="tool-number">05</span>
+        <span class="tool-number">06</span>
         <span class="tool-copy"><strong>PDF TO IMAGES</strong><small>Export pages as pictures.</small></span>
         <span class="tool-arrow" aria-hidden="true">↗</span>
       </a>
       <a class="tool-card{% if active_tool_endpoint == 'images_to_pdf' %} current{% endif %}" href="{{ tool_url('images_to_pdf') }}"{% if active_tool_endpoint == 'images_to_pdf' %} aria-current="page"{% endif %}>
-        <span class="tool-number">06</span>
+        <span class="tool-number">07</span>
         <span class="tool-copy"><strong>IMAGES TO PDF</strong><small>Build one PDF from images.</small></span>
         <span class="tool-arrow" aria-hidden="true">↗</span>
       </a>
       {% if tool_is_public('image_toolkit') %}
       <a class="tool-card{% if active_tool_endpoint == 'image_toolkit' %} current{% endif %}" href="{{ tool_url('image_toolkit') }}"{% if active_tool_endpoint == 'image_toolkit' %} aria-current="page"{% endif %}>
-        <span class="tool-number">07</span>
+        <span class="tool-number">08</span>
         <span class="tool-copy"><strong>IMAGE TOOLKIT</strong><small>Resize, compress, convert.</small></span>
         <span class="tool-arrow" aria-hidden="true">↗</span>
       </a>
       {% endif %}
       {% if tool_is_public('image_transform') %}
       <a class="tool-card{% if active_tool_endpoint == 'image_transform' %} current{% endif %}" href="{{ tool_url('image_transform') }}"{% if active_tool_endpoint == 'image_transform' %} aria-current="page"{% endif %}>
-        <span class="tool-number">08</span>
+        <span class="tool-number">09</span>
         <span class="tool-copy"><strong>IMAGE TRANSFORM</strong><small>Mirror, flip, and rotate.</small></span>
         <span class="tool-arrow" aria-hidden="true">↗</span>
       </a>
       {% endif %}
       {% if tool_is_public('file_hash') %}
       <a class="tool-card{% if active_tool_endpoint == 'file_hash' %} current{% endif %}" href="{{ tool_url('file_hash') }}"{% if active_tool_endpoint == 'file_hash' %} aria-current="page"{% endif %}>
-        <span class="tool-number">09</span>
+        <span class="tool-number">10</span>
         <span class="tool-copy"><strong>FILE HASH</strong><small>Check a file fingerprint.</small></span>
         <span class="tool-arrow" aria-hidden="true">↗</span>
       </a>
       {% endif %}
       {% if tool_is_public('qr_generator') %}
       <a class="tool-card{% if active_tool_endpoint == 'qr_generator' %} current{% endif %}" href="{{ tool_url('qr_generator') }}"{% if active_tool_endpoint == 'qr_generator' %} aria-current="page"{% endif %}>
-        <span class="tool-number">10</span>
+        <span class="tool-number">11</span>
         <span class="tool-copy"><strong>QR GENERATOR</strong><small>Turn text into a QR code.</small></span>
         <span class="tool-arrow" aria-hidden="true">↗</span>
       </a>
       {% endif %}
       {% if tool_is_public('focus_timer') %}
       <a class="tool-card{% if active_tool_endpoint == 'focus_timer' %} current{% endif %}" href="{{ tool_url('focus_timer') }}"{% if active_tool_endpoint == 'focus_timer' %} aria-current="page"{% endif %}>
-        <span class="tool-number">11</span>
+        <span class="tool-number">12</span>
         <span class="tool-copy"><strong>FOCUS TIMER</strong><small>Stay on one task.</small></span>
         <span class="tool-arrow" aria-hidden="true">↗</span>
       </a>
       {% endif %}
       {% if tool_is_public('calculator') %}
       <a class="tool-card{% if active_tool_endpoint == 'calculator' %} current{% endif %}" href="{{ tool_url('calculator') }}"{% if active_tool_endpoint == 'calculator' %} aria-current="page"{% endif %}>
-        <span class="tool-number">12</span>
+        <span class="tool-number">13</span>
         <span class="tool-copy"><strong>CALCULATOR</strong><small>Percent, discount, tax, tip.</small></span>
         <span class="tool-arrow" aria-hidden="true">↗</span>
       </a>
