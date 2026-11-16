@@ -42,6 +42,18 @@ TOOL_SEO = {
         ],
         "related": [("index", "MERGE PDF"), ("pdf_organizer", "ORGANIZE PAGES"), ("pdf_to_images", "PDF TO IMAGES")],
     },
+    "pdf_compress": {
+        "name": "PDF Compressor",
+        "h1": "FREE PDF COMPRESSOR.",
+        "intro": "Reduce PDF file size for free in your browser. No account or file uploads required.",
+        "title": "Free PDF Compressor | Reduce PDF File Size",
+        "description": "Compress scanned and image-heavy PDFs in your browser and compare the original and compressed file sizes.",
+        "heading": "HOW TO COMPRESS A PDF",
+        "faq": [("Is my PDF uploaded?", "No. The browser processes the PDF on your device.")],
+        "summary": "Choose a compression level, compare both file sizes, and download the smaller PDF.",
+        "steps": ["Add one PDF.", "Choose a compression level.", "Compress and download the result."],
+        "related": [("pdf_split", "SPLIT PDF"), ("index", "MERGE PDF")],
+    },
     "pdf_organizer": {
         "name": "PDF Page Organizer",
         "h1": "FREE PDF SELECTION.",

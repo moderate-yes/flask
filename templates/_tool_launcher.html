@@ -40,6 +40,10 @@
         <span class="tool-copy"><strong>PDF SELECTION</strong><small>Choose pages for your final PDF.</small></span>
         <span class="tool-arrow" aria-hidden="true">↗</span>
       </a>
+      <a class="tool-card{% if active_tool_endpoint == 'pdf_compress' %} current{% endif %}" href="{{ tool_url('pdf_compress') }}"{% if active_tool_endpoint == 'pdf_compress' %} aria-current="page"{% endif %}>
+        <span class="tool-copy"><strong>{{ 'PDF 용량 줄이기' if page_locale == 'ko' else 'COMPRESS PDF' }}</strong></span>
+        <span class="tool-arrow" aria-hidden="true">↗</span>
+      </a>
       <a class="tool-card{% if active_tool_endpoint == 'pdf_annotations' %} current{% endif %}" href="{{ tool_url('pdf_annotations') }}"{% if active_tool_endpoint == 'pdf_annotations' %} aria-current="page"{% endif %}>
         <span class="tool-number">04</span>
         <span class="tool-copy"><strong>PDF ANNOTATIONS</strong><small>Highlight, comment, review.</small></span>

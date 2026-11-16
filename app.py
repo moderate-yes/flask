@@ -36,6 +36,7 @@ DEFAULT_LEGACY_HOSTS = {
 }
 LOCALE_COOKIE = "bt_locale"
 FEATURED_TOOL_ENDPOINTS = (
+    "pdf_compress",
     "pdf_split",
     "pdf_organizer",
     "pdf_to_images",
@@ -52,6 +53,7 @@ FEATURED_TOOL_SURFACES = {
 TOOL_PAGE_CONFIG = {
     "": ("index", "pdf_merge.html"),
     "pdf-split": ("pdf_split", "pdf_split.html"),
+    "pdf-compress": ("pdf_compress", "pdf_compress.html"),
     "pdf-organizer": ("pdf_organizer", "pdf_organizer.html"),
     "pdf-annotations": ("pdf_annotations", "pdf_annotations.html"),
     "pdf-to-images": ("pdf_to_images", "pdf_to_images.html"),
@@ -507,6 +509,11 @@ def pdf_split():
     return render_template("pdf_split.html")
 
 
+@app.get("/pdf-compress")
+def pdf_compress():
+    return render_template("pdf_compress.html")
+
+
 @app.get("/pdf-organizer")
 def pdf_organizer():
     return render_template("pdf_organizer.html")
@@ -770,6 +777,7 @@ def sitemap_xml():
         public_url("index"),
         public_url("pdf_split"),
         public_url("pdf_organizer"),
+        public_url("pdf_compress"),
         public_url("pdf_annotations"),
         public_url("pdf_to_images"),
         public_url("images_to_pdf"),

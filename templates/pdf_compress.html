@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+  {% include '_brand_head.html' %}
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>{{ seo_page.title }}</title>
+  <meta name="description" content="{{ seo_page.description }}">
+  <link rel="canonical" href="{{ canonical_url }}">
+  {% include '_tool_seo_head.html' %}
+  <link rel="stylesheet" href="{{ url_for('static',filename='css/style.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static',filename='css/pdf-merge.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static',filename='css/tool-pages.css') }}">
+</head>
+<body>
+<main class="page-shell pdf-shell" id="compressApp"
+  data-pdfjs="{{ url_for('static',filename='vendor/pdf.min.mjs') }}"
+  data-worker="{{ url_for('static',filename='vendor/pdf.worker.min.mjs') }}">
+  {% include '_tool_launcher.html' %}
+  <section class="merge-card">
+    <header class="merge-heading"><h1>{{ seo_page.h1 }}</h1><p class="merge-intro">{{ seo_page.intro }}</p></header>
+    <button class="drop-zone" id="compressDrop" type="button">
+      <span class="add-mark" aria-hidden="true">+</span>
+      <strong>ADD ONE PDF</strong><span>Choose a file or drop it here</span>
+    </button>
+    <input class="visually-hidden" id="compressFile" type="file" accept="application/pdf,.pdf">
+    <div class="utility-workspace">
+      <label class="field">{{ '압축 수준' if page_locale == 'ko' else 'COMPRESSION LEVEL' }}
+        <select id="compressLevel">
+          <option value="light">{{ '낮음 · 화질 우선' if page_locale == 'ko' else 'Light · higher quality' }}</option>
+          <option value="balanced" selected>{{ '보통 · 균형' if page_locale == 'ko' else 'Balanced' }}</option>
+          <option value="strong">{{ '높음 · 용량 우선' if page_locale == 'ko' else 'Strong · smaller file' }}</option>
+        </select>
+      </label>
+      <p class="local-processing-note">{{ '스캔 문서나 이미지가 많은 PDF에 적합합니다. 압축본은 페이지를 이미지로 저장하므로 텍스트 검색·선택, 링크, 양식이 유지되지 않습니다.' if page_locale == 'ko' else 'Best for scanned or image-heavy PDFs. The output stores pages as images, so searchable text, links, and interactive forms are lost.' }}</p>
+    </div>
+    <p class="merge-status" id="compressStatus" role="status">{{ '시작하려면 PDF 파일 한 개를 추가하세요.' if page_locale == 'ko' else 'Add one PDF file to begin.' }}</p>
+    <button id="compressButton" class="merge-button" type="button" disabled>{{ 'PDF 용량 줄이기' if page_locale == 'ko' else 'COMPRESS PDF' }}</button>
+    <div id="compressResult" class="file-result" hidden>
+      <p id="compressSizes"></p>
+      <a id="compressDownload" class="tool-action" style="display:block;text-align:center">{{ '압축 PDF 다운로드' if page_locale == 'ko' else 'DOWNLOAD COMPRESSED PDF' }}</a>
+    </div>
+  </section>
+  {% include '_tool_seo.html' %}
+  {% include '_site_footer.html' %}
+</main>
+<script src="{{ url_for('static',filename='js/tool-launcher.js') }}" defer></script>
+<script src="{{ url_for('static',filename='vendor/pdf-lib.min.js') }}"></script>
+<script type="module" src="{{ url_for('static',filename='js/pdf-compress.js') }}"></script>
+</body>
+</html>
