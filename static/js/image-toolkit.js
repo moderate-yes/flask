@@ -10,7 +10,7 @@ const quality = get('quality');
 const download = get('download');
 const preview = get('preview');
 let files = [];
-let previewUrl;
+const previewUrls = [];
 let busy = false;
 let ratio = 1;
 let dimension = 'width';
@@ -43,13 +43,29 @@ async function load(selection) {
         height.value = image.naturalHeight;
         dimension = 'width';
       });
-      previewUrl = URL.createObjectURL(candidates[0]);
-      preview.src = previewUrl;
     }
+    const wasBatch = files.length > 1;
     files.push(...candidates);
+    for (const file of candidates) {
+      const tile = document.createElement('li');
+      tile.className = 'asset-card';
+      const thumbnail = document.createElement('img');
+      thumbnail.alt = '';
+      thumbnail.loading = 'lazy';
+      const url = URL.createObjectURL(file);
+      previewUrls.push(url);
+      thumbnail.src = url;
+      const caption = document.createElement('p');
+      caption.className = 'asset-name';
+      caption.textContent = file.name;
+      tile.append(thumbnail, caption);
+      preview.append(tile);
+    }
+    if (!wasBatch && files.length > 1) lock.checked = false;
+    get('batchSettings').hidden = files.length < 2;
     get('workspace').hidden = false;
     get('status').textContent = files.length > 1
-      ? (ko ? `${files.length}장 선택됨. 미리보기는 첫 이미지입니다. 비율을 유지하면 마지막으로 수정한 가로 또는 세로 크기가 각 이미지에 적용됩니다.` : `${files.length} images selected. The preview shows the first image. With aspect ratio locked, the last edited dimension is applied to each image.`)
+      ? (ko ? `${files.length}장 선택됨.` : `${files.length} images selected.`)
       : `${width.value} × ${height.value} px`;
     download.textContent = files.length > 1
       ? (ko ? '처리하고 ZIP 다운로드' : 'PROCESS & DOWNLOAD ZIP')
@@ -149,9 +165,10 @@ download.addEventListener('click', async () => {
 get('clearImages').addEventListener('click', () => {
   if (busy) return;
   files = [];
-  if (previewUrl) URL.revokeObjectURL(previewUrl);
-  previewUrl = null;
-  preview.removeAttribute('src');
+  for (const url of previewUrls) URL.revokeObjectURL(url);
+  previewUrls.length = 0;
+  preview.replaceChildren();
+  lock.checked = true;
   get('workspace').hidden = true;
   get('loadStatus').textContent = '';
   download.disabled = true;
