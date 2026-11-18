@@ -97,12 +97,12 @@ TOOL_SEO = {
     "pdf_to_images": {
         "name": "PDF to Image Converter",
         "h1": "FREE PDF TO IMAGE CONVERTER.",
-        "intro": "Convert PDF pages to JPG or PNG for free, with no daily usage limits. Choose pages and download a ZIP. No account or file uploads required.",
+        "intro": "Convert PDF pages to JPG or PNG for free, with no daily usage limits. Download one page as an image or multiple pages as a ZIP. No account or file uploads required.",
         "title": "Free PDF to JPG & PNG Converter — No Uploads",
-        "description": "Convert PDF pages to JPG or PNG for free, with no daily usage limits. Choose pages and download a ZIP. No account or file uploads required.",
+        "description": "Convert PDF pages to JPG or PNG for free, with no daily usage limits. Download one page as an image or multiple pages as a ZIP. No account or file uploads required.",
         "heading": "CONVERT PDF TO IMAGES",
         "summary": "Render an entire PDF or selected pages as PNG or JPEG files. Page-range controls help avoid processing pages you do not need.",
-        "steps": ["Add one PDF.", "Enter a range such as 1-3, 5 or leave it blank for all pages.", "Choose PNG or JPEG and a rendering scale.", "Download the generated images as a ZIP."],
+        "steps": ["Add one PDF.", "Enter a range such as 1-3, 5 or leave it blank for all pages.", "Choose PNG or JPEG and a rendering scale.", "Download a single image directly or multiple images as a ZIP."],
         "notes": [
             ("PNG OR JPEG", "PNG is useful for text, diagrams, and crisp edges. JPEG can produce smaller photographic files and offers an adjustable quality setting."),
             ("SCALE AND MEMORY", "A larger rendering scale creates more pixels and can improve detail, but it also increases file size, memory use, and processing time."),
