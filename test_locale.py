@@ -72,7 +72,7 @@ class LocalePagesTest(unittest.TestCase):
             self.assertIn(f'href="{path}"', html)
         self.assertIn("개인정보 보호 PDF 분할기", html)
         split_html = self.client.get("/ko/pdf-split").get_data(as_text=True)
-        self.assertIn("PDF 분할 무료 — 원하는 위치에서 페이지 나누기", split_html)
+        self.assertIn("PDF 나누기 무료 — 원하는 위치에서 페이지 분할", split_html)
 
     def test_unrelated_tools_do_not_show_pdf_task_promotions(self):
         html = self.client.get("/ko/calculator").get_data(as_text=True)
