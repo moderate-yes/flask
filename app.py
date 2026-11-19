@@ -14,7 +14,7 @@ from ad_policy import advertising_allowed
 from learn_pages import LEARN_PAGES
 from public_guides import public_guides
 from seo_pages import TOOL_SEO
-from site_metadata import SITEMAP_LASTMOD
+from site_metadata import sitemap_lastmod
 from tool_visibility import tool_is_public, path_is_public, public_content_page
 from content_presentation import CONTENT_REDIRECTS, streamlined_content
 from usage_stats import usage, ready as usage_stats_ready
@@ -36,6 +36,9 @@ DEFAULT_LEGACY_HOSTS = {
 }
 LOCALE_COOKIE = "bt_locale"
 FEATURED_TOOL_ENDPOINTS = (
+    "index",
+    "image_toolkit",
+    "image_transform",
     "pdf_compress",
     "pdf_split",
     "pdf_organizer",
@@ -43,6 +46,9 @@ FEATURED_TOOL_ENDPOINTS = (
     "images_to_pdf",
 )
 FEATURED_TOOL_SURFACES = {
+    "image_toolkit",
+    "image_transform",
+    "pdf_compress",
     "index",
     "pdf_split",
     "pdf_organizer",
@@ -816,7 +822,7 @@ def sitemap_xml():
                 {"hreflang": "ko", "href": korean},
                 {"hreflang": "x-default", "href": english},
             ]
-        pages.append({"loc": page, "lastmod": SITEMAP_LASTMOD, "alternates": alternates})
+        pages.append({"loc": page, "lastmod": sitemap_lastmod(path), "alternates": alternates})
     return Response(render_template("sitemap.xml", pages=pages), mimetype="application/xml")
 
 

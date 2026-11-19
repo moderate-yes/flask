@@ -14,7 +14,7 @@ import shutil
 from pathlib import Path
 from urllib.parse import urlsplit
 
-from site_metadata import SITEMAP_LASTMOD
+from site_metadata import sitemap_lastmod
 from tool_visibility import path_is_public
 from content_presentation import CONTENT_REDIRECTS
 
@@ -234,7 +234,7 @@ def sitemap(site_url: str) -> str:
             "  <url>\n"
             f"    <loc>{site_url}{public_path}</loc>\n"
             f"{alternates}"
-            f"    <lastmod>{SITEMAP_LASTMOD}</lastmod>\n"
+            f"    <lastmod>{sitemap_lastmod(route)}</lastmod>\n"
             "  </url>"
         )
     return (

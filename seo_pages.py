@@ -3,9 +3,9 @@
 TOOL_SEO = {
     "index": {
         "name": "Private PDF Merger",
-        "h1": "FREE PDF MERGER.",
+        "h1": "FREE ONLINE PDF MERGER.",
         "intro": "Merge PDF files for free, with no daily usage limits. Arrange documents in your chosen order. No account or file uploads required.",
-        "title": "Free PDF Merger — Combine PDF Files, No Sign-Up",
+        "title": "Free Online PDF Merger — Merge PDF Files Without Uploads",
         "description": "Merge PDF files for free, with no daily usage limits. Arrange documents in your chosen order. No account or file uploads required.",
         "heading": "HOW TO MERGE PDF FILES",
         "summary": "Combine two or more PDF documents in the order you choose. Processing happens in browser memory, so the source files are not uploaded to an application server.",
