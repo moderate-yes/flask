@@ -8,15 +8,15 @@ class LocalePagesTest(unittest.TestCase):
         app.config.update(TESTING=True)
         self.client = app.test_client()
 
-    def test_korean_visitor_starts_on_korean_homepage(self):
+    def test_homepage_url_stays_english_in_korea(self):
         response = self.client.get("/", headers={"CF-IPCountry": "KR"})
-        self.assertEqual(response.status_code, 302)
-        self.assertEqual(response.headers["Location"], "/ko/")
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('<html lang="en">', response.get_data(as_text=True))
 
-    def test_korean_visitor_uses_korean_tool_page_by_default(self):
+    def test_explicit_english_tool_url_stays_english_in_korea(self):
         response = self.client.get("/pdf-split", headers={"CF-IPCountry": "KR"})
-        self.assertEqual(response.status_code, 302)
-        self.assertEqual(response.headers["Location"], "/ko/pdf-split")
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('<html lang="en">', response.get_data(as_text=True))
 
     def test_explicit_english_choice_is_respected_in_korea(self):
         self.client.set_cookie("bt_locale", "en")
@@ -90,6 +90,32 @@ class LocalePagesTest(unittest.TestCase):
         korean_html = self.client.get("/ko/pdf-split").get_data(as_text=True)
         self.assertIn(tag, english_html)
         self.assertIn(tag, korean_html)
+
+    def test_us_english_url_ignores_old_korean_cookie_and_browser_language(self):
+        self.client.set_cookie("bt_locale", "ko")
+        response = self.client.get("/pdf-split", headers={"CF-IPCountry": "US", "Accept-Language": "ko-KR,ko;q=0.9,en;q=0.8"})
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('<html lang="en">', response.get_data(as_text=True))
+
+    def test_explicit_korean_url_remains_korean_for_us_visitors(self):
+        response = self.client.get("/ko/pdf-split", headers={"CF-IPCountry": "US", "Accept-Language": "en-US"})
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('<html lang="ko">', response.get_data(as_text=True))
+
+    def test_country_comes_from_proxy_and_is_not_guessed_from_language(self):
+        unknown = self.client.get("/", headers={"Accept-Language": "en-US"})
+        self.assertIn('name="visitor-country" content="UNKNOWN"', unknown.get_data(as_text=True))
+        known = self.client.get("/", headers={"CF-IPCountry": "KR", "Accept-Language": "en-US"})
+        self.assertIn('name="visitor-country" content="KR"', known.get_data(as_text=True))
+        self.assertIn("CF-IPCountry", known.headers["Vary"])
+        self.assertIn("private", known.headers["Cache-Control"])
+
+    def test_topbar_has_language_switch(self):
+        html = self.client.get("/ko/pdf-split").get_data(as_text=True)
+        topbar = html.split('class="tools-bar"', 1)[1].split("</div>", 1)[0]
+        self.assertIn('action="/language"', topbar)
+        self.assertIn('name="locale" value="en"', topbar)
+        self.assertIn('name="locale" value="ko"', topbar)
 
     def test_sitemap_contains_korean_tool_pages(self):
         xml = self.client.get("/sitemap.xml").get_data(as_text=True)

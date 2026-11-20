@@ -1,4 +1,7 @@
 <div class="tools-bar">
+  {% if is_tool_page %}
+  {% with language_path=request.path %}{% include '_language_switch.html' %}{% endwith %}
+  {% endif %}
   <button class="install-trigger" type="button" data-install-app hidden>
     <span>INSTALL APP</span><span aria-hidden="true">↓</span>
   </button>

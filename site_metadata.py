@@ -8,6 +8,8 @@ SITEMAP_LASTMOD = "2026-10-17"
 
 # Dates reflect content and navigation changes, rather than the build time.
 PAGE_LASTMOD = {
+    "/contact": "2026-11-20",
+    "/how-it-works": "2026-11-20",
     "/": "2026-11-20",
     "/pdf-split": "2026-11-20",
     "/pdf-organizer": "2026-11-20",

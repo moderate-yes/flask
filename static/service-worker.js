@@ -1,4 +1,4 @@
-const CACHE_NAME = "browser-tools-v16-pdf-selection";
+const CACHE_NAME = "browser-tools-v17-explicit-language";
 const CORE_ASSETS = [
   "/manifest.webmanifest",
   "/",

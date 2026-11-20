@@ -114,32 +114,6 @@ def tool_path(endpoint, locale="en"):
     return paths.get(endpoint, "/ko/" if locale == "ko" else "/")
 
 
-def visitor_country():
-    for header in (
-        "CF-IPCountry",
-        "CloudFront-Viewer-Country",
-        "X-Vercel-IP-Country",
-        "X-Country-Code",
-    ):
-        value = request.headers.get(header, "").strip().upper()
-        if value:
-            return value
-    # The production domain is proxied by Cloudflare. This fallback keeps the
-    # intended first visit behavior when running through a proxy that strips
-    # its country header, without collecting precise location information.
-    best = request.accept_languages.best_match(["ko", "en"])
-    return "KR" if best == "ko" else ""
-
-
-def is_search_crawler():
-    agent = request.user_agent.string.lower()
-    return any(name in agent for name in (
-        "googlebot", "google-inspectiontool", "googleother", "adsbot-google",
-        "mediapartners-google", "bingbot", "yandexbot", "baiduspider", "duckduckbot",
-        "yeti", "naverbot",
-    ))
-
-
 @app.before_request
 def redirect_legacy_domains():
     """Keep every public legacy hostname on one permanent canonical origin."""
@@ -159,27 +133,6 @@ def redirect_legacy_domains():
 def hide_paused_tools():
     if not tool_is_public(current_tool_endpoint() or request.endpoint):
         abort(404)
-
-
-@app.before_request
-def choose_initial_tool_language():
-    endpoint = current_tool_endpoint()
-    if request.method not in ("GET", "HEAD") or not endpoint or request.endpoint == "ko_tool" or is_search_crawler():
-        return None
-    saved = request.cookies.get(LOCALE_COOKIE)
-    # Respect an explicit language choice across the tool collection. On a
-    # first visit, show the localized version of every tool to visitors in
-    # Korea. Search crawlers are exempt above so both locales stay crawlable.
-    wants_korean = saved == "ko" or (
-        saved not in ("en", "ko")
-        and visitor_country() == "KR"
-    )
-    if not wants_korean:
-        return None
-    target = tool_path(endpoint, "ko")
-    if request.query_string:
-        target = f"{target}?{request.query_string.decode('latin-1')}"
-    return redirect(target, code=302)
 
 
 def public_url(endpoint, **values):
@@ -464,8 +417,6 @@ def localize_tool_response(response):
     page_locale = "ko" if request.endpoint == "ko_tool" else "en"
     html = response.get_data(as_text=True)
 
-    # The language selector stays deliberately understated so the product
-    # still reads as an English-first independent tool site.
     language_switch = render_template(
         "_language_switch.html",
         page_locale=page_locale,
@@ -483,7 +434,14 @@ def localize_tool_response(response):
         locale_script = f'<script src="{url_for("static", filename="js/locale.js")}" defer></script>'
         html = html.replace("</body>", f"{locale_script}\n</body>", 1)
 
+    reported_country = request.headers.get("CF-IPCountry", "").strip().upper()
+    if (len(reported_country) != 2 or not reported_country.isascii()
+            or not reported_country.isalpha() or reported_country == "XX"):
+        reported_country = "UNKNOWN"
+    html = html.replace("</head>", f'<meta name="visitor-country" content="{reported_country}">\n</head>', 1)
     response.set_data(html)
+    response.vary.add("CF-IPCountry")
+    response.cache_control.private = True
     if source_endpoint:
         response.vary.add("Cookie")
         response.vary.add("CF-IPCountry")

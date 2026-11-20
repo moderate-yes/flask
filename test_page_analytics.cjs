@@ -11,6 +11,7 @@ const context = {
   Intl,
   crypto: { randomUUID: () => `00000000-0000-4000-8000-${String(++uuid).padStart(12, "0")}` },
   document: {
+    querySelector: () => ({content: "US"}),
     referrer: "https://www.google.com/search?q=pdf",
     documentElement: { lang: "ko" },
   },
@@ -42,8 +43,15 @@ vm.runInNewContext(fs.readFileSync("static/js/page-analytics.js", "utf8"), conte
   assert.equal(payload.source, "google");
   assert.equal(payload.device, "mobile");
   assert.equal(payload.locale, "ko");
-  assert.equal(payload.country, "EST-KR");
+  assert.equal(payload.country, "US");
+  assert.notEqual(payload.country, "KR");
   assert.equal(payload.landing, true);
   assert.match(payload.session_id, /^[0-9a-f-]{36}$/);
+  context.document.querySelector = () => null;
+  vm.runInNewContext(fs.readFileSync("static/js/page-analytics.js", "utf8"), context);
+  assert.equal(JSON.parse(await sent[1].body.text()).country, "UNKNOWN");
+  context.window.location.hostname = "127.0.0.1";
+  vm.runInNewContext(fs.readFileSync("static/js/page-analytics.js", "utf8"), context);
+  assert.equal(sent.length, 2);
   console.log("page analytics tests passed");
 })().catch(error => { console.error(error); process.exitCode = 1; });

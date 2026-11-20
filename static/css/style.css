@@ -384,3 +384,12 @@ button:focus-visible, input:focus-visible { outline: 3px solid rgba(17, 18, 16, 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; transition-duration: .01ms !important; }
 }
+
+
+.tools-bar > .language-switch { margin: 0 auto 0 0; gap: 8px; font-size: 11px; letter-spacing: 0; }
+.tools-bar > .language-switch > span, .tools-bar > .language-switch > i { display: none; }
+.tools-bar > .language-switch button { min-width: 42px; min-height: 38px; padding: 7px; border: 1px solid var(--line); }
+.tools-bar > .language-switch button.active { background: var(--ink); color: var(--white); border-color: var(--ink); }
+.content-tool-links { margin: 18px 0; display: flex; flex-wrap: wrap; gap: 10px; }
+.content-tool-links a { padding: 12px 16px; color: var(--ink); background: var(--white); border: 1px solid var(--ink); text-decoration: none; font-size: 12px; }
+.content-tool-links a:hover { color: var(--white); background: var(--ink); }
